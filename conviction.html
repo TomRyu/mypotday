@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>곗돈 타는 날이 될 수밖에 없는 이유</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:    #C8860A;
+      --gold-l:  #E8A030;
+      --gold-p:  #FDF3E0;
+      --bg:      #FDFAF5;
+      --bg2:     #FFF8EE;
+      --text:    #1E1208;
+      --sub:     #4A3018;
+      --muted:   #9A7A50;
+      --border:  #E8D5B0;
+      --green:   #1D7A55;
+      --green-b: #ECFDF5;
+    }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.9; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(160deg, #1A0E04 0%, #3A2208 60%, #2C1A08 100%);
+      padding: 80px 40px 72px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(232,160,48,0.15) 0%, transparent 65%);
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 3px;
+      color: rgba(255,255,255,0.35); margin-bottom: 24px; position: relative;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.8rem, 5.5vw, 3.4rem);
+      font-weight: 900; color: #fff; line-height: 1.3;
+      position: relative; margin-bottom: 0;
+    }
+    .hero h1 em { color: #E8A030; font-style: normal; display: block; }
+    .hero-line { width: 48px; height: 2px; background: var(--gold-l); margin: 30px auto; position: relative; }
+    .hero-quote {
+      font-family: 'Noto Serif KR', serif; font-size: 1rem;
+      color: rgba(255,255,255,0.5); position: relative;
+      max-width: 480px; margin: 0 auto; line-height: 1.9;
+    }
+
+    /* WRAPPER */
+    .wrapper { max-width: 780px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* OPENING */
+    .opening {
+      margin-top: 60px; padding: 40px 44px;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-left: 5px solid var(--gold-l); border-radius: 0 18px 18px 0;
+    }
+    .opening p {
+      font-family: 'Noto Serif KR', serif; font-size: 1.1rem;
+      color: var(--sub); line-height: 2; margin-bottom: 14px;
+    }
+    .opening p:last-child { margin-bottom: 0; }
+    .opening p strong { color: var(--text); }
+
+    /* REASON BLOCK */
+    .reasons { margin-top: 64px; display: flex; flex-direction: column; gap: 0; }
+
+    .reason {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 0; border-bottom: 1px solid var(--border);
+      padding: 48px 0;
+    }
+    .reason:last-child { border-bottom: none; }
+
+    .reason-num {
+      font-family: 'Space Mono', monospace; font-size: 3.5rem; font-weight: 700;
+      color: var(--border); line-height: 1; padding-top: 6px; letter-spacing: -2px;
+    }
+    .reason-body { padding-left: 8px; }
+    .reason-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      color: var(--gold); margin-bottom: 10px; font-family: 'Space Mono', monospace;
+    }
+    .reason-body h2 {
+      font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 900;
+      color: var(--text); line-height: 1.4; margin-bottom: 20px;
+    }
+    .reason-body h2 em { color: var(--gold-l); font-style: normal; }
+    .reason-body p { font-size: 15px; color: var(--sub); line-height: 1.9; margin-bottom: 14px; }
+    .reason-body p:last-of-type { margin-bottom: 0; }
+    .reason-body strong { color: var(--text); font-weight: 700; }
+
+    /* HIGHLIGHT BOX */
+    .highlight {
+      background: var(--gold-p); border-radius: 12px;
+      padding: 20px 24px; margin: 20px 0;
+      font-family: 'Noto Serif KR', serif; font-size: 1rem;
+      color: var(--sub); line-height: 1.85;
+    }
+    .highlight strong { color: var(--gold); }
+
+    /* EVIDENCE */
+    .evidence {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 24px; margin: 20px 0;
+    }
+    .evidence-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      color: var(--muted); margin-bottom: 12px; font-family: 'Space Mono', monospace;
+    }
+    .evidence ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .evidence ul li {
+      font-size: 14px; color: var(--sub); padding-left: 18px; position: relative; line-height: 1.7;
+    }
+    .evidence ul li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; font-size: 12px; top: 2px; }
+
+    /* COMPARISON */
+    .vs-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    .vs-table th {
+      background: var(--gold-p); color: var(--sub); font-weight: 700;
+      text-align: left; padding: 12px 16px; font-size: 11.5px; border-bottom: 2px solid var(--border);
+    }
+    .vs-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--sub); }
+    .vs-table tr:last-child td { border-bottom: none; }
+    .vs-table .good { color: var(--green); font-weight: 700; }
+    .vs-table .bad  { color: #9CA3AF; }
+
+    /* BIG QUOTE */
+    .big-quote {
+      margin: 64px 0; padding: 52px 40px;
+      background: linear-gradient(135deg, #1A0E04, #3A2208);
+      border-radius: 20px; text-align: center;
+    }
+    .big-quote p {
+      font-family: 'Noto Serif KR', serif; font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      font-weight: 700; color: #fff; line-height: 1.7;
+    }
+    .big-quote p em { color: var(--gold-l); font-style: normal; }
+    .big-quote small { display: block; margin-top: 18px; font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 1px; font-family: 'Space Mono', monospace; }
+
+    /* FOUNDER NOTE */
+    .founder-note {
+      margin-top: 60px; border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+    }
+    .founder-header {
+      background: var(--bg2); padding: 22px 28px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+    }
+    .founder-avatar {
+      width: 44px; height: 44px; background: var(--gold-p); border: 2px solid var(--gold-l);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .founder-meta h4 { font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .founder-meta p { font-size: 12px; color: var(--muted); }
+    .founder-body { padding: 28px 28px; }
+    .founder-body p {
+      font-family: 'Noto Serif KR', serif; font-size: 1.05rem;
+      color: var(--sub); line-height: 2; margin-bottom: 16px;
+    }
+    .founder-body p:last-child { margin-bottom: 0; }
+
+    /* CLOSING */
+    .closing {
+      margin-top: 60px; text-align: center;
+      padding: 52px 32px; border-top: 2px solid var(--border);
+    }
+    .closing h2 {
+      font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 900;
+      color: var(--text); line-height: 1.5; margin-bottom: 16px;
+    }
+    .closing h2 em { color: var(--gold-l); font-style: normal; }
+    .closing p { font-size: 15px; color: var(--muted); max-width: 460px; margin: 0 auto; line-height: 1.9; }
+
+    /* FOOTER */
+    .footer { text-align: center; padding: 36px 24px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--border); margin-top: 48px; }
+    .footer .brand { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 60px 24px 56px; }
+      .opening { padding: 28px 24px; }
+      .reason { grid-template-columns: 1fr; }
+      .reason-num { font-size: 2rem; margin-bottom: 10px; }
+      .reason-body { padding-left: 0; }
+      .big-quote { padding: 36px 24px; }
+      .wrapper { padding-left: 18px; padding-right: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <p class="hero-eyebrow">FOUNDER'S CONVICTION · 창업자의 확신</p>
+  <h1>
+    곗돈 타는 날이<br>
+    <em>될 수밖에 없는 이유</em>
+  </h1>
+  <div class="hero-line"></div>
+  <p class="hero-quote">
+    생각할수록 괜찮은 아이템이다.<br>나 스스로도 놀라고 있다.
+  </p>
+</section>
+
+<div class="wrapper">
+
+  <!-- Opening -->
+  <div class="opening">
+    <p>
+      처음에는 그냥 아이디어였다. 어릴 적 기억 속 계모임, 중국집 한턱, 식권 한 장.
+      그걸 디지털로 만들면 어떨까 — 막연하게 시작했다.
+    </p>
+    <p>
+      그런데 파고들수록 <strong>이미 시장이 있었고, 경쟁자는 비어 있었고,
+      브랜드 이름 자체가 마케팅이 됐으며, 파생 서비스가 자연스럽게 붙었다.</strong>
+    </p>
+    <p>
+      우연이 아니다. 이 아이템이 될 수밖에 없는 이유가 있다.
+    </p>
+  </div>
+
+  <!-- REASONS -->
+  <div class="reasons">
+
+    <!-- 01 -->
+    <div class="reason">
+      <div class="reason-num">01</div>
+      <div class="reason-body">
+        <p class="reason-label">VALIDATED DEMAND</p>
+        <h2>시장을 만들 필요가 없다.<br><em>이미 돌아가고 있다.</em></h2>
+        <p>
+          대부분의 스타트업은 "이 서비스를 사람들이 원할까?"를 증명하는 데 수억 원을 씁니다.
+          곗돈 타는 날은 그 관문을 이미 통과했습니다.
+        </p>
+        <p>
+          지금 이 순간에도 수천 개의 계모임이 <strong>카카오톡 단체방 + 엑셀 파일</strong>로 돌아갑니다.
+          불편하게, 계주 혼자 고생하며, 먹튀 걱정을 안고. 수요는 증명됐습니다.
+          우리가 할 일은 창조가 아니라 <strong>이동</strong>입니다.
+        </p>
+        <div class="evidence">
+          <p class="evidence-title">시장 존재 근거</p>
+          <ul>
+            <li>한국 성인 3명 중 1명이 계모임 경험 보유 (추정)</li>
+            <li>연간 계모임 거래 규모 수십조 원 — 제도권 집계 불가 수준</li>
+            <li>카카오톡·네이버밴드 계모임 관련 검색량 월 수만 건</li>
+            <li>앱스토어 "계모임" 검색 시 마땅한 전문 앱 없음</li>
+            <li>맘카페·블라인드에 "계 앱 없냐"는 질문 반복 등장</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="reason">
+      <div class="reason-num">02</div>
+      <div class="reason-body">
+        <p class="reason-label">UNTAPPED NICHE</p>
+        <h2>토스도 카카오도<br><em>진지하게 안 봤다.</em></h2>
+        <p>
+          토스에게 계모임은 "모임통장" 기능 중 하나입니다.
+          카카오뱅크에게는 체크카드 부가 서비스입니다.
+          그들에게 계는 수백 개 기능 중 하나지만,
+          <strong>곗돈 타는 날에게 계는 전부</strong>입니다.
+        </p>
+        <p>
+          집중도에서 이깁니다. 대형 플랫폼이 계모임에 인력과 예산을 올인할 이유가 없습니다.
+          이 틈새는 전문 서비스가 들어서기 전까지 비어있을 겁니다.
+        </p>
+        <div class="vs-table" style="overflow:auto">
+        <table class="vs-table">
+          <thead><tr><th>플랫폼</th><th>계모임에 대한 포지션</th><th>전문성</th><th>집중도</th></tr></thead>
+          <tbody>
+            <tr><td>토스</td><td>모임통장 부가 기능</td><td class="bad">낮음</td><td class="bad">관심 없음</td></tr>
+            <tr><td>카카오뱅크</td><td>단체 통장 옵션</td><td class="bad">낮음</td><td class="bad">관심 없음</td></tr>
+            <tr><td>네이버페이</td><td>정산 도구 수준</td><td class="bad">낮음</td><td class="bad">관심 없음</td></tr>
+            <tr><td><strong>곗돈 타는 날</strong></td><td><strong>계모임 전용 플랫폼</strong></td><td class="good">최고</td><td class="good">100%</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="reason">
+      <div class="reason-num">03</div>
+      <div class="reason-body">
+        <p class="reason-label">ZERO-COST VIRAL</p>
+        <h2>브랜드 이름이<br><em>스스로 광고한다.</em></h2>
+        <p>
+          "나 오늘 곗돈 타는 날!" — 이 말을 사람들은 이미 씁니다.
+          서비스 이름이 생활 언어와 완벽하게 겹칩니다.
+        </p>
+        <p>
+          계원이 카카오톡에서 "<strong>오늘 곗돈 타는 날 앱으로 정산했어</strong>"라고 말하는 순간,
+          듣는 모든 사람이 자연스럽게 앱 이름을 인식합니다.
+          마케팅비 없이 입소문이 퍼지는 구조입니다.
+          서비스 이름이 곧 슬로건이고, 슬로건이 곧 바이럴 문구입니다.
+        </p>
+        <div class="highlight">
+          <strong>"곗돈 타는 날"</strong> — 수십 년간 한국인이 실제로 써온 말.
+          설명이 필요 없고, 광고가 필요 없고, 번역이 필요 없다.
+          이 이름 하나에 서비스의 정체성 전부가 담겨 있다.
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="reason">
+      <div class="reason-num">04</div>
+      <div class="reason-body">
+        <p class="reason-label">NATURAL EXTENSIONS</p>
+        <h2>파생 서비스가<br><em>억지가 아니다.</em></h2>
+        <p>
+          한턱 선물, 공동구매, 경조사 모금, 보험, 적금 연계, 식당 예약.
+          이것들은 우리가 갖다 붙인 게 아닙니다.
+          <strong>계모임 안에서 원래 일어나던 일들</strong>입니다.
+        </p>
+        <p>
+          수령자가 한턱을 쐈고, 계원들이 명절 선물을 공동구매했고,
+          경조사 때 돈을 모았고, 계주를 믿고 보증 없이 돈을 맡겼습니다.
+          플랫폼이 이 행동들을 디지털로 담으면 사용자는 거부감 없이 씁니다.
+          문화가 먼저 있었고, 서비스가 뒤따릅니다.
+        </p>
+        <div class="evidence">
+          <p class="evidence-title">자연스럽게 붙는 14가지 파생 서비스</p>
+          <ul>
+            <li>한턱 선물샵 — 커피·배달 쿠폰 원클릭 발송</li>
+            <li>경조사 모금함 — 결혼·출산·부고 단체 모금</li>
+            <li>계원 공동구매 — 명절 선물세트·생필품 단체 할인</li>
+            <li>목적계 연계 쇼핑 — 여행계에 항공권, 결혼계에 웨딩 패키지</li>
+            <li>계 단체 식당 예약 — 한턱 낼 곳 원클릭 예약</li>
+            <li>계 전용 보험 — 먹튀·연체·경조사 보장</li>
+            <li>적금 즉시 연계 — 수령 즉시 고금리 상품 연결</li>
+            <li>AI 재무 코치 — "이 돈 어떻게 굴릴까" 맞춤 제안</li>
+            <li>기업 B2B 솔루션 — 사내 계 HR 복지 패키지</li>
+            <li>신협·금고 SaaS — 오프라인 계 운영 기관 디지털화</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="reason">
+      <div class="reason-num">05</div>
+      <div class="reason-body">
+        <p class="reason-label">FOUNDER-MARKET FIT</p>
+        <h2>창업자가<br><em>그 문화 속에서 살았다.</em></h2>
+        <p>
+          실리콘밸리에서 가장 중요하게 보는 것 중 하나가 <strong>파운더-마켓 핏(Founder-Market Fit)</strong>입니다.
+          창업자가 그 시장을 얼마나 깊게 이해하느냐.
+        </p>
+        <p>
+          어릴 적 동네에서 곗돈 타는 날 식권을 받아 중국집에 가던 기억.
+          계주를 믿고 현금을 맡기던 어른들의 모습.
+          그 따뜻함과 불안함을 동시에 몸으로 알고 있는 창업자가
+          만드는 서비스는 다릅니다.
+        </p>
+        <p>
+          <strong>진정성은 설계할 수 없습니다.</strong>
+          살아봐야 압니다. 그 진정성이 사용자에게 전달되고,
+          투자자에게 설득력이 됩니다.
+        </p>
+        <div class="highlight">
+          아이템보다 창업자가 먼저입니다. 이 서비스가 좋은 이유의 절반은
+          <strong>창업자가 그 문화의 사람</strong>이라는 사실에 있습니다.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BIG QUOTE -->
+  <div class="big-quote">
+    <p>
+      시장은 이미 있다.<br>
+      경쟁자는 비어 있다.<br>
+      이름이 광고다.<br>
+      파생이 자연스럽다.<br>
+      창업자가 그 사람이다.<br><br>
+      <em>이 아이템이 될 수밖에 없는 이유다.</em>
+    </p>
+    <small>GYET-NAL · 2026</small>
+  </div>
+
+  <!-- FOUNDER NOTE -->
+  <div class="founder-note">
+    <div class="founder-header">
+      <div class="founder-avatar">👤</div>
+      <div class="founder-meta">
+        <h4>창업자 노트</h4>
+        <p>2026년 5월 23일 · 창업 준비 중</p>
+      </div>
+    </div>
+    <div class="founder-body">
+      <p>
+        생각할수록 괜찮은 아이템이다. 나 스스로도 놀라고 있다.
+      </p>
+      <p>
+        처음엔 그냥 계모임을 편하게 만들면 어떨까 싶었는데,
+        파고들수록 수십 년 된 문화가 그대로 디지털 서비스로 번역된다는 걸 알았다.
+        선물, 모금, 보험, 적금, B2B까지 — 다 계모임 안에 원래 있었던 것들이다.
+      </p>
+      <p>
+        이제 남은 건 실행이다.
+      </p>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <h2>다음은 <em>실행</em>이다.</h2>
+    <p>
+      좋은 아이템은 실행하지 않으면 아이디어로 끝납니다.<br>
+      창업 로드맵 트래커의 38개 과제가 기다리고 있습니다.
+    </p>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="brand">곗돈 타는 날</div>
+  <p>창업자의 확신 노트 · 2026-05-23</p>
+</footer>
+
+</body>
+</html>
