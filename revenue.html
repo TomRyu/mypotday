@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>곗돈 타는 날 — 수수료 수익 시뮬레이션</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:      #C8860A;
+      --gold-l:    #E8A030;
+      --gold-pale: #FDF3E0;
+      --bg:        #FDFAF5;
+      --bg-warm:   #FFF8EE;
+      --text:      #1E1208;
+      --sub:       #4A3018;
+      --muted:     #9A7A50;
+      --border:    #E8D5B0;
+      --green:     #1D7A55;
+      --green-bg:  #ECFDF5;
+      --blue:      #1D4ED8;
+      --blue-bg:   #EFF6FF;
+      --red:       #B91C1C;
+      --red-bg:    #FEF2F2;
+    }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.85; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(150deg, #1A0E04 0%, #3A2208 55%, #2C1A08 100%);
+      padding: 68px 40px 60px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(200,134,10,0.18) 0%, transparent 65%);
+    }
+    .hero-badge {
+      display: inline-block; border: 1px solid rgba(200,134,10,0.45); color: #E8A030;
+      font-size: 11px; letter-spacing: 3px; padding: 5px 18px; border-radius: 20px; margin-bottom: 26px; position: relative;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif; font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 900; color: #fff; line-height: 1.3; position: relative; margin-bottom: 12px;
+    }
+    .hero h1 em { color: #E8A030; font-style: normal; }
+    .hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.45); position: relative; }
+    .hero-line { width: 44px; height: 2px; background: var(--gold-l); margin: 26px auto 0; position: relative; }
+
+    /* WRAPPER */
+    .wrapper { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* SECTION */
+    .sec { margin-top: 60px; }
+    .sec-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: var(--gold); margin-bottom: 8px; }
+    .sec h2 {
+      font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700;
+      color: var(--text); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid var(--border);
+    }
+    .sec p { font-size: 14.5px; color: var(--sub); margin-bottom: 12px; }
+
+    /* FEE RATE BAR */
+    .fee-rates {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px; margin: 24px 0;
+    }
+    .fee-rate-card {
+      background: var(--bg-warm); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px 16px; text-align: center;
+    }
+    .fee-rate-card .rate {
+      font-family: 'Space Mono', monospace; font-size: 1.6rem; font-weight: 700;
+      color: var(--gold); line-height: 1;
+    }
+    .fee-rate-card .rate-label { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+    /* CASE BLOCK */
+    .case-block {
+      border: 1px solid var(--border); border-radius: 18px; overflow: hidden; margin-bottom: 32px;
+    }
+    .case-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 22px 28px; border-bottom: 1px solid var(--border);
+    }
+    .case-icon { font-size: 2rem; }
+    .case-meta { flex: 1; }
+    .case-meta h3 { font-family: 'Noto Serif KR', serif; font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .case-meta p { font-size: 13px; color: var(--muted); margin: 0; }
+    .case-total {
+      text-align: right;
+      font-family: 'Space Mono', monospace;
+    }
+    .case-total .t-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .case-total .t-val { font-size: 1.5rem; font-weight: 700; color: var(--gold); }
+
+    /* SIM TABLE */
+    .sim-wrap { padding: 0 28px 24px; }
+    .sim-table {
+      width: 100%; border-collapse: collapse; font-size: 13.5px; margin-top: 16px;
+    }
+    .sim-table thead th {
+      background: var(--gold-pale); color: var(--sub); font-weight: 700;
+      text-align: left; padding: 11px 14px; font-size: 11.5px; letter-spacing: 0.5px;
+    }
+    .sim-table tbody td {
+      padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--sub); vertical-align: middle;
+    }
+    .sim-table tbody tr:last-child td { border-bottom: none; }
+    .sim-table tbody tr:hover td { background: var(--bg-warm); }
+    .c-gold  { color: var(--gold) !important; font-weight: 700; font-family: 'Space Mono', monospace; }
+    .c-green { color: var(--green) !important; font-weight: 700; font-family: 'Space Mono', monospace; }
+    .c-muted { color: var(--muted) !important; }
+    .c-mono  { font-family: 'Space Mono', monospace; }
+
+    /* SUBTOTAL ROW */
+    .subtotal td {
+      background: var(--gold-pale) !important;
+      font-weight: 700; color: var(--text) !important;
+      border-top: 2px solid var(--border) !important;
+    }
+
+    /* CALLOUT */
+    .callout {
+      border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+      font-size: 13.5px; line-height: 1.75;
+    }
+    .callout-gold  { background: var(--gold-pale); border-left: 4px solid var(--gold-l); color: var(--sub); }
+    .callout-green { background: var(--green-bg);  border-left: 4px solid var(--green);  color: #064E3B; }
+    .callout strong { font-weight: 700; }
+
+    /* SCALE TABLE */
+    .scale-block {
+      background: #1A0E04; border-radius: 18px; padding: 36px 32px; margin-top: 24px;
+    }
+    .scale-block .s-title {
+      font-family: 'Space Mono', monospace; font-size: 11px; color: #E8A030;
+      letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 12px;
+    }
+    .scale-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .scale-table th {
+      color: rgba(255,255,255,0.4); font-weight: 400; text-align: left;
+      padding: 8px 14px; border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 1px;
+    }
+    .scale-table td {
+      padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.7); font-family: 'Space Mono', monospace; font-size: 12.5px;
+    }
+    .scale-table tr:last-child td { border-bottom: none; }
+    .scale-table .s-gold  { color: #E8A030; font-weight: 700; }
+    .scale-table .s-green { color: #34D399; font-weight: 700; }
+    .scale-table .s-stage { color: rgba(255,255,255,0.35); font-size: 11px; }
+
+    /* KPI CARDS */
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 24px; }
+    .kpi-card {
+      background: rgba(255,255,255,0.06); border-radius: 12px; padding: 22px 18px;
+    }
+    .kpi-card .kpi-label { font-size: 10px; color: rgba(255,255,255,0.35); letter-spacing: 2px; margin-bottom: 8px; font-family: 'Space Mono', monospace; }
+    .kpi-card .kpi-val { font-family: 'Space Mono', monospace; font-size: 1.6rem; font-weight: 700; color: #E8A030; line-height: 1; }
+    .kpi-card .kpi-sub { font-size: 11.5px; color: rgba(255,255,255,0.4); margin-top: 6px; }
+
+    /* REVENUE MIX */
+    .mix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .mix-card {
+      background: var(--bg-warm); border: 1px solid var(--border); border-radius: 12px; padding: 20px 18px;
+    }
+    .mix-card h4 { font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .mix-bar-wrap { height: 8px; background: var(--border); border-radius: 4px; margin: 10px 0; }
+    .mix-bar { height: 100%; border-radius: 4px; }
+    .mix-card .mix-pct { font-family: 'Space Mono', monospace; font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+    .mix-card p { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+
+    /* FOOTER */
+    .footer { text-align: center; padding: 36px 24px; font-size: 12px; color: var(--muted); margin-top: 48px; border-top: 1px solid var(--border); }
+    .footer .brand { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+
+    @media (max-width: 640px) {
+      .hero, .wrapper { padding-left: 18px; padding-right: 18px; }
+      .case-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .case-total { text-align: left; }
+      .mix-grid { grid-template-columns: 1fr; }
+      .sim-wrap { padding: 0 16px 20px; }
+      .scale-block { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-badge">REVENUE SIMULATION · 수수료 수익 시뮬레이션</div>
+  <h1>내가 버는 돈은<br><em>얼마</em>인가</h1>
+  <p class="hero-sub">구체적인 계 사례별 수수료 계산 · 플랫폼 규모별 월/연 수익 추정</p>
+  <div class="hero-line"></div>
+</section>
+
+<div class="wrapper">
+
+  <!-- 수수료 요율 요약 -->
+  <div class="sec">
+    <p class="sec-label">00 · Fee Structure</p>
+    <h2>수수료 체계 요약</h2>
+    <div class="fee-rates">
+      <div class="fee-rate-card">
+        <div class="rate">1%</div>
+        <div class="rate-label">거래 수수료<br>곗돈 수령액 기준</div>
+      </div>
+      <div class="fee-rate-card">
+        <div class="rate">5%</div>
+        <div class="rate-label">낙찰 수수료<br>낙찰 이자액 기준</div>
+      </div>
+      <div class="fee-rate-card">
+        <div class="rate">3,900<span style="font-size:1rem">원</span></div>
+        <div class="rate-label">프리미엄 구독<br>월정액</div>
+      </div>
+      <div class="fee-rate-card">
+        <div class="rate">10%</div>
+        <div class="rate-label">보험 판매 수수료<br>보험료 기준</div>
+      </div>
+      <div class="fee-rate-card">
+        <div class="rate">0.3%</div>
+        <div class="rate-label">순번 당기기<br>팟 금액 기준</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CASE 1: 소액 친목계 -->
+  <div class="sec">
+    <p class="sec-label">01 · Case Study</p>
+    <h2>실제 계 사례별 수수료 계산</h2>
+
+    <div class="case-block">
+      <div class="case-header" style="background:var(--bg-warm)">
+        <div class="case-icon">👫</div>
+        <div class="case-meta">
+          <h3>CASE A — 소액 친목계 (균등계)</h3>
+          <p>5명 × 월 30만원 · 5개월 · 지인 모임</p>
+        </div>
+        <div class="case-total">
+          <div class="t-label">계 1개당 수수료 수익</div>
+          <div class="t-val">15,000원</div>
+        </div>
+      </div>
+      <div class="sim-wrap">
+        <table class="sim-table">
+          <thead>
+            <tr>
+              <th>회차</th><th>수령자</th><th>수령액</th><th>수수료 유형</th><th>요율</th><th>수수료 수익</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1회</td><td>계주</td><td class="c-mono">300만원</td><td>거래 수수료</td><td class="c-mono">1%</td><td class="c-gold">3,000원</td></tr>
+            <tr><td>2회</td><td>A</td><td class="c-mono">300만원</td><td>거래 수수료</td><td class="c-mono">1%</td><td class="c-gold">3,000원</td></tr>
+            <tr><td>3회</td><td>B</td><td class="c-mono">300만원</td><td>거래 수수료</td><td class="c-mono">1%</td><td class="c-gold">3,000원</td></tr>
+            <tr><td>4회</td><td>C</td><td class="c-mono">300만원</td><td>거래 수수료</td><td class="c-mono">1%</td><td class="c-gold">3,000원</td></tr>
+            <tr><td>5회</td><td>D</td><td class="c-mono">300만원</td><td>거래 수수료</td><td class="c-mono">1%</td><td class="c-gold">3,000원</td></tr>
+            <tr class="subtotal">
+              <td colspan="5"><strong>CASE A 총 거래액: 1,500만원</strong></td>
+              <td class="c-gold">합계 15,000원</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout callout-gold" style="margin-top:14px">
+          소액 균등계 1개에서 5개월간 버는 수수료는 <strong>15,000원</strong>. 작아 보이지만 이런 계가 동시에 1,000개 돌아가면 월 <strong>300만원</strong>이 됩니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 2: 직장 낙찰계 -->
+    <div class="case-block">
+      <div class="case-header" style="background:var(--green-bg)">
+        <div class="case-icon">💼</div>
+        <div class="case-meta">
+          <h3>CASE B — 직장 낙찰계 (메인 모델)</h3>
+          <p>10명 × 월 50만원 · 10개월 · 낙찰 이자 평균 30만원/회</p>
+        </div>
+        <div class="case-total">
+          <div class="t-label">계 1개당 수수료 수익</div>
+          <div class="t-val" style="color:var(--green)">63,500원</div>
+        </div>
+      </div>
+      <div class="sim-wrap">
+        <table class="sim-table">
+          <thead>
+            <tr>
+              <th>회차</th><th>낙찰자</th><th>수령액</th><th>낙찰 이자</th><th>거래 수수료 (1%)</th><th>낙찰 수수료 (5%)</th><th>회차 합계</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1회</td><td>계주 (면제)</td><td class="c-mono">500만원</td><td class="c-muted">—</td><td class="c-gold">5,000원</td><td class="c-muted">—</td><td class="c-green">5,000원</td></tr>
+            <tr><td>2회</td><td>A</td><td class="c-mono">450만원</td><td class="c-mono">50만원</td><td class="c-gold">4,500원</td><td class="c-gold">2,500원</td><td class="c-green">7,000원</td></tr>
+            <tr><td>3회</td><td>B</td><td class="c-mono">460만원</td><td class="c-mono">40만원</td><td class="c-gold">4,600원</td><td class="c-gold">2,000원</td><td class="c-green">6,600원</td></tr>
+            <tr><td>4회</td><td>C</td><td class="c-mono">465만원</td><td class="c-mono">35만원</td><td class="c-gold">4,650원</td><td class="c-gold">1,750원</td><td class="c-green">6,400원</td></tr>
+            <tr><td>5회</td><td>D</td><td class="c-mono">470만원</td><td class="c-mono">30만원</td><td class="c-gold">4,700원</td><td class="c-gold">1,500원</td><td class="c-green">6,200원</td></tr>
+            <tr><td>6회</td><td>E</td><td class="c-mono">475만원</td><td class="c-mono">25만원</td><td class="c-gold">4,750원</td><td class="c-gold">1,250원</td><td class="c-green">6,000원</td></tr>
+            <tr><td>7회</td><td>F</td><td class="c-mono">480만원</td><td class="c-mono">20만원</td><td class="c-gold">4,800원</td><td class="c-gold">1,000원</td><td class="c-green">5,800원</td></tr>
+            <tr><td>8회</td><td>G</td><td class="c-mono">485만원</td><td class="c-mono">15만원</td><td class="c-gold">4,850원</td><td class="c-gold">750원</td><td class="c-green">5,600원</td></tr>
+            <tr><td>9회</td><td>H</td><td class="c-mono">490만원</td><td class="c-mono">10만원</td><td class="c-gold">4,900원</td><td class="c-gold">500원</td><td class="c-green">5,400원</td></tr>
+            <tr><td>10회</td><td>I (마지막)</td><td class="c-mono">500만원+배당</td><td class="c-muted">—</td><td class="c-gold">5,000원</td><td class="c-muted">—</td><td class="c-green">5,000원</td></tr>
+            <tr class="subtotal">
+              <td colspan="4"><strong>CASE B 총 거래액: 4,775만원 · 총 낙찰 이자: 225만원</strong></td>
+              <td class="c-gold"><strong>47,750원</strong></td>
+              <td class="c-gold"><strong>11,250원</strong></td>
+              <td class="c-green"><strong>59,000원</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout callout-gold" style="margin-top:14px">
+          + 순번 당기기 1회 발생 가정: 500만원 × 0.3% = <strong>1,500원</strong> 추가<br>
+          + 프리미엄 구독 계주 1명 (월 3,900원 × 10개월) = <strong>3,900원/월 별도 집계</strong><br>
+          → <strong>CASE B 1개 계 총 수수료: 약 63,500원</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 3: 고액 계 -->
+    <div class="case-block">
+      <div class="case-header" style="background:var(--blue-bg)">
+        <div class="case-icon">🏢</div>
+        <div class="case-meta">
+          <h3>CASE C — 고액 목돈 계 (낙찰계)</h3>
+          <p>20명 × 월 100만원 · 20개월 · 낙찰 이자 평균 80만원/회</p>
+        </div>
+        <div class="case-total">
+          <div class="t-label">계 1개당 수수료 수익</div>
+          <div class="t-val" style="color:var(--blue)">416,000원</div>
+        </div>
+      </div>
+      <div class="sim-wrap">
+        <table class="sim-table">
+          <thead>
+            <tr><th>구분</th><th>계산 기준</th><th>금액</th><th>요율</th><th>수수료 수익</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>거래 수수료</td>
+              <td>월 팟 2,000만원 × 20회</td>
+              <td class="c-mono">4억원</td>
+              <td class="c-mono">1%</td>
+              <td class="c-gold">400만원</td>
+            </tr>
+            <tr>
+              <td>낙찰 수수료</td>
+              <td>평균 낙찰 이자 80만원 × 19회</td>
+              <td class="c-mono">1,520만원</td>
+              <td class="c-mono">5%</td>
+              <td class="c-gold">76,000원</td>
+            </tr>
+            <tr>
+              <td>순번 당기기</td>
+              <td>2,000만원 × 0.3% × 1회</td>
+              <td class="c-mono">2,000만원</td>
+              <td class="c-mono">0.3%</td>
+              <td class="c-gold">60,000원</td>
+            </tr>
+            <tr class="subtotal">
+              <td colspan="4"><strong>CASE C 총 거래액: 4억원</strong></td>
+              <td class="c-gold"><strong>416만원</strong></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout callout-gold" style="margin-top:14px">
+          고액 계 1개에서 20개월간 <strong>416만원</strong>. 이런 계가 10개만 동시에 운영돼도 연간 <strong>4,160만원</strong>입니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 보험 수수료 -->
+  <div class="sec">
+    <p class="sec-label">02 · Insurance Fee</p>
+    <h2>계 보험 판매 수수료</h2>
+    <p>계원이 "먹튀·연체 보험"에 가입하면 보험료의 10%가 수수료로 수취됩니다.</p>
+    <div class="case-block">
+      <div class="sim-wrap" style="padding-top:20px">
+        <table class="sim-table">
+          <thead>
+            <tr><th>계 규모</th><th>계원 1인 보험료/월</th><th>계원 수</th><th>가입률</th><th>월 보험료 합계</th><th>월 수수료 (10%)</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>소액계 (30만원)</td>
+              <td class="c-mono">2,000원</td>
+              <td class="c-mono">5명</td>
+              <td class="c-mono">60%</td>
+              <td class="c-mono">6,000원</td>
+              <td class="c-gold">600원/월</td>
+            </tr>
+            <tr>
+              <td>직장계 (50만원)</td>
+              <td class="c-mono">3,500원</td>
+              <td class="c-mono">10명</td>
+              <td class="c-mono">70%</td>
+              <td class="c-mono">24,500원</td>
+              <td class="c-gold">2,450원/월</td>
+            </tr>
+            <tr>
+              <td>고액계 (100만원)</td>
+              <td class="c-mono">6,000원</td>
+              <td class="c-mono">20명</td>
+              <td class="c-mono">80%</td>
+              <td class="c-mono">96,000원</td>
+              <td class="c-gold">9,600원/월</td>
+            </tr>
+            <tr class="subtotal">
+              <td colspan="5"><strong>계 1개 평균 보험 수수료 (혼합 기준)</strong></td>
+              <td class="c-gold"><strong>약 4,200원/월</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 플랫폼 규모별 월/연 수익 -->
+  <div class="sec">
+    <p class="sec-label">03 · Scale Simulation</p>
+    <h2>플랫폼 규모별 월·연간 수익 추정</h2>
+    <p>동시 운영 계 수와 구독 가입자 수에 따라 수익이 어떻게 성장하는지 단계별로 계산합니다.</p>
+    <p style="font-size:13px;color:var(--muted)">
+      가정: 계 1개 평균 수수료 = <strong>8만원/계 (10개월 기준, 월 8,000원)</strong> · 구독자 평균 3,900원/월 · 보험 4,200원/월·계
+    </p>
+
+    <div class="scale-block">
+      <div class="s-title">▸ 플랫폼 규모별 월 수익 시뮬레이션</div>
+      <table class="scale-table">
+        <thead>
+          <tr>
+            <th>성장 단계</th>
+            <th>활성 계 수</th>
+            <th>구독자</th>
+            <th>거래·낙찰 수수료</th>
+            <th>구독 수익</th>
+            <th>보험 수수료</th>
+            <th class="s-gold">월 합계</th>
+            <th class="s-gold">연간 수익</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="s-stage">초기 (0~6개월)</td>
+            <td>100개</td>
+            <td>50명</td>
+            <td class="c-mono">800,000원</td>
+            <td class="c-mono">195,000원</td>
+            <td class="c-mono">420,000원</td>
+            <td class="s-gold">1,415,000원</td>
+            <td class="s-green">~1,700만원</td>
+          </tr>
+          <tr>
+            <td class="s-stage">성장 (6~12개월)</td>
+            <td>500개</td>
+            <td>300명</td>
+            <td class="c-mono">4,000,000원</td>
+            <td class="c-mono">1,170,000원</td>
+            <td class="c-mono">2,100,000원</td>
+            <td class="s-gold">7,270,000원</td>
+            <td class="s-green">~8,700만원</td>
+          </tr>
+          <tr>
+            <td class="s-stage">확장 (1~2년)</td>
+            <td>2,000개</td>
+            <td>1,500명</td>
+            <td class="c-mono">16,000,000원</td>
+            <td class="c-mono">5,850,000원</td>
+            <td class="c-mono">8,400,000원</td>
+            <td class="s-gold">30,250,000원</td>
+            <td class="s-green">~3.6억원</td>
+          </tr>
+          <tr>
+            <td class="s-stage">MAU 5만 (1년 목표)</td>
+            <td>5,000개</td>
+            <td>5,000명</td>
+            <td class="c-mono">40,000,000원</td>
+            <td class="c-mono">19,500,000원</td>
+            <td class="c-mono">21,000,000원</td>
+            <td class="s-gold">80,500,000원</td>
+            <td class="s-green">~9.7억원</td>
+          </tr>
+          <tr>
+            <td class="s-stage">MAU 20만 (2년 목표)</td>
+            <td>20,000개</td>
+            <td>25,000명</td>
+            <td class="c-mono">160,000,000원</td>
+            <td class="c-mono">97,500,000원</td>
+            <td class="c-mono">84,000,000원</td>
+            <td class="s-gold">341,500,000원</td>
+            <td class="s-green">~41억원</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- KPI 하이라이트 -->
+  <div class="sec">
+    <p class="sec-label">04 · Key Milestones</p>
+    <h2>수익 달성 마일스톤</h2>
+    <div class="scale-block">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">손익분기점</div>
+          <div class="kpi-val">177개</div>
+          <div class="kpi-sub">동시 운영 계 수<br>(월 운영비 150만원 기준)</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">월 1,000만원</div>
+          <div class="kpi-val">700개</div>
+          <div class="kpi-sub">활성 계 + 구독 500명<br>창업 약 8개월 목표</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">연 1억원</div>
+          <div class="kpi-val">2,100개</div>
+          <div class="kpi-sub">활성 계 + 구독 1,600명<br>창업 약 14개월 목표</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">연 10억원</div>
+          <div class="kpi-val">5,500개</div>
+          <div class="kpi-sub">활성 계 + 구독 6,000명<br>MAU 5만 달성 시점</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 수익 구성 비율 -->
+  <div class="sec">
+    <p class="sec-label">05 · Revenue Mix</p>
+    <h2>수익원별 구성 비율 (MAU 5만 기준)</h2>
+    <div class="mix-grid">
+      <div class="mix-card">
+        <h4>거래·낙찰 수수료</h4>
+        <div class="mix-pct">50%</div>
+        <div class="mix-bar-wrap"><div class="mix-bar" style="width:50%;background:var(--gold-l)"></div></div>
+        <p>월 4,000만원. 핵심 수익원. 거래액에 비례해 자동 성장.</p>
+      </div>
+      <div class="mix-card">
+        <h4>보험 판매 수수료</h4>
+        <div class="mix-pct">26%</div>
+        <div class="mix-bar-wrap"><div class="mix-bar" style="width:26%;background:var(--green)"></div></div>
+        <p>월 2,100만원. 계원 수 증가에 따라 안정적으로 성장.</p>
+      </div>
+      <div class="mix-card">
+        <h4>프리미엄 구독</h4>
+        <div class="mix-pct">24%</div>
+        <div class="mix-bar-wrap"><div class="mix-bar" style="width:24%;background:var(--blue)"></div></div>
+        <p>월 1,950만원. 구독자 이탈률 낮아 가장 안정적인 수익.</p>
+      </div>
+      <div class="mix-card">
+        <h4>기타 (당기기·B2B)</h4>
+        <div class="mix-pct">~0%</div>
+        <div class="mix-bar-wrap"><div class="mix-bar" style="width:5%;background:#9CA3AF)"></div></div>
+        <p>초기엔 미미하지만 B2B 확장 시 급성장 가능.</p>
+      </div>
+    </div>
+    <div class="callout callout-green" style="margin-top:20px">
+      <strong>핵심 인사이트:</strong> 거래 수수료는 계가 많아질수록 자동으로 커지는 구조입니다.
+      별도 영업 없이도 플랫폼 사용자가 계를 개설할수록 수익이 선형 증가합니다.
+      MAU 5만 달성 시점(창업 1년)에 <strong>월 8,000만원 · 연 9.7억원</strong>이 목표치입니다.
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="brand">곗돈 타는 날</div>
+  <p>수수료 수익 시뮬레이션 · 2026-05-23</p>
+</footer>
+
+</body>
+</html>

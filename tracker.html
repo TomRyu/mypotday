@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>곗돈 타는 날 — 창업 로드맵 트래커</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #0C0D0F;
+    --surface:  #13141A;
+    --surface2: #1A1C24;
+    --border:   rgba(255,255,255,0.06);
+    --border2:  rgba(255,255,255,0.11);
+    --text:     #EAE8E0;
+    --muted:    #6B6A64;
+    --muted2:   #9E9C94;
+
+    /* 브랜드 컬러 — 따뜻한 골드 */
+    --gold:      #E8A030;
+    --gold-dim:  rgba(232,160,48,0.10);
+    --gold-glow: rgba(232,160,48,0.20);
+
+    --p2: #1D9E75;
+    --p2-dim: rgba(29,158,117,0.12);
+    --p3: #D85A30;
+    --p3-dim: rgba(216,90,48,0.12);
+    --p4: #7F77DD;
+    --p4-dim: rgba(127,119,221,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    padding: 80px 40px 60px;
+    max-width: 920px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -160px; right: -60px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,160,48,0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(29,158,117,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    border: 1px solid rgba(232,160,48,0.30);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 32px;
+    letter-spacing: 0.10em;
+  }
+  .hero-tag-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted2);
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(40px, 7vw, 68px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  h1 .ko { color: var(--text); }
+  h1 .accent { color: var(--gold); }
+
+  .hero-en {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 24px;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted2);
+    font-weight: 300;
+    line-height: 1.75;
+    max-width: 460px;
+    margin-bottom: 44px;
+    border-left: 2px solid rgba(232,160,48,0.35);
+    padding-left: 16px;
+  }
+
+  /* ── OVERVIEW CARDS ── */
+  .overview {
+    max-width: 920px;
+    margin: 0 auto 10px;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .ov-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .ov-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+  .ov-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .ov-label { font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: 0.02em; }
+
+  /* ── GLOBAL PROGRESS BAR ── */
+  .global-bar-wrap {
+    max-width: 920px;
+    margin: 0 auto 52px;
+    padding: 22px 40px 0;
+  }
+  .global-bar-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    font-family: 'Space Mono', monospace;
+  }
+  .global-bar-track {
+    height: 5px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .global-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--gold), #F0C060);
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 0 12px rgba(232,160,48,0.4);
+  }
+
+  /* ── PHASES ── */
+  .phases {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .phase-wrap {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .phase-wrap:hover { border-color: var(--border2); }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .phase-header:hover { opacity: 0.9; }
+
+  .phase-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+  .phase-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .phase-name { font-size: 14px; font-weight: 500; flex: 1; }
+  .phase-period {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+  .phase-pct {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 36px;
+    text-align: right;
+  }
+  .phase-chevron {
+    color: var(--muted);
+    font-size: 18px;
+    transition: transform 0.22s;
+    line-height: 1;
+    margin-left: 4px;
+  }
+  .phase-chevron.open { transform: rotate(90deg); }
+
+  .phase-bar { height: 2px; background: var(--border); }
+  .phase-bar-fill { height: 100%; transition: width 0.4s ease; }
+
+  .phase-body { display: none; padding: 6px 0 4px; }
+  .phase-body.open { display: block; }
+
+  /* ── TASKS ── */
+  .cat-section { padding: 12px 24px 4px; }
+  .cat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2px;
+  }
+
+  .task-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .task-row:last-child { border-bottom: none; }
+  .task-row:hover { opacity: 0.70; }
+
+  .chk {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255,255,255,0.16);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    font-size: 11px;
+    color: #000;
+    font-weight: 700;
+  }
+
+  .task-text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.55;
+    flex: 1;
+    color: var(--text);
+    transition: color 0.15s;
+  }
+  .task-text.done { color: var(--muted); text-decoration: line-through; }
+
+  .task-tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 40px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+  .save-hint { display: flex; align-items: center; gap: 7px; }
+  .save-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--p2); }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    max-width: 920px;
+    margin: 0 auto 36px;
+    padding: 0 40px;
+  }
+  .divider-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border2), transparent);
+  }
+
+  @media (max-width: 640px) {
+    .overview { grid-template-columns: repeat(2, 1fr); }
+    h1 { font-size: 38px; }
+    .hero, .overview, .phases, .global-bar-wrap, .footer, .section-divider { padding-left: 20px; padding-right: 20px; }
+    .phase-period { display: none; }
+    .hero-sub { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-tag">
+    <div class="hero-tag-dot"></div>
+    STARTUP ROADMAP TRACKER
+  </div>
+  <div class="hero-eyebrow">DIGITAL 계(契) PLATFORM</div>
+  <h1>
+    <span class="ko">곗돈</span> <span class="accent">타는</span> <span class="ko">날</span>
+  </h1>
+  <div class="hero-en">The Day You Get Your Gye Money</div>
+  <p class="hero-sub">한국 전통 계(契) 문화를 안전하고 투명하게 — 단계별 창업 과제를 체크하며 진행 상황을 관리하세요.</p>
+</div>
+
+<!-- ── OVERVIEW ── -->
+<div class="overview">
+  <div class="ov-card">
+    <div class="ov-num" id="ov-total">38</div>
+    <div class="ov-label">전체 과제</div>
+  </div>
+  <div class="ov-card">
+    <div class="ov-num" id="ov-done" style="color:var(--p2)">0</div>
+    <div class="ov-label">완료</div>
+  </div>
+  <div class="ov-card">
+    <div class="ov-num" id="ov-remain" style="color:var(--p3)">38</div>
+    <div class="ov-label">남은 과제</div>
+  </div>
+  <div class="ov-card">
+    <div class="ov-num" id="ov-pct" style="color:var(--gold)">0%</div>
+    <div class="ov-label">전체 진행률</div>
+  </div>
+</div>
+
+<!-- ── GLOBAL BAR ── -->
+<div class="global-bar-wrap">
+  <div class="global-bar-meta">
+    <span>OVERALL PROGRESS</span>
+    <span id="gb-label">0 / 38 완료</span>
+  </div>
+  <div class="global-bar-track">
+    <div class="global-bar-fill" id="global-bar" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="section-divider"><div class="divider-line"></div></div>
+
+<!-- ── PHASES ── -->
+<div class="phases" id="phases-container"></div>
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <div class="save-hint">
+    <div class="save-dot"></div>
+    <span id="save-status">자동 저장 완료</span>
+  </div>
+  <span>곗돈 타는 날 © 2026</span>
+</div>
+
+<script>
+const STORAGE_KEY = 'gyetdon_tasks_v1';
+
+const phases = [
+  {
+    id:1, label:'P1', name:'MVP 개발 & 사업 기반 구축', period:'0~6개월',
+    color:'#E8A030', dimColor:'rgba(232,160,48,0.10)',
+    categories:[
+      { name:'⚖️ 법인·법무', tasks:[
+        {text:'법인 설립 (1인 법인 or 공동창업 구조 결정)', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+        {text:'금융규제 샌드박스 혁신금융서비스 신청 준비', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+        {text:'금융·에스크로 전문 법률 자문 계약', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+        {text:'서비스 이용약관·개인정보처리방침 초안 작성', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+      ]},
+      { name:'💰 자금 조달', tasks:[
+        {text:'초기창업패키지 신청 (중기부, 최대 1억)', tag:'추천', tc:'#1D9E75', tbg:'rgba(29,158,117,0.12)'},
+        {text:'TIPS 예비창업팀 신청 검토', tag:'추천', tc:'#1D9E75', tbg:'rgba(29,158,117,0.12)'},
+        {text:'자기자본 2,000만원 투입 계획 확정', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+      ]},
+      { name:'🛠️ 기술 개발', tasks:[
+        {text:'Flutter 앱 아키텍처 설계 및 UI/UX 와이어프레임', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+        {text:'Spring Boot 백엔드 API 서버 세팅 (AWS EC2 + RDS)', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+        {text:'포트원 PG 에스크로 API 연동', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+        {text:'카카오·네이버 소셜 로그인 + PASS 본인인증 연동', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+        {text:'Firebase FCM + 카카오 알림톡 납입 독촉 알림 구현', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+        {text:'계 개설·초대·납입·순번 배분 핵심 플로우 구현', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+      ]},
+      { name:'🧪 검증', tasks:[
+        {text:'베타 테스터 100명 모집 (지인·맘카페 커뮤니티)', tag:'마케팅', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+        {text:'오프라인 계주 5~10명 인터뷰 및 피드백 반영', tag:'마케팅', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+        {text:'MVP 핵심 지표 정의 (DAU, 납입 완료율, 이탈률)', tag:'기획', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+      ]},
+    ]
+  },
+  {
+    id:2, label:'P2', name:'정식 출시 & MAU 5만 달성', period:'6~12개월',
+    color:'#1D9E75', dimColor:'rgba(29,158,117,0.10)',
+    categories:[
+      { name:'🚀 출시', tasks:[
+        {text:'iOS / Android 앱스토어 정식 등록', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+        {text:'계 신용도 시스템 v1 출시 (납입 이력 기반)', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+        {text:'목적별 템플릿 5종 정식 오픈 (여행·결혼·친목·적금·자유)', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+      ]},
+      { name:'📣 마케팅', tasks:[
+        {text:'카카오톡 계 초대 링크 바이럴 최적화', tag:'마케팅', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+        {text:'첫 계 개설 수수료 3개월 면제 프로모션 집행', tag:'마케팅', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+        {text:'맘카페·블라인드·리멤버 타겟 바이럴 콘텐츠 배포', tag:'마케팅', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+        {text:'유튜브 쇼츠·인스타 안전한 계모임 스토리텔링 운영', tag:'마케팅', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+        {text:'계주 추천 프로그램 (지인 유입 시 포인트 지급) 설계', tag:'마케팅', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+      ]},
+      { name:'⚖️ 규제 대응', tasks:[
+        {text:'혁신금융서비스 심사 대응 및 지정 획득 목표', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+        {text:'정기 보안 감사 실시 + PCI DSS 준수 체계 구축', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+      ]},
+      { name:'📊 지표 관리', tasks:[
+        {text:'MAU 5만 달성 (월간 목표 퍼널 설계)', tag:'기획', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+        {text:'거래액 50억 달성 트래킹 시스템 구축', tag:'기획', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+        {text:'NPS·CS 채널 구축 (카카오채널 또는 채널톡)', tag:'기획', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+      ]},
+    ]
+  },
+  {
+    id:3, label:'P3', name:'보험 제휴 & B2B & MAU 20만', period:'1~2년차',
+    color:'#D85A30', dimColor:'rgba(216,90,48,0.10)',
+    categories:[
+      { name:'🤝 제휴·파트너십', tasks:[
+        {text:'보험사 제휴 계약 — 계 보험 상품 출시 (먹튀·연체 보장)', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+        {text:'신협·새마을금고 제휴 — 오프라인 계모임 디지털 전환 공략', tag:'추천', tc:'#1D9E75', tbg:'rgba(29,158,117,0.12)'},
+        {text:'HR 복지 플랫폼 제휴 — 기업 사내 계 솔루션 납품', tag:'추천', tc:'#1D9E75', tbg:'rgba(29,158,117,0.12)'},
+      ]},
+      { name:'🏢 B2B', tasks:[
+        {text:'B2B 기업계 서비스 패키지 설계 및 가격 정책 수립', tag:'기획', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+        {text:'기업 고객 파일럿 5~10사 유치 및 POC 진행', tag:'기획', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+      ]},
+      { name:'⚖️ 법무·금융', tasks:[
+        {text:'전자금융업 등록 완료 (소액후불결제업 or 전자지급결제대행업)', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+        {text:'Pre-Seed 투자 유치 (3~5억 목표, MAU 1만 이후)', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+      ]},
+      { name:'🛠️ 제품 고도화', tasks:[
+        {text:'계 신용도 v2 — 타 계 가입 제한 연동 강화', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+        {text:'다계좌 연동 기능 출시 (한 앱에서 여러 계 동시 관리)', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+        {text:'계 역사 아카이브 PDF 다운로드 기능 출시', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+      ]},
+    ]
+  },
+  {
+    id:4, label:'P4', name:'글로벌 확장 & 금융 슈퍼앱', period:'2년차 이후',
+    color:'#7F77DD', dimColor:'rgba(127,119,221,0.10)',
+    categories:[
+      { name:'🌏 글로벌', tasks:[
+        {text:'동남아 (아리산·차마 문화권) 시장 진출 타당성 조사', tag:'전략', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+        {text:'베트남·인도네시아·필리핀 현지 파트너사 발굴', tag:'전략', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+        {text:'현지화 앱 빌드 (언어·통화·결제 수단 현지 적용)', tag:'개발', tc:'#E8A030', tbg:'rgba(232,160,48,0.10)'},
+      ]},
+      { name:'💳 금융 슈퍼앱', tasks:[
+        {text:'계 신용도 데이터 기반 중금리 대출 상품 연계 출시', tag:'전략', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+        {text:'계 적금 연계 상품 출시 (은행 제휴)', tag:'전략', tc:'#7F77DD', tbg:'rgba(127,119,221,0.12)'},
+        {text:'Series A 투자 유치 목표 (MAU 20만 달성 후)', tag:'필수', tc:'#E24B4A', tbg:'rgba(226,75,74,0.12)'},
+      ]},
+      { name:'📊 목표 지표', tasks:[
+        {text:'MAU 80만 달성', tag:'목표', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+        {text:'연 거래액 1,500억 달성', tag:'목표', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+        {text:'직접 고용 10명+ 팀 빌딩 완료', tag:'목표', tc:'#EF9F27', tbg:'rgba(239,159,39,0.12)'},
+      ]},
+    ]
+  }
+];
+
+// ── STATE ──
+let states = {};
+
+function loadStates() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) states = JSON.parse(raw);
+  } catch(e) { states = {}; }
+}
+
+function saveStates() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(states));
+    const el = document.getElementById('save-status');
+    const t = new Date().toLocaleTimeString('ko-KR', {hour:'2-digit', minute:'2-digit'});
+    el.textContent = `자동 저장 · ${t}`;
+  } catch(e) {}
+}
+
+// ── RENDER ──
+function render() {
+  const container = document.getElementById('phases-container');
+
+  // preserve open state
+  const openMap = {};
+  phases.forEach((_, pi) => {
+    const b = document.getElementById(`body_ph_${pi}`);
+    if (b) openMap[pi] = b.classList.contains('open');
+  });
+
+  container.innerHTML = '';
+
+  let totalDone = 0;
+  const totalAll = phases.reduce((s,p) => s + p.categories.reduce((ss,c) => ss + c.tasks.length, 0), 0);
+
+  phases.forEach((phase, pi) => {
+    const allTasks = phase.categories.flatMap(c => c.tasks);
+    const done = allTasks.filter((_, ti) => states[`${pi}_${ti}`]).length;
+    totalDone += done;
+    const pct = allTasks.length ? Math.round(done / allTasks.length * 100) : 0;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'phase-wrap';
+
+    let bodyHtml = '';
+    let gi = 0;
+    phase.categories.forEach(cat => {
+      bodyHtml += `<div class="cat-section"><div class="cat-label">${cat.name}</div>`;
+      cat.tasks.forEach(task => {
+        const key = `${pi}_${gi}`;
+        const isDone = !!states[key];
+        bodyHtml += `
+          <div class="task-row" onclick="toggle('${key}')">
+            <div class="chk" id="chk_${key}" style="${isDone ? `background:${phase.color};border-color:${phase.color}` : ''}">
+              ${isDone ? '✓' : ''}
+            </div>
+            <div class="task-text${isDone ? ' done' : ''}" id="tt_${key}">${task.text}</div>
+            <span class="task-tag" style="color:${task.tc};background:${task.tbg}">${task.tag}</span>
+          </div>`;
+        gi++;
+      });
+      bodyHtml += `</div>`;
+    });
+
+    const isOpen = pi in openMap ? openMap[pi] : pi === 0;
+
+    wrap.innerHTML = `
+      <div class="phase-header" onclick="togglePhase(${pi})" style="background:${phase.dimColor}">
+        <div class="phase-dot" style="background:${phase.color}"></div>
+        <span class="phase-label" style="color:${phase.color};background:${phase.dimColor};border:1px solid ${phase.color}35">${phase.label}</span>
+        <span class="phase-name">${phase.name}</span>
+        <span class="phase-period">${phase.period}</span>
+        <span class="phase-pct" style="color:${phase.color}">${pct}%</span>
+        <span class="phase-chevron${isOpen ? ' open' : ''}" id="chev_ph_${pi}">›</span>
+      </div>
+      <div class="phase-bar">
+        <div class="phase-bar-fill" style="width:${pct}%;background:${phase.color}"></div>
+      </div>
+      <div class="phase-body${isOpen ? ' open' : ''}" id="body_ph_${pi}">${bodyHtml}</div>`;
+
+    container.appendChild(wrap);
+  });
+
+  document.getElementById('ov-total').textContent   = totalAll;
+  document.getElementById('ov-done').textContent    = totalDone;
+  document.getElementById('ov-remain').textContent  = totalAll - totalDone;
+  document.getElementById('ov-pct').textContent     = Math.round(totalDone / totalAll * 100) + '%';
+  document.getElementById('global-bar').style.width = (totalDone / totalAll * 100) + '%';
+  document.getElementById('gb-label').textContent   = `${totalDone} / ${totalAll} 완료`;
+}
+
+function toggle(key) {
+  states[key] = !states[key];
+  saveStates();
+  render();
+}
+
+function togglePhase(pi) {
+  const body = document.getElementById(`body_ph_${pi}`);
+  const chev = document.getElementById(`chev_ph_${pi}`);
+  if (!body) return;
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+loadStates();
+render();
+</script>
+</body>
+</html>

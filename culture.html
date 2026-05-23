@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>우리 계모임 문화 — 전통과 현대의 연결</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:       #C8860A;
+      --gold-light: #E8A030;
+      --gold-pale:  #FDF3E0;
+      --brown:      #5C3A1E;
+      --brown-light:#8B5A2B;
+      --bg:         #FDFAF5;
+      --bg-warm:    #FFF8EE;
+      --text:       #1E1208;
+      --text-sub:   #4A3018;
+      --text-muted: #9A7A50;
+      --border:     #E8D5B0;
+      --red:        #C0392B;
+      --green:      #1D7A55;
+      --blue:       #2060A0;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.85;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(160deg, #2C1A08 0%, #4A2E10 50%, #3A2208 100%);
+      padding: 72px 40px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(200,134,10,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(200,134,10,0.10) 0%, transparent 50%);
+    }
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid rgba(200,134,10,0.5);
+      color: #E8A030;
+      font-size: 11px;
+      letter-spacing: 3px;
+      padding: 5px 18px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(2rem, 5.5vw, 3.4rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.3;
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .hero h1 em { color: #E8A030; font-style: normal; }
+    .hero-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      position: relative;
+      letter-spacing: 0.5px;
+    }
+    .hero-divider {
+      width: 48px; height: 2px;
+      background: var(--gold-light);
+      margin: 28px auto 0;
+      position: relative;
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── MEMORY CARD (도입부) ── */
+    .memory-card {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--gold-light);
+      border-radius: 0 16px 16px 0;
+      padding: 32px 36px;
+      margin: 52px 0 0;
+      position: relative;
+    }
+    .memory-card::before {
+      content: '"';
+      font-family: 'Noto Serif KR', serif;
+      font-size: 5rem;
+      color: var(--gold-light);
+      opacity: 0.3;
+      position: absolute;
+      top: 8px; left: 16px;
+      line-height: 1;
+    }
+    .memory-card p {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.05rem;
+      color: var(--text-sub);
+      line-height: 1.9;
+      padding-left: 24px;
+    }
+    .memory-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 12px;
+      padding-left: 24px;
+    }
+
+    /* ── SECTION TITLE ── */
+    .sec {
+      margin-top: 64px;
+    }
+    .sec-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .sec h2 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* ── TRADITION BLOCK ── */
+    .tradition-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .tradition-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 0 20px;
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 24px 24px 20px;
+      align-items: start;
+    }
+    .tradition-icon {
+      width: 48px; height: 48px;
+      background: var(--gold-pale);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+      border: 1px solid var(--border);
+    }
+    .tradition-body h3 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .tradition-body p {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+    .tradition-body .highlight {
+      display: inline-block;
+      background: var(--gold-pale);
+      border: 1px solid #E8C87A;
+      color: var(--brown);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin: 8px 4px 0 0;
+    }
+
+    /* ── TYPES OF GYE ── */
+    .gye-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .gye-card {
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 18px;
+      text-align: center;
+    }
+    .gye-card .emoji { font-size: 1.8rem; margin-bottom: 10px; }
+    .gye-card h4 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .gye-card p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── BRIDGE SECTION ── */
+    .bridge {
+      background: linear-gradient(135deg, #2C1A08, #4A2E10);
+      border-radius: 20px;
+      padding: 44px 40px;
+      margin-top: 64px;
+      color: #fff;
+      text-align: center;
+    }
+    .bridge h2 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+    .bridge p {
+      font-size: 14.5px;
+      color: rgba(255,255,255,0.65);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.85;
+    }
+
+    /* ── MODERN APPLICATION ── */
+    .modern-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .modern-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .modern-left {
+      background: var(--bg-warm);
+      padding: 28px 28px;
+      border-right: 1px solid var(--border);
+    }
+    .modern-right {
+      background: #fff;
+      padding: 28px 28px;
+    }
+    .modern-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .label-trad { background: #FEF3C7; color: #92400E; }
+    .label-mod  { background: #D1FAE5; color: #065F46; }
+    .modern-left h3, .modern-right h3 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .modern-left h3 { color: var(--brown); }
+    .modern-right h3 { color: #065F46; }
+    .modern-left p, .modern-right p {
+      font-size: 13.5px;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+    .modern-right p { color: #1A4A35; }
+    .arrow-mid {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-size: 1.4rem;
+      color: var(--gold);
+      padding: 0;
+      grid-column: 1 / -1;
+      background: var(--border);
+      height: 1px;
+    }
+
+    /* ── FEATURE TABLE ── */
+    .feature-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .feature-table th {
+      background: var(--gold-pale);
+      color: var(--brown);
+      font-weight: 700;
+      text-align: left;
+      padding: 13px 16px;
+      border-bottom: 2px solid var(--border);
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+    .feature-table td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-sub);
+      vertical-align: top;
+    }
+    .feature-table tr:last-child td { border-bottom: none; }
+    .feature-table tr:hover td { background: var(--bg-warm); }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 20px;
+    }
+    .tag-gold  { background: #FEF3C7; color: #92400E; }
+    .tag-green { background: #D1FAE5; color: #065F46; }
+    .tag-blue  { background: #DBEAFE; color: #1E40AF; }
+
+    /* ── QUOTE ── */
+    .big-quote {
+      text-align: center;
+      padding: 48px 24px;
+      margin-top: 64px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .big-quote p {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .big-quote p em { color: var(--gold); font-style: normal; }
+    .big-quote small {
+      display: block;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center;
+      padding: 36px 24px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 48px;
+    }
+    .footer .brand {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 620px) {
+      .modern-item { grid-template-columns: 1fr; }
+      .modern-left { border-right: none; border-bottom: 1px solid var(--border); }
+      .hero, .wrapper { padding-left: 18px; padding-right: 18px; }
+      .bridge { padding: 32px 22px; }
+      .memory-card { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">CULTURAL HERITAGE · 계(契) 문화</div>
+  <h1>우리 <em>계모임</em> 문화<br>전통과 현대의 연결</h1>
+  <p class="hero-sub">수백 년을 이어온 한국의 공동체 금융 문화, 그리고 곗돈 타는 날</p>
+  <div class="hero-divider"></div>
+</section>
+
+<div class="wrapper">
+
+  <!-- 기억 -->
+  <div class="memory-card">
+    <div class="memory-label">FOUNDER'S MEMORY · 창업자의 기억</div>
+    <p>
+      어릴 적, 누군가 곗돈을 타는 날이면 동네 중국집에서 자장면과 탕수육이 나왔다.
+      때로는 계원들에게 식권을 나눠주어 각자 가서 먹기도 했다.
+      그 날만큼은 온 동네에 특별한 기쁨이 퍼졌고, 먹는 사람도 대접하는 사람도 모두 웃었다.
+      이 서비스는 그 따뜻한 기억에서 출발한다.
+    </p>
+  </div>
+
+  <!-- 01. 계(契)란 무엇인가 -->
+  <div class="sec">
+    <p class="sec-label">01 · Origin</p>
+    <h2>계(契)란 무엇인가</h2>
+    <p style="font-size:15px;color:var(--text-sub);margin-bottom:20px;">
+      계(契)는 삼국시대부터 이어진 한국 고유의 공동체 상호 금융 제도입니다.
+      여러 사람이 일정 금액을 정기적으로 모아 구성원들이 돌아가며 목돈을 받는 방식으로,
+      제도권 금융이 미치지 못하던 시대에 서민들의 가장 현실적인 금융 수단이었습니다.
+      신라의 <strong>향도(香徒)</strong>, 고려의 <strong>계(契)</strong>, 조선의 <strong>두레·품앗이</strong>까지
+      그 뿌리는 공동체 연대의 정신에 닿아 있습니다.
+    </p>
+  </div>
+
+  <!-- 02. 전통 계모임 문화 -->
+  <div class="sec">
+    <p class="sec-label">02 · Traditions</p>
+    <h2>전통 계모임의 문화와 관습</h2>
+    <div class="tradition-list">
+
+      <div class="tradition-item">
+        <div class="tradition-icon">🍜</div>
+        <div class="tradition-body">
+          <h3>곗돈 타는 날의 식사 대접 — 한턱 문화</h3>
+          <p>
+            곗돈을 받은 계원은 나머지 구성원들에게 식사를 대접하는 것이 불문율이었습니다.
+            1970~90년대에는 <strong>중국집(자장면·탕수육)</strong>이 가장 대표적인 장소였고,
+            직접 데려가기 어려울 때는 <strong>식권을 나눠주는 방식</strong>도 널리 쓰였습니다.
+            이는 단순한 식사가 아니라 "내가 이 돈으로 잘 살겠다"는 감사 표현이었습니다.
+          </p>
+          <span class="highlight">중국집 한턱</span>
+          <span class="highlight">식권 배포</span>
+          <span class="highlight">감사의 표현</span>
+        </div>
+      </div>
+
+      <div class="tradition-item">
+        <div class="tradition-icon">🎲</div>
+        <div class="tradition-body">
+          <h3>순번 정하기 — 제비뽑기와 합의</h3>
+          <p>
+            누가 먼저 곗돈을 받을지 정하는 방식은 계모임마다 달랐습니다.
+            <strong>제비뽑기(추첨)</strong>가 가장 공정하다고 여겨졌고,
+            <strong>나이순·필요 순서</strong>로 정하기도 했습니다.
+            급히 목돈이 필요한 사람이 생기면 계원들의 동의 하에 순번을 당기는
+            <strong>'당기기'</strong> 관행도 있었습니다.
+          </p>
+          <span class="highlight">제비뽑기</span>
+          <span class="highlight">나이순</span>
+          <span class="highlight">당기기(긴급 수령)</span>
+        </div>
+      </div>
+
+      <div class="tradition-item">
+        <div class="tradition-icon">👑</div>
+        <div class="tradition-body">
+          <h3>계주(契主)의 역할과 신뢰</h3>
+          <p>
+            계주는 계모임의 핵심 인물로, 납입금 수금·보관·지급을 혼자 책임졌습니다.
+            계주는 대개 <strong>동네에서 신망이 두텁거나</strong> 집이 있는 사람이 맡았습니다.
+            그 부담과 책임에 대한 보상으로 계주는 첫 번째 혹은 무이자 혜택을 받기도 했습니다.
+            계주를 잘못 믿으면 '계 먹튀(먹고 튀기)'를 당하는 위험도 있었습니다.
+          </p>
+          <span class="highlight">신뢰 기반 선발</span>
+          <span class="highlight">첫 번째 수령 특권</span>
+          <span class="highlight">먹튀 리스크</span>
+        </div>
+      </div>
+
+      <div class="tradition-item">
+        <div class="tradition-icon">🏠</div>
+        <div class="tradition-body">
+          <h3>정기 모임 — 가정 방문과 공동체</h3>
+          <p>
+            납입일에는 보통 계주 집이나 구성원 집에 모여 현금을 내고 차와 음식을 나눴습니다.
+            이 자리는 단순한 금전 거래가 아니라 <strong>안부 인사, 자녀 소식, 동네 이야기</strong>를
+            나누는 사교 모임이기도 했습니다. 계는 금융이기 전에 공동체였습니다.
+          </p>
+          <span class="highlight">월례 모임</span>
+          <span class="highlight">가정 방문</span>
+          <span class="highlight">공동체 사교</span>
+        </div>
+      </div>
+
+      <div class="tradition-item">
+        <div class="tradition-icon">🤝</div>
+        <div class="tradition-body">
+          <h3>신뢰의 울타리 — 관계 기반 가입</h3>
+          <p>
+            계는 아무나 들어올 수 없었습니다. <strong>가족, 친척, 이웃, 직장 동료</strong> 등
+            이미 신뢰가 형성된 관계망 안에서만 구성되었습니다.
+            낯선 사람을 데려올 때는 소개한 계원이 <strong>연대보증</strong> 역할을 했습니다.
+            계약서 없이 오직 사람에 대한 신뢰만으로 수백만 원이 오갔습니다.
+          </p>
+          <span class="highlight">지인 기반 가입</span>
+          <span class="highlight">연대보증</span>
+          <span class="highlight">계약 없는 신뢰</span>
+        </div>
+      </div>
+
+      <div class="tradition-item">
+        <div class="tradition-icon">📣</div>
+        <div class="tradition-body">
+          <h3>납입 독촉 — 계주의 고충</h3>
+          <p>
+            납입을 미루는 계원이 생기면 계주가 직접 집으로 찾아가거나 전화를 돌려
+            독촉해야 했습니다. 이 역할이 계주에게 가장 고된 일이었으며,
+            <strong>빨간 독촉 전화</strong>는 계원 사이의 미묘한 긴장감을 만들기도 했습니다.
+            이를 피하려고 자동이체가 보편화된 이후 직장 계는 급여일 자동 납입 방식으로 전환되었습니다.
+          </p>
+          <span class="highlight">직접 방문 독촉</span>
+          <span class="highlight">계주의 사적 부담</span>
+          <span class="highlight">자동이체 전환</span>
+        </div>
+      </div>
+
+      <div class="tradition-item">
+        <div class="tradition-icon">🎊</div>
+        <div class="tradition-body">
+          <h3>계 해산 모임 — 마지막 곗날</h3>
+          <p>
+            마지막 계원이 곗돈을 받는 날은 계모임 전체의 해산식을 겸했습니다.
+            한 자리에 모여 수고한 계주를 치하하고, <strong>다음 계를 재결성하거나</strong>
+            아쉬운 작별을 나눴습니다. 마지막으로 타는 사람은 이자 혜택은 없었지만
+            가장 믿음직한 사람으로 여겨졌습니다.
+          </p>
+          <span class="highlight">해산 모임</span>
+          <span class="highlight">계주 치하</span>
+          <span class="highlight">재결성 논의</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 03. 계의 종류 -->
+  <div class="sec">
+    <p class="sec-label">03 · Types</p>
+    <h2>계모임의 다양한 종류</h2>
+    <div class="gye-grid">
+      <div class="gye-card">
+        <div class="emoji">👫</div>
+        <h4>친목계</h4>
+        <p>친구·이웃·직장 동료 간 사교와 목돈 마련을 겸한 가장 보편적인 계</p>
+      </div>
+      <div class="gye-card">
+        <div class="emoji">💍</div>
+        <h4>결혼계</h4>
+        <p>결혼 비용 마련을 위한 계. 혼수·예단·예식장 비용 충당에 활용</p>
+      </div>
+      <div class="gye-card">
+        <div class="emoji">✈️</div>
+        <h4>여행계</h4>
+        <p>해외여행·국내 여행 경비를 모으는 계. 여행 날짜에 맞춰 수령 순번 조정</p>
+      </div>
+      <div class="gye-card">
+        <div class="emoji">📚</div>
+        <h4>학비계</h4>
+        <p>자녀 대학 등록금을 마련하기 위한 계. 입학 시기에 맞춰 수령</p>
+      </div>
+      <div class="gye-card">
+        <div class="emoji">🎁</div>
+        <h4>명절계</h4>
+        <p>추석·설 전에 해산하여 명절 비용을 마련하는 단기 계</p>
+      </div>
+      <div class="gye-card">
+        <div class="emoji">🌾</div>
+        <h4>현물계</h4>
+        <p>쌀·광목·연탄 등 현물을 모아 나누던 농경 사회의 계 (현재는 거의 소멸)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRIDGE -->
+  <div class="bridge">
+    <h2>왜 지금 다시 계(契)인가</h2>
+    <p>
+      고금리 시대, 2030세대의 목돈 마련 어려움, 은행 적금보다 높은 체감 수익률 —
+      계모임은 사라진 게 아닙니다. 여전히 카카오톡 단체방과 엑셀 파일로 수천 개의 계가 돌아가고 있습니다.
+      문제는 <strong>신뢰를 담보할 디지털 인프라가 없다는 것</strong>입니다.
+      <em>곗돈 타는 날</em>은 수백 년의 공동체 금융 지혜를 안전한 디지털 플랫폼 위에 올립니다.
+    </p>
+  </div>
+
+  <!-- 04. 현대적 적용 -->
+  <div class="sec">
+    <p class="sec-label">04 · Modern Application</p>
+    <h2>전통 문화의 현대적 재해석</h2>
+    <div class="modern-list">
+
+      <div class="modern-item">
+        <div class="modern-left">
+          <span class="modern-label label-trad">전통 관습</span>
+          <h3>🍜 중국집 한턱 · 식권 배포</h3>
+          <p>곗돈을 받은 날, 계원들에게 식사를 대접하거나 식권을 나눠주며 감사를 표현했다.</p>
+        </div>
+        <div class="modern-right">
+          <span class="modern-label label-mod">디지털 재해석</span>
+          <h3>🎁 "한턱 쏘기" 기능</h3>
+          <p>
+            곗돈 수령 즉시 앱 안에서 <strong>배달의민족·스타벅스·편의점 쿠폰</strong>을
+            계원 전원에게 원클릭 발송. "오늘 내가 쐈어요!" 알림이 계 채팅방에 자동 공유됩니다.
+            전통의 감사 문화를 디지털 선물로 계승합니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="modern-item">
+        <div class="modern-left">
+          <span class="modern-label label-trad">전통 관습</span>
+          <h3>🎲 제비뽑기로 순번 결정</h3>
+          <p>누가 먼저 받을지 제비뽑기나 합의로 정했다. 긴급 시 '당기기'로 순번 조정.</p>
+        </div>
+        <div class="modern-right">
+          <span class="modern-label label-mod">디지털 재해석</span>
+          <h3>🔮 공개 추첨 & 긴급 신청</h3>
+          <p>
+            <strong>실시간 라이브 추첨</strong>으로 모든 계원이 동시에 결과를 확인.
+            긴급 목돈이 필요할 때는 <strong>"순번 당기기 신청"</strong>을 하면
+            계원 과반 찬성 시 자동 순번 교환. 투명하고 공정한 디지털 제비뽑기입니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="modern-item">
+        <div class="modern-left">
+          <span class="modern-label label-trad">전통 관습</span>
+          <h3>👑 계주의 신뢰 · 사적 보증</h3>
+          <p>계주 한 사람이 모든 돈을 관리하고 책임졌다. 계주를 잘못 믿으면 먹튀 피해를 입었다.</p>
+        </div>
+        <div class="modern-right">
+          <span class="modern-label label-mod">디지털 재해석</span>
+          <h3>🔒 AI 계주 · 에스크로 보호</h3>
+          <p>
+            앱이 계주 역할을 대신합니다. 납입금은 <strong>에스크로 계좌</strong>에 보관되어
+            계주도 임의로 인출 불가. <strong>계 신용도 시스템</strong>이 납입 이력을 투명하게 기록하여
+            먹튀 리스크를 원천 차단합니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="modern-item">
+        <div class="modern-left">
+          <span class="modern-label label-trad">전통 관습</span>
+          <h3>🏠 가정 방문 · 월례 모임</h3>
+          <p>납입일마다 집에 모여 돈을 내고 차 한 잔 하며 안부를 나눴다.</p>
+        </div>
+        <div class="modern-right">
+          <span class="modern-label label-mod">디지털 재해석</span>
+          <h3>💬 계 전용 커뮤니티</h3>
+          <p>
+            <strong>계 전용 채팅방</strong>에서 납입 완료 알림, 목표 공유, 응원 메시지를 주고받습니다.
+            수령자의 곗돈 사용 계획("이 돈으로 뭐 할 거예요?")을 피드에 공유하는
+            <strong>스토리 기능</strong>으로 공동체 감각을 디지털로 복원합니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="modern-item">
+        <div class="modern-left">
+          <span class="modern-label label-trad">전통 관습</span>
+          <h3>📣 계주의 납입 독촉</h3>
+          <p>계주가 직접 전화하거나 방문해 납입을 요청해야 했다. 가장 힘든 역할.</p>
+        </div>
+        <div class="modern-right">
+          <span class="modern-label label-mod">디지털 재해석</span>
+          <h3>🔔 자동 알림 & 자동이체</h3>
+          <p>
+            납입일 <strong>D-3, D-1, D-Day</strong> 카카오 알림톡 자동 발송.
+            자동이체를 등록하면 인간관계 마찰 없이 납입 완료.
+            미납 시 계 신용도 차감 — 독촉 없이 시스템이 알아서 관리합니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="modern-item">
+        <div class="modern-left">
+          <span class="modern-label label-trad">전통 관습</span>
+          <h3>🎊 계 해산 모임</h3>
+          <p>마지막 곗날에 모여 수고한 계주를 치하하고 다음 계를 논의했다.</p>
+        </div>
+        <div class="modern-right">
+          <span class="modern-label label-mod">디지털 재해석</span>
+          <h3>📜 계 아카이브 & 재결성</h3>
+          <p>
+            계 완료 시 <strong>계 역사 PDF</strong>(납입 내역·참여자·달성 목표)를
+            자동 생성하여 추억으로 보관. "이 멤버로 다시 계 시작하기" 원클릭 재결성 버튼으로
+            단골 계원 그룹을 유지합니다.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 05. 기능 요약 -->
+  <div class="sec">
+    <p class="sec-label">05 · Feature Map</p>
+    <h2>전통 → 디지털 기능 매핑</h2>
+    <table class="feature-table">
+      <thead>
+        <tr>
+          <th>전통 관습</th>
+          <th>앱 기능명</th>
+          <th>유형</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>한턱 쏘기 (중국집·식권)</td>
+          <td>한턱 기프트 — 수령자 → 계원 쿠폰 발송</td>
+          <td><span class="tag tag-gold">핵심 기능</span></td>
+        </tr>
+        <tr>
+          <td>제비뽑기 순번 결정</td>
+          <td>라이브 추첨 & 순번 당기기 신청</td>
+          <td><span class="tag tag-gold">핵심 기능</span></td>
+        </tr>
+        <tr>
+          <td>계주 신뢰 · 보증</td>
+          <td>에스크로 보호 + 계 신용도 시스템</td>
+          <td><span class="tag tag-gold">핵심 기능</span></td>
+        </tr>
+        <tr>
+          <td>납입 독촉 전화</td>
+          <td>자동 알림톡 + 자동이체 연동</td>
+          <td><span class="tag tag-green">자동화</span></td>
+        </tr>
+        <tr>
+          <td>월례 모임 · 안부 나눔</td>
+          <td>계 전용 채팅 + 목표 공유 피드</td>
+          <td><span class="tag tag-blue">커뮤니티</span></td>
+        </tr>
+        <tr>
+          <td>해산 모임 · 계주 치하</td>
+          <td>계 아카이브 PDF + 재결성 버튼</td>
+          <td><span class="tag tag-blue">커뮤니티</span></td>
+        </tr>
+        <tr>
+          <td>연대보증 · 지인 소개</td>
+          <td>계원 초대 링크 + 추천인 신용 연계</td>
+          <td><span class="tag tag-green">자동화</span></td>
+        </tr>
+        <tr>
+          <td>현물계 (쌀·연탄)</td>
+          <td>목적별 계 템플릿 (여행·결혼·적금 등)</td>
+          <td><span class="tag tag-blue">커뮤니티</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- BIG QUOTE -->
+  <div class="big-quote">
+    <p>
+      계는 돈이 아니라 <em>사람</em>이었습니다.<br>
+      곗돈 타는 날은 그 사람의 온기를<br>
+      디지털로 옮깁니다.
+    </p>
+    <small>곗돈 타는 날 — 브랜드 철학</small>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="brand">곗돈 타는 날</div>
+  <p>우리 계모임 문화 리서치 · 2026-05-23</p>
+</footer>
+
+</body>
+</html>

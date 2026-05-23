@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>곗돈 타는 날 — 사업계획서</title>
+  <style>
+
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+white-space: pre-wrap;
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">곗돈 타는 날 — 사업계획서</h1>
+</header>
+<p><strong>사 업 계 획 서</strong></p>
+<p><em>Business Plan</em></p>
+<p><strong>계모아 (GyeMoa)</strong></p>
+<p>한국 전통 계(契) 문화의 디지털 혁신 — 투명하고 안전한 모바일 계모임
+플랫폼</p>
+<table style="width:55%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 35%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>서비스명</strong></td>
+<td style="text-align: left;">계모아 (GyeMoa)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>사업 유형</strong></td>
+<td style="text-align: left;">핀테크 / 모바일 앱 (Flutter)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>수익 모델</strong></td>
+<td style="text-align: left;">거래 수수료 + 프리미엄 구독</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>작성일</strong></td>
+<td style="text-align: left;">2026년 5월</td>
+</tr>
+</tbody>
+</table>
+<p><strong>1. 사업 개요</strong></p>
+<p><strong>1.1 서비스 소개</strong></p>
+<p>계모아(GyeMoa)는 한국 전통 &#39;계(契)&#39; 문화를 모바일 앱으로 구현한
+핀테크 플랫폼입니다. 현재 대부분의 계모임은 카카오톡 + 계좌이체 + 엑셀로
+수동 관리되고 있어 계주의 부담, 미납 추적의 어려움, 횡령·먹튀 등 신뢰
+문제가 지속적으로 발생하고 있습니다.</p>
+<p>계모아는 계원 초대·납입·배분·정산의 전 과정을 자동화하고 투명하게
+관리하여, 계주에게는 관리 부담 제거를, 계원에게는 안전한 목돈 마련
+수단을 제공합니다.</p>
+<p><strong>1.2 사업 비전 및 목표</strong></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr>
+<td>비전: 대한민국 3,000만 계모임 참여자가 신뢰하는 디지털 계 플랫폼 —
+계모아</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>6개월</strong></td>
+<td style="text-align: center;"><strong>1년차</strong></td>
+<td style="text-align: center;"><strong>2년차</strong></td>
+<td style="text-align: center;"><strong>3년차</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;">MVP 출시 베타 유저 1,000명</td>
+<td style="text-align: center;">MAU 5만 명 계 거래액 50억</td>
+<td style="text-align: center;">MAU 20만 명 계 거래액 300억</td>
+<td style="text-align: center;">MAU 80만 명 계 거래액 1,500억</td>
+</tr>
+</tbody>
+</table>
+<p><strong>1.3 핵심 가치 제안</strong></p>
+<ul>
+<li><p>계주 부담 제로 — 납입 독촉·정산·순번 배정 100% 자동화</p></li>
+<li><p>투명한 자금 흐름 — 모든 계원이 실시간 납입 현황 확인
+가능</p></li>
+<li><p>안전한 보관 — 계좌 에스크로 방식으로 계주 임의 인출 불가</p></li>
+<li><p>목적별 계 템플릿 — 여행계·결혼계·친목계·적금계 원클릭
+생성</p></li>
+<li><p>미납 자동 처리 — 연체자 알림·제명·대체 납입 플로우
+자동화</p></li>
+</ul>
+<p><strong>2. 시장 분석</strong></p>
+<p><strong>2.1 시장 규모</strong></p>
+<p>한국의 계모임 문화는 수백 년의 역사를 가진 고유한 소셜 금융 형태로,
+현재도 광범위하게 활용되고 있습니다. 통계청 조사에 따르면 성인 2명 중
+1명이 계모임 경험이 있으며, 연간 계 거래 추정액은 수십조 원에
+달합니다.</p>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 34%" />
+<col style="width: 30%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>구분</strong></td>
+<td style="text-align: center;"><strong>규모</strong></td>
+<td style="text-align: center;"><strong>비고</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">계모임 경험 성인 인구</td>
+<td style="text-align: left;">약 2,500만 명 이상</td>
+<td style="text-align: left;">성인의 약 50%</td>
+</tr>
+<tr>
+<td style="text-align: left;">연간 계 거래 추정액</td>
+<td style="text-align: left;">약 30~50조원</td>
+<td style="text-align: left;">비공식 추정치</td>
+</tr>
+<tr>
+<td style="text-align: left;">디지털 전환 TAM</td>
+<td style="text-align: left;">약 1~3조원</td>
+<td style="text-align: left;">수수료 0.5~1% 기준</td>
+</tr>
+<tr>
+<td style="text-align: left;">당사 3년차 목표 SOM</td>
+<td style="text-align: left;">약 150억원</td>
+<td style="text-align: left;">거래액 1,500억 × 1%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2.2 경쟁사 현황</strong></p>
+<p>국내 디지털 계 전문 앱은 사실상 공백 상태입니다. 유사 서비스들은 모두
+핵심 기능이 부재합니다.</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 18%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>비교 항목</strong></td>
+<td style="text-align: center;"><strong>토스 모임통장</strong></td>
+<td style="text-align: center;"><strong>카카오뱅크</strong></td>
+<td style="text-align: center;"><strong>코나아이</strong></td>
+<td style="text-align: center;"><strong>계모아</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>자동 순번 배분</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">일부</td>
+<td style="text-align: center;"><strong>✅ 완전 자동</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>미납 자동 독촉</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;"><strong>✅</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>에스크로 보관</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">부분</td>
+<td style="text-align: center;"><strong>✅</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>목적별 템플릿</strong></td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;"><strong>✅ 5종 제공</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>전용 앱 (Flutter)</strong></td>
+<td style="text-align: center;">슈퍼앱 내 기능</td>
+<td style="text-align: center;">슈퍼앱 내 기능</td>
+<td style="text-align: center;">제한적</td>
+<td style="text-align: center;"><strong>✅ 전문 앱</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>→ 직접 경쟁사 사실상 없음. 완전한 블루오션 시장.</strong></p>
+<p><strong>2.3 타깃 고객</strong></p>
+<p><strong>◆ 1차 타깃 — 계주 (모임 주도자)</strong></p>
+<ul>
+<li><p>30~50대 여성 (전통적 계모임 주도 계층)</p></li>
+<li><p>매달 납입 독촉·정산에 지쳐있는 계주</p></li>
+<li><p>월 평균 10~20명 규모 계모임 운영</p></li>
+</ul>
+<p><strong>◆ 2차 타깃 — 계원 (참여자)</strong></p>
+<ul>
+<li><p>목돈 마련이 필요한 MZ세대 직장인</p></li>
+<li><p>기존 계모임에서 불신·분쟁 경험이 있는 사용자</p></li>
+<li><p>안전한 온라인 계모임을 원하는 비대면 선호 세대</p></li>
+</ul>
+<p><strong>3. 서비스 기획</strong></p>
+<p><strong>3.1 핵심 기능</strong></p>
+<p><strong>◆ ① 계 개설 및 초대</strong></p>
+<ul>
+<li><p>계 유형 선택: 순번계, 추첨계, 적금계, 목표계</p></li>
+<li><p>목적별 템플릿: 여행계 / 결혼계 / 친목계 / 적금계 /
+자유계</p></li>
+<li><p>카카오톡·문자·링크로 계원 초대 (비앱 사용자도 웹으로
+참여)</p></li>
+<li><p>계 규칙 설정: 납입 주기, 금액, 순번 방식, 연체 패널티</p></li>
+</ul>
+<p><strong>◆ ② 납입 및 정산 자동화</strong></p>
+<ul>
+<li><p>자동이체 연동: 납입일 D-3, D-1, D-day 알림 자동 발송</p></li>
+<li><p>미납 시 3단계 에스컬레이션 (알림 → 계원 공지 → 계주
+알림)</p></li>
+<li><p>납입 완료 시 전체 계원에게 실시간 투명 공개</p></li>
+<li><p>곗돈 수령자에게 자동 이체 (에스크로 → 수령자 계좌)</p></li>
+</ul>
+<p><strong>◆ ③ 투명한 자금 관리 (에스크로)</strong></p>
+<ul>
+<li><p>납입금은 계모아 에스크로 계좌에 보관 (계주 임의 인출
+불가)</p></li>
+<li><p>전체 계원이 잔액·납입 현황 실시간 열람</p></li>
+<li><p>계 종료 시 자동 정산 및 영수증 발급</p></li>
+</ul>
+<p><strong>◆ ④ 계원 관리</strong></p>
+<ul>
+<li><p>계원 신용 점수 시스템 (납입 이력 기반 &#39;계 신용도&#39; 부여)</p></li>
+<li><p>연체·제명 시 계 신용도 하락 → 타 계 가입 제한</p></li>
+<li><p>계원 투표로 규칙 변경·제명 처리</p></li>
+</ul>
+<p><strong>◆ ⑤ 프리미엄 기능</strong></p>
+<ul>
+<li><p>계 보험 (먹튀·연체 보장 상품 — 보험사 제휴)</p></li>
+<li><p>계 역사 아카이브 (과거 계 이력 PDF 다운로드)</p></li>
+<li><p>다계좌 연동 (한 앱에서 여러 계 동시 관리)</p></li>
+</ul>
+<p><strong>3.2 법적 구조</strong></p>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr>
+<td>핵심: 전자금융업 등록 또는 기존 은행·PG사 제휴를 통해 에스크로
+서비스 구현</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>단기 전략: 기존 PG사(토스페이먼츠, 나이스페이 등) API 연동으로
+에스크로 구현</p></li>
+<li><p>중기 전략: 전자금융업 등록 (소액후불결제업 또는
+전자지급결제대행업)</p></li>
+<li><p>법률 자문: 금융규제 샌드박스 &#39;혁신금융서비스&#39; 신청 → 규제 유예
+기간 확보</p></li>
+<li><p>참고: 코나아이가 동일 구조로 혁신금융서비스 지정 선례
+있음</p></li>
+</ul>
+<p><strong>4. 수익 모델</strong></p>
+<p><strong>4.1 수익 구조</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 28%" />
+<col style="width: 25%" />
+<col style="width: 27%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>유형</strong></td>
+<td style="text-align: center;"><strong>항목</strong></td>
+<td style="text-align: center;"><strong>단가</strong></td>
+<td style="text-align: center;"><strong>비고</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>거래 수수료</strong></td>
+<td style="text-align: left;">계 거래액 기반</td>
+<td style="text-align: center;">0.5~1.0%</td>
+<td style="text-align: left;">핵심 수익원</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>프리미엄 구독</strong></td>
+<td style="text-align: left;">계 보험·고급 기능</td>
+<td style="text-align: center;">월 2,900원</td>
+<td style="text-align: left;">계주 대상</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>B2B 기업계</strong></td>
+<td style="text-align: left;">사내 계모임 솔루션</td>
+<td style="text-align: center;">월 50~200만원</td>
+<td style="text-align: left;">HR 복지 연계</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>금융 상품 중개</strong></td>
+<td style="text-align: left;">계 보험·적금 연계</td>
+<td style="text-align: center;">제휴 수수료</td>
+<td style="text-align: left;">3년차 이후 확장</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>광고·프로모션</strong></td>
+<td style="text-align: left;">금융사·여행사 제휴</td>
+<td style="text-align: center;">별도 협의</td>
+<td style="text-align: left;">부수 수익</td>
+</tr>
+</tbody>
+</table>
+<p><strong>4.2 연도별 매출 추정</strong></p>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>구분</strong></td>
+<td style="text-align: center;"><strong>1년차</strong></td>
+<td style="text-align: center;"><strong>2년차</strong></td>
+<td style="text-align: center;"><strong>3년차</strong></td>
+<td style="text-align: center;"><strong>5년차</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>MAU</strong></td>
+<td style="text-align: center;">5만</td>
+<td style="text-align: center;">20만</td>
+<td style="text-align: center;">80만</td>
+<td style="text-align: center;">300만</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>연 계 거래액</strong></td>
+<td style="text-align: center;">50억</td>
+<td style="text-align: center;">300억</td>
+<td style="text-align: center;">1,500억</td>
+<td style="text-align: center;">8,000억</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>거래 수수료 수익</strong></td>
+<td style="text-align: center;">0.3억</td>
+<td style="text-align: center;">2.1억</td>
+<td style="text-align: center;">12억</td>
+<td style="text-align: center;">64억</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>구독·B2B 수익</strong></td>
+<td style="text-align: center;">0.1억</td>
+<td style="text-align: center;">0.8억</td>
+<td style="text-align: center;">4억</td>
+<td style="text-align: center;">20억</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>합계 매출</strong></td>
+<td style="text-align: center;"><strong>0.4억</strong></td>
+<td style="text-align: center;"><strong>2.9억</strong></td>
+<td style="text-align: center;"><strong>16억</strong></td>
+<td style="text-align: center;"><strong>84억+</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>5. 운영 전략</strong></p>
+<p><strong>5.1 사업화 로드맵</strong></p>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 80%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>단계</strong></td>
+<td style="text-align: center;"><strong>내용</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Phase 1 (0~6개월)</strong></td>
+<td style="text-align: left;">Flutter MVP 개발 / PG사 에스크로 API 연동
+/ 베타 테스터 100명 계모임 운영 / 금융규제 샌드박스 신청</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Phase 2 (6~12개월)</strong></td>
+<td style="text-align: left;">정식 출시 (iOS/Android) / 계 신용도 시스템
+도입 / 카카오·네이버 소셜 로그인 연동 / MAU 5만 달성</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Phase 3 (1~2년)</strong></td>
+<td style="text-align: left;">보험사 제휴 (계 보험 출시) / B2B 기업계
+서비스 런칭 / 전자금융업 등록 완료 / MAU 20만 달성</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Phase 4 (2년+)</strong></td>
+<td style="text-align: left;">동남아·아프리카 글로벌 확장 (현지
+계·아리산·차마 문화) / 금융 슈퍼앱으로 확장 / MAU 80만+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>5.2 마케팅 전략</strong></p>
+<p><strong>◆ 바이럴 성장 (핵심)</strong></p>
+<ul>
+<li><p>계 초대 링크 공유 시 앱 자연 설치 → 카카오톡 바이럴
+최적화</p></li>
+<li><p>첫 계 개설 시 수수료 3개월 면제 프로모션</p></li>
+<li><p>계주 추천 프로그램: 지인 계주 유입 시 포인트 지급</p></li>
+</ul>
+<p><strong>◆ 커뮤니티 마케팅</strong></p>
+<ul>
+<li><p>맘카페·직장인 커뮤니티(블라인드·리멤버) 타겟 바이럴</p></li>
+<li><p>&#39;안전한 계모임&#39; 스토리텔링 콘텐츠 (유튜브 쇼츠·인스타)</p></li>
+<li><p>계 먹튀 피해자 구제 사례 PR → 신뢰도 마케팅</p></li>
+</ul>
+<p><strong>◆ B2B 영업</strong></p>
+<ul>
+<li><p>HR 복지 플랫폼(복지몰) 제휴로 기업 사내 계 솔루션 공급</p></li>
+<li><p>신협·새마을금고 제휴로 기존 계모임 디지털 전환 지원</p></li>
+</ul>
+<p><strong>5.3 기술 스택</strong></p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>영역</strong></td>
+<td style="text-align: center;"><strong>기술</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>모바일 앱</strong></td>
+<td style="text-align: left;">Flutter (iOS/Android 동시 지원) — 기존
+역량 완전 활용</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>백엔드</strong></td>
+<td style="text-align: left;">Spring Boot (REST API) — 기존 easyfee_be
+아키텍처 레버리지</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>결제·에스크로</strong></td>
+<td style="text-align: left;">포트원(구 아임포트) PG 연동 / 토스페이먼츠
+에스크로 API</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>인프라</strong></td>
+<td style="text-align: left;">AWS (EC2 + RDS + S3) — 멀티 테넌트 SaaS
+구조</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>알림</strong></td>
+<td style="text-align: left;">Firebase FCM (푸시) + Kakao 알림톡 (납입
+독촉)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>인증</strong></td>
+<td style="text-align: left;">카카오·네이버 소셜 로그인 + 본인인증 (PASS
+또는 휴대폰 인증)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>6. 조직 및 재무 계획</strong></p>
+<p><strong>6.1 핵심 팀</strong></p>
+<table>
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 15%" />
+<col style="width: 65%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>역할</strong></td>
+<td style="text-align: center;"><strong>인원</strong></td>
+<td style="text-align: center;"><strong>담당 업무</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>대표 / PM</strong></td>
+<td style="text-align: center;">1명</td>
+<td style="text-align: left;">사업 총괄, 금융사 제휴 협상, 규제 대응,
+투자 유치</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Flutter 개발</strong></td>
+<td style="text-align: center;">1~2명</td>
+<td style="text-align: left;">iOS/Android 앱 개발 및 유지보수 (기존 역량
+활용)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>백엔드 개발</strong></td>
+<td style="text-align: center;">1명</td>
+<td style="text-align: left;">Spring Boot API, 에스크로 연동, 자동이체
+시스템</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>디자인 / UX</strong></td>
+<td style="text-align: center;">1명</td>
+<td style="text-align: left;">UI/UX 설계, 브랜딩, 마케팅 콘텐츠</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>금융/법무</strong></td>
+<td style="text-align: center;">외부 자문</td>
+<td style="text-align: left;">전자금융업 등록, 에스크로 구조 법률 검토,
+혁신금융 신청</td>
+</tr>
+</tbody>
+</table>
+<p><strong>6.2 초기 투자 비용</strong></p>
+<table>
+<colgroup>
+<col style="width: 44%" />
+<col style="width: 29%" />
+<col style="width: 25%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>항목</strong></td>
+<td style="text-align: center;"><strong>금액</strong></td>
+<td style="text-align: center;"><strong>비고</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;">앱 개발 인건비 (6개월)</td>
+<td style="text-align: center;">5,000~6,000만원</td>
+<td style="text-align: left;">Flutter 2명 + BE 1명</td>
+</tr>
+<tr>
+<td style="text-align: left;">PG·에스크로 연동 개발</td>
+<td style="text-align: center;">500만원</td>
+<td style="text-align: left;">포트원 API</td>
+</tr>
+<tr>
+<td style="text-align: left;">서버 인프라 (AWS, 1년)</td>
+<td style="text-align: center;">600만원</td>
+<td style="text-align: left;">EC2 + RDS + S3</td>
+</tr>
+<tr>
+<td style="text-align: left;">법률·금융 자문</td>
+<td style="text-align: center;">500만원</td>
+<td style="text-align: left;">혁신금융 신청 포함</td>
+</tr>
+<tr>
+<td style="text-align: left;">마케팅 (초기 6개월)</td>
+<td style="text-align: center;">800만원</td>
+<td style="text-align: left;">커뮤니티·SNS 중심</td>
+</tr>
+<tr>
+<td style="text-align: left;">예비비 (10%)</td>
+<td style="text-align: center;">740만원</td>
+<td style="text-align: left;">—</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>합계</strong></td>
+<td style="text-align: center;"><strong>약 8,140만원 (≈
+8천만원)</strong></td>
+<td style="text-align: left;">6개월 런웨이</td>
+</tr>
+</tbody>
+</table>
+<p><strong>6.3 자금 조달 계획</strong></p>
+<ul>
+<li><p>자기자본: 2,000만원</p></li>
+<li><p>정부 창업지원금: 5,000만원 (초기창업패키지 또는 TIPS
+신청)</p></li>
+<li><p>엔젤 투자: 1,000만원 (창업 초기 엔젤 네트워크)</p></li>
+<li><p>Pre-Seed 라운드: MAU 1만 달성 후 3~5억 규모 투자 유치
+목표</p></li>
+</ul>
+<p><strong>7. 리스크 분석 및 대응</strong></p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 12%" />
+<col style="width: 34%" />
+<col style="width: 31%" />
+</colgroup>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>리스크</strong></td>
+<td style="text-align: center;"><strong>수준</strong></td>
+<td style="text-align: center;"><strong>내용</strong></td>
+<td style="text-align: center;"><strong>대응 방안</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>금융 규제</strong></td>
+<td style="text-align: center;">高</td>
+<td style="text-align: left;">에스크로 운영에 전자금융업 등록 필요</td>
+<td style="text-align: left;">혁신금융 샌드박스 우선 신청, PG사 제휴로
+초기 대응</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>먹튀·사기 이슈</strong></td>
+<td style="text-align: center;">中</td>
+<td style="text-align: left;">계원 간 분쟁 발생 시 플랫폼 신뢰도
+타격</td>
+<td style="text-align: left;">에스크로 구조로 계주 임의 인출 원천
+차단</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>대형 플랫폼 진입</strong></td>
+<td style="text-align: center;">低</td>
+<td style="text-align: left;">토스·카카오가 계 전문 기능 추가
+가능성</td>
+<td style="text-align: left;">계 신용도 데이터 선점으로 전환 비용
+높임</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>사용자 신뢰 확보</strong></td>
+<td style="text-align: center;">中</td>
+<td style="text-align: left;">금융 앱 특성상 초기 신뢰 구축 난이도
+높음</td>
+<td style="text-align: left;">초기 오프라인 계주 네트워크 공략, PR
+선행</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>개인정보 보안</strong></td>
+<td style="text-align: center;">高</td>
+<td style="text-align: left;">금융 정보 유출 시 서비스 치명타</td>
+<td style="text-align: left;">정기 보안 감사, PCI DSS 준수, 암호화
+저장</td>
+</tr>
+</tbody>
+</table>
+<p><strong>8. 기대 효과 및 결론</strong></p>
+<p><strong>8.1 사회적 효과</strong></p>
+<ul>
+<li><p>수십 년간 지속된 계 먹튀·분쟁 문제 해소 → 사회적 신뢰 비용
+절감</p></li>
+<li><p>전통 계 문화의 디지털 보존 및 MZ세대로의 계승</p></li>
+<li><p>서민 목돈 마련 수단의 안전성 강화 → 금융 소외계층 지원</p></li>
+<li><p>동남아·아프리카 등 유사 문화권 글로벌 수출 가능성</p></li>
+</ul>
+<p><strong>8.2 경제적 효과</strong></p>
+<ul>
+<li><p>5년차 기준 MAU 300만, 연 거래액 8,000억, 매출 84억+ 목표</p></li>
+<li><p>계 신용도 데이터 축적 → 중금리 대출·적금 상품 연계로 금융 슈퍼앱
+확장</p></li>
+<li><p>일자리 창출: 직접 고용 10명+, 간접 고용 다수</p></li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr>
+<td>계모아는 블루오션 시장에서 Flutter 기반 빠른 MVP 개발이 가능하며,
+대흥정보의 개발 역량을 직접 활용할 수 있는 최적의 창업 아이템입니다.
+전문 경쟁사가 없는 지금이 시장 선점의 최적 타이밍입니다.</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
