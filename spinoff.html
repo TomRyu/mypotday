@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>곗돈 타는 날 — 파생서비스 기획서</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:     #C8860A;
+      --gold-l:   #E8A030;
+      --gold-p:   #FDF3E0;
+      --bg:       #FDFAF5;
+      --bg2:      #FFF8EE;
+      --text:     #1E1208;
+      --sub:      #4A3018;
+      --muted:    #9A7A50;
+      --border:   #E8D5B0;
+      --c1: #E8A030; --c1b: #FDF3E0; /* 선물·커머스 - 골드 */
+      --c2: #1D9E75; --c2b: #ECFDF5; /* 금융 - 그린 */
+      --c3: #4A7FD4; --c3b: #EFF6FF; /* B2B - 블루 */
+      --c4: #D85A30; --c4b: #FEF2F2; /* 커뮤니티 - 레드 */
+      --c5: #8B7DD8; --c5b: #F5F3FF; /* 데이터·AI - 퍼플 */
+      --c6: #2DD4BF; --c6b: #F0FDFA; /* 라이프스타일 - 틸 */
+    }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.85; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(150deg, #1A0E04 0%, #3A2208 55%, #2C1A08 100%);
+      padding: 68px 40px 60px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(200,134,10,0.18) 0%, transparent 65%);
+    }
+    .hero-badge {
+      display: inline-block; border: 1px solid rgba(200,134,10,0.45); color: #E8A030;
+      font-size: 11px; letter-spacing: 3px; padding: 5px 18px; border-radius: 20px;
+      margin-bottom: 26px; position: relative;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif; font-size: clamp(1.9rem, 5vw, 3.2rem);
+      font-weight: 900; color: #fff; line-height: 1.3; position: relative; margin-bottom: 12px;
+    }
+    .hero h1 em { color: #E8A030; font-style: normal; }
+    .hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.45); position: relative; }
+    .hero-line { width: 44px; height: 2px; background: var(--gold-l); margin: 24px auto 0; }
+
+    /* OVERVIEW STATS */
+    .overview {
+      max-width: 900px; margin: 0 auto; padding: 40px 24px 0;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    }
+    .ov-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 22px 18px; text-align: center;
+    }
+    .ov-num { font-family: 'Space Mono', monospace; font-size: 2rem; font-weight: 700; color: var(--gold-l); line-height: 1; margin-bottom: 6px; }
+    .ov-lbl { font-size: 11px; color: var(--muted); }
+
+    /* WRAPPER */
+    .wrapper { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* SECTION */
+    .sec { margin-top: 60px; }
+    .sec-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; }
+    .sec h2 {
+      font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700;
+      color: var(--text); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sec-tag {
+      font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    /* SERVICE CARD */
+    .svc-grid { display: flex; flex-direction: column; gap: 20px; }
+    .svc-card {
+      border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+    }
+    .svc-header {
+      display: grid; grid-template-columns: 60px 1fr auto; gap: 0;
+      align-items: stretch;
+    }
+    .svc-icon-wrap {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; padding: 22px 0;
+      background: var(--icon-bg, var(--gold-p));
+    }
+    .svc-title-wrap { padding: 20px 22px; }
+    .svc-title-wrap h3 {
+      font-family: 'Noto Serif KR', serif; font-size: 1.05rem; font-weight: 700;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .svc-title-wrap .tagline { font-size: 12.5px; color: var(--muted); }
+    .svc-revenue {
+      display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+      padding: 16px 22px; border-left: 1px solid var(--border); min-width: 130px; gap: 4px;
+    }
+    .svc-revenue .rev-label { font-size: 10px; color: var(--muted); letter-spacing: 1px; font-family: 'Space Mono', monospace; }
+    .svc-revenue .rev-val { font-family: 'Space Mono', monospace; font-size: 0.95rem; font-weight: 700; color: var(--gold); }
+    .svc-revenue .rev-type { font-size: 10px; color: var(--muted); }
+
+    .svc-body { padding: 20px 22px 22px; border-top: 1px solid var(--border); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; background: var(--bg); }
+    .svc-col-title { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 8px; font-family: 'Space Mono', monospace; }
+    .svc-desc { font-size: 13px; color: var(--sub); line-height: 1.7; }
+    .svc-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .svc-list li { font-size: 12.5px; color: var(--sub); padding-left: 14px; position: relative; }
+    .svc-list li::before { content: '·'; position: absolute; left: 0; color: var(--gold-l); font-weight: 700; }
+
+    /* PRIORITY BADGE */
+    .priority {
+      font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 10px;
+      font-family: 'Space Mono', monospace; letter-spacing: 0.5px;
+    }
+    .p-high   { background: #FEE2E2; color: #991B1B; }
+    .p-mid    { background: #FEF3C7; color: #92400E; }
+    .p-low    { background: #DBEAFE; color: #1E40AF; }
+    .p-future { background: #F5F3FF; color: #5B21B6; }
+
+    /* CALLOUT */
+    .callout {
+      border-radius: 12px; padding: 18px 22px; margin: 20px 0;
+      font-size: 13.5px; line-height: 1.75;
+    }
+    .callout-gold  { background: var(--gold-p); border-left: 4px solid var(--gold-l); color: var(--sub); }
+    .callout-green { background: var(--c2b); border-left: 4px solid var(--c2); color: #064E3B; }
+    .callout strong { font-weight: 700; }
+
+    /* REVENUE SUMMARY TABLE */
+    .rev-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 13.5px; }
+    .rev-table th {
+      background: var(--gold-p); color: var(--sub); font-weight: 700;
+      text-align: left; padding: 12px 16px; font-size: 11.5px; border-bottom: 2px solid var(--border);
+    }
+    .rev-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--sub); vertical-align: middle; }
+    .rev-table tr:last-child td { border-bottom: none; }
+    .rev-table .total td { background: var(--gold-p); font-weight: 700; color: var(--text); border-top: 2px solid var(--border); }
+    .mono { font-family: 'Space Mono', monospace; }
+    .c-gold { color: var(--gold); font-weight: 700; }
+    .c-green { color: var(--c2); font-weight: 700; }
+
+    /* ROADMAP */
+    .roadmap { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .rm-card {
+      border: 1px solid var(--border); border-radius: 14px; padding: 22px 18px; background: var(--bg2);
+    }
+    .rm-card .rm-phase {
+      font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 2px;
+      margin-bottom: 10px; font-weight: 700;
+    }
+    .rm-card h4 { font-family: 'Noto Serif KR', serif; font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .rm-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .rm-card ul li { font-size: 12.5px; color: var(--sub); padding-left: 14px; position: relative; }
+    .rm-card ul li::before { content: '→'; position: absolute; left: 0; color: var(--gold-l); font-size: 10px; top: 2px; }
+
+    /* FOOTER */
+    .footer { text-align: center; padding: 36px 24px; font-size: 12px; color: var(--muted); margin-top: 48px; border-top: 1px solid var(--border); }
+    .footer .brand { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+
+    @media (max-width: 680px) {
+      .overview { grid-template-columns: repeat(2, 1fr); }
+      .svc-body { grid-template-columns: 1fr; }
+      .svc-header { grid-template-columns: 52px 1fr; }
+      .svc-revenue { display: none; }
+      .roadmap { grid-template-columns: 1fr; }
+      .hero, .wrapper { padding-left: 18px; padding-right: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-badge">DERIVATIVE SERVICES · 파생서비스 기획서</div>
+  <h1>계 플랫폼을 넘어<br><em>슈퍼앱</em>으로</h1>
+  <p class="hero-sub">곗돈 타는 날이 펼칠 수 있는 14가지 파생 서비스 전략</p>
+  <div class="hero-line"></div>
+</section>
+
+<!-- OVERVIEW -->
+<div class="overview">
+  <div class="ov-card"><div class="ov-num">14</div><div class="ov-lbl">파생 서비스</div></div>
+  <div class="ov-card"><div class="ov-num">5</div><div class="ov-lbl">서비스 카테고리</div></div>
+  <div class="ov-card"><div class="ov-num">3</div><div class="ov-lbl">즉시 개발 가능</div></div>
+  <div class="ov-card"><div class="ov-num" style="font-size:1.3rem">+41억</div><div class="ov-lbl">연 추가 수익 잠재</div></div>
+</div>
+
+<div class="wrapper">
+
+  <!-- ① 선물·커머스 -->
+  <div class="sec">
+    <p class="sec-label" style="color:var(--c1)">01 · GIFT & COMMERCE</p>
+    <h2>🎁 선물·커머스 서비스 <span class="sec-tag" style="background:var(--c1b);color:var(--c1)">핵심 수익원</span></h2>
+
+    <div class="svc-grid">
+
+      <!-- 한턱 선물샵 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c1b)">🍜</div>
+          <div class="svc-title-wrap">
+            <h3>한턱 선물샵 <span class="priority p-high">즉시 출시</span></h3>
+            <p class="tagline">곗돈 수령자가 계원 전체에게 원클릭으로 쿠폰·선물을 발송</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">마진 8~15%</span>
+            <span class="rev-type">상품 판매 수수료</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">곗돈을 받은 당일, 수령자가 앱 내 선물샵에서 상품을 골라 계원 전체에게 즉시 발송. 전통 "중국집 한턱" 문화를 디지털로 재현.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">상품 구성</p>
+            <ul class="svc-list">
+              <li>스타벅스·메가커피 음료 쿠폰</li>
+              <li>배달의민족·쿠팡이츠 할인쿠폰</li>
+              <li>편의점 상품권 (GS25·CU)</li>
+              <li>CGV·롯데시네마 영화 쿠폰</li>
+              <li>중국집·치킨 단체 배달 예약</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>평균 선물 금액: 계원 1인당 5천원</li>
+              <li>10명 계: 1회 한턱 = 5만원 거래</li>
+              <li>마진 10% = 5,000원/회</li>
+              <li>월 1,000계 × 40% 사용 = 월 200만원</li>
+              <li>연간 약 <strong>2,400만원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 목적계 연계 쇼핑 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c1b)">🛍️</div>
+          <div class="svc-title-wrap">
+            <h3>목적계 연계 쇼핑 <span class="priority p-mid">6개월 내</span></h3>
+            <p class="tagline">계 목적에 맞는 상품을 자동 추천하고 제휴 할인 제공</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">커미션 3~7%</span>
+            <span class="rev-type">제휴 판매 수수료</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">여행계 개설 시 항공권·호텔 추천, 결혼계엔 예식장·웨딩 패키지, 가전계엔 삼성·LG 제품 특가. 계 목적에 딱 맞는 쇼핑 경험.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">제휴 채널</p>
+            <ul class="svc-list">
+              <li>여행: 마이리얼트립, 야놀자, 네이버 항공</li>
+              <li>결혼: 웨딩홀닷컴, 더현대 웨딩</li>
+              <li>가전: 삼성 다이렉트, 쿠팡</li>
+              <li>명절: SSG, 롯데온 선물세트</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>여행계 전환율 15% × 평균 50만원</li>
+              <li>커미션 5% = 25,000원/건</li>
+              <li>월 500계 여행계 × 15% = 75건</li>
+              <li>월 수익 약 187만원</li>
+              <li>연간 약 <strong>2,200만원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 공동구매 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c1b)">🧺</div>
+          <div class="svc-title-wrap">
+            <h3>계원 공동구매 <span class="priority p-mid">6개월 내</span></h3>
+            <p class="tagline">계원끼리 묶어 대량 구매 → 개인보다 20~40% 저렴하게</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">마진 5~12%</span>
+            <span class="rev-type">공동구매 중개</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">계원 10명이 함께 구매 시 도매가 적용. 명절 선물세트·건강식품·생필품 등 카테고리 운영. 티몬·위메프처럼 타임딜 형식.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">상품 카테고리</p>
+            <ul class="svc-list">
+              <li>명절 선물세트 (한우·과일·홍삼)</li>
+              <li>건강기능식품·비타민</li>
+              <li>생필품·주방용품</li>
+              <li>유아동 용품</li>
+              <li>로컬 농산물 직거래</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>계당 평균 공동구매 1회/분기</li>
+              <li>평균 거래액 30만원 × 10명 = 300만원</li>
+              <li>마진 8% = 24,000원/계</li>
+              <li>분기 500계 참여 = 1,200만원/분기</li>
+              <li>연간 약 <strong>4,800만원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ② 금융 파생 -->
+  <div class="sec">
+    <p class="sec-label" style="color:var(--c2)">02 · FINANCIAL SERVICES</p>
+    <h2>💳 금융 파생 서비스 <span class="sec-tag" style="background:var(--c2b);color:var(--c2)">고수익 장기</span></h2>
+
+    <div class="svc-grid">
+
+      <!-- 곗돈 적금 연계 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c2b)">🏦</div>
+          <div class="svc-title-wrap">
+            <h3>곗돈 수령 즉시 적금 연계 <span class="priority p-mid">1년 내</span></h3>
+            <p class="tagline">수령 직후 "이 돈, 지금 어디에 굴릴까요?" — 은행 특판 적금 연결</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">중개 수수료</span>
+            <span class="rev-type">금융상품 판매</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">곗돈 입금 즉시 "특판 적금 가입" 팝업 노출. 제휴 저축은행·인터넷은행의 고금리 상품을 인앱에서 바로 가입. 목돈이 잠들지 않게 관리.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">제휴 금융사</p>
+            <ul class="svc-list">
+              <li>토스뱅크 (파킹통장 특금리)</li>
+              <li>카카오뱅크 적금</li>
+              <li>SBI저축은행·웰컴저축은행</li>
+              <li>CMA (증권사 제휴)</li>
+              <li>P2P 투자 연계 (중위험)</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>수령자 30% 전환율</li>
+              <li>평균 예치액 300만원</li>
+              <li>중개 수수료 0.3%/년 = 9,000원/건</li>
+              <li>월 300건 × 9,000원</li>
+              <li>연간 약 <strong>3,240만원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 중금리 대출 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c2b)">📊</div>
+          <div class="svc-title-wrap">
+            <h3>계 신용도 기반 중금리 대출 <span class="priority p-future">2년차</span></h3>
+            <p class="tagline">성실 납입 이력이 곧 신용점수 — 은행 대출이 안 되는 분들의 대안</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">대출 중개 수수료</span>
+            <span class="rev-type">1~2% / 대출액</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">6개월 이상 계 납입 완주 이력을 자체 신용점수로 환산. 제1금융권 대출 거절자에게 중금리(연 8~15%) 대출 상품 연계. 금융 소외 계층 포용.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">대출 자격 기준</p>
+            <ul class="svc-list">
+              <li>계 납입 완주 2회 이상</li>
+              <li>연체 이력 없음</li>
+              <li>계 신용도 점수 70점 이상</li>
+              <li>대출 한도: 최근 수령 곗돈의 2배</li>
+              <li>보증: 에스크로 기 납입금 활용</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>MAU 5만 중 대출 이용 1% = 500명</li>
+              <li>평균 대출액 500만원</li>
+              <li>중개 수수료 1.5% = 75,000원/건</li>
+              <li>연 500건 × 75,000원</li>
+              <li>연간 약 <strong>3,750만원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 계 보험 확장 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c2b)">🛡️</div>
+          <div class="svc-title-wrap">
+            <h3>계 전용 보험 패키지 <span class="priority p-mid">1년 내</span></h3>
+            <p class="tagline">먹튀 보험 → 경조사·상해보험까지 확장한 계원 전용 보험</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">보험료의 10%</span>
+            <span class="rev-type">판매 대행 수수료</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">보험 상품 구성</p>
+            <p class="svc-desc">단순 먹튀 보험을 넘어 계원의 일상 전반을 커버하는 패키지 상품. 계 가입자 대상 단체할인 적용으로 가격 경쟁력 확보.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">상품 라인업</p>
+            <ul class="svc-list">
+              <li>계 먹튀·연체 보험 (기본)</li>
+              <li>계원 경조사 모금 보험</li>
+              <li>계원 단체 상해·입원비 보험</li>
+              <li>여행계 전용 여행자 보험</li>
+              <li>결혼계 웨딩 취소 보험</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>보험 가입 계원 평균 4,200원/월</li>
+              <li>MAU 5만 중 30% 가입 = 1.5만명</li>
+              <li>월 보험료 합계 6,300만원</li>
+              <li>수수료 10% = 630만원/월</li>
+              <li>연간 약 <strong>7,560만원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ③ 커뮤니티·경조사 -->
+  <div class="sec">
+    <p class="sec-label" style="color:var(--c4)">03 · COMMUNITY SERVICES</p>
+    <h2>🤝 커뮤니티·경조사 서비스 <span class="sec-tag" style="background:var(--c4b);color:var(--c4)">바이럴 동력</span></h2>
+
+    <div class="svc-grid">
+
+      <!-- 계원 경조사 모금 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c4b)">💝</div>
+          <div class="svc-title-wrap">
+            <h3>계원 경조사 모금함 <span class="priority p-high">즉시 출시</span></h3>
+            <p class="tagline">결혼·출산·부고 — 계원끼리 십시일반 모금을 앱 안에서</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">모금액의 2%</span>
+            <span class="rev-type">플랫폼 수수료</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">계 채팅방에서 "모금함 열기" 버튼 하나로 경조사 모금 시작. 계원들이 얼마를 낼지 선택하고, 마감일에 자동 정산 후 현금 전달.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">모금 종류</p>
+            <ul class="svc-list">
+              <li>결혼 축의금 모금</li>
+              <li>출산 선물 공동 구매</li>
+              <li>부고 조의금 모금</li>
+              <li>생일 서프라이즈 선물</li>
+              <li>병원비·재난 긴급 모금</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>계 1개당 연 2회 경조사 모금</li>
+              <li>평균 모금액 30만원</li>
+              <li>수수료 2% = 6,000원/회</li>
+              <li>월 1,000계 × 2회/12 = 167건</li>
+              <li>연간 약 <strong>1,200만원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 식당 단체 예약 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c4b)">🍽️</div>
+          <div class="svc-title-wrap">
+            <h3>계 단체 식당 예약 <span class="priority p-mid">6개월 내</span></h3>
+            <p class="tagline">"오늘 한턱 어디서 쏠까요?" — 인근 맛집 단체 예약 원클릭</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">예약 건당 3천원</span>
+            <span class="rev-type">예약 수수료</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">곗돈 수령 알림과 함께 "오늘 한턱 어디서?" 추천 카드 노출. 계원 수에 맞는 단체석 보유 식당 자동 필터링. 카카오맵·네이버플레이스 연동.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">기능 구성</p>
+            <ul class="svc-list">
+              <li>계원 수 맞춤 식당 추천</li>
+              <li>예산 입력 → 메뉴 자동 제안</li>
+              <li>날짜·시간 계원 투표</li>
+              <li>현장 계산 QR 코드 (수령자 일괄 결제)</li>
+              <li>식사 후 사진·후기 계 피드 공유</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>수령 계원 20% 식당 예약 이용</li>
+              <li>월 1,000건 수령 × 20% = 200건</li>
+              <li>예약 수수료 3,000원/건</li>
+              <li>월 60만원 → 광고 제휴 추가 시 확대</li>
+              <li>연간 약 <strong>720만원 + 광고</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 계 기념 아카이브 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c4b)">📸</div>
+          <div class="svc-title-wrap">
+            <h3>계 기념 굿즈 & 포토북 <span class="priority p-low">1년 내</span></h3>
+            <p class="tagline">계가 끝나는 날, 함께한 기억을 실물 기념품으로</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">마진 30~40%</span>
+            <span class="rev-type">굿즈 판매</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">계 완료 시 납입 내역·계원 사진·목표 달성 스토리가 자동으로 포토북 편집 완성. 버튼 하나로 실물 인쇄 주문. 계 해산 기념 선물로 딱.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">상품 라인업</p>
+            <ul class="svc-list">
+              <li>계 포토북 (A5, 20페이지) 1.5만원</li>
+              <li>계원 명단 각인 텀블러</li>
+              <li>계 히스토리 PDF 아카이브 (무료)</li>
+              <li>계 완주 인증 디지털 배지</li>
+              <li>특별판: 계 10주년 기념 액자</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>계 완료 시 10% 포토북 주문</li>
+              <li>월 완료 계 100개 × 10% = 10건</li>
+              <li>평균 주문액 3만원, 마진 35% = 1만원</li>
+              <li>월 10만원 → 규모 성장 시 급증</li>
+              <li>연간 약 <strong>120만원 → 성장형</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ④ B2B -->
+  <div class="sec">
+    <p class="sec-label" style="color:var(--c3)">04 · B2B SERVICES</p>
+    <h2>🏢 B2B 파생 서비스 <span class="sec-tag" style="background:var(--c3b);color:var(--c3)">고단가 안정 수익</span></h2>
+
+    <div class="svc-grid">
+
+      <!-- 기업 복지계 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c3b)">🏗️</div>
+          <div class="svc-title-wrap">
+            <h3>기업 사내 계 솔루션 <span class="priority p-mid">1년 내</span></h3>
+            <p class="tagline">HR 복지 패키지로 기업에 납품 — 직원 계모임을 회사가 운영</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">월 50만원~</span>
+            <span class="rev-type">기업 구독료</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">중소기업 HR 담당자가 직원들의 계모임을 회사 복지 차원에서 운영. 급여 자동이체 연동, 복지포인트 연계, 법인카드 납입 지원.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">패키지 구성</p>
+            <ul class="svc-list">
+              <li>기업 전용 화이트라벨 앱 (로고 삽입)</li>
+              <li>급여일 자동 납입 연동</li>
+              <li>복지포인트·식대 통합 납입</li>
+              <li>HR 대시보드 (참여율·현황 관리)</li>
+              <li>세무·정산 리포트 자동 생성</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>기업 구독료: 50인 이하 50만원/월</li>
+              <li>50~200인: 150만원/월</li>
+              <li>200인 이상: 300만원/월</li>
+              <li>기업 10개 유치 시 월 500만원</li>
+              <li>연간 약 <strong>6,000만원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 신협·새마을금고 제휴 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c3b)">🏛️</div>
+          <div class="svc-title-wrap">
+            <h3>신협·금고 디지털 전환 SaaS <span class="priority p-future">2년차</span></h3>
+            <p class="tagline">오프라인 계모임을 운영하는 신협·새마을금고에 플랫폼 납품</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">월 200만원~</span>
+            <span class="rev-type">SaaS 라이선스</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">전국 900개 신협, 1,300개 새마을금고가 지금도 오프라인으로 계를 운영. 이들에게 디지털 계 운영 플랫폼을 SaaS로 납품해 디지털 전환 지원.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">제공 기능</p>
+            <ul class="svc-list">
+              <li>기관 브랜드 화이트라벨</li>
+              <li>조합원 전용 앱 운영</li>
+              <li>기존 계 데이터 마이그레이션</li>
+              <li>준법감시 리포트 자동화</li>
+              <li>창구 직원 관리 대시보드</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>신협 1곳 월 200만원 SaaS</li>
+              <li>10곳 유치 = 월 2,000만원</li>
+              <li>50곳 유치 = 월 1억원</li>
+              <li>전국 100곳 시 연간 24억원</li>
+              <li>→ <strong>장기 최대 수익원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ⑤ 데이터·AI -->
+  <div class="sec">
+    <p class="sec-label" style="color:var(--c5)">05 · DATA & AI SERVICES</p>
+    <h2>🤖 데이터·AI 파생 서비스 <span class="sec-tag" style="background:var(--c5b);color:var(--c5)">미래 성장동력</span></h2>
+
+    <div class="svc-grid">
+
+      <!-- AI 재무 코치 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c5b)">🧠</div>
+          <div class="svc-title-wrap">
+            <h3>AI 곗돈 재무 코치 <span class="priority p-low">1.5년차</span></h3>
+            <p class="tagline">"이 500만원, 어떻게 굴리면 좋을까요?" — AI가 맞춤 재무 플랜 제시</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">월 9,900원</span>
+            <span class="rev-type">프리미엄 구독</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">수령액·나이·목표·기존 자산 입력 시 AI가 단기 파킹, 중기 적금, 장기 ETF 비율을 제안. 실행 버튼 하나로 금융상품 바로 가입.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">주요 기능</p>
+            <ul class="svc-list">
+              <li>수령 후 72시간 AI 재무 진단</li>
+              <li>목표별 포트폴리오 제안</li>
+              <li>제휴 금융상품 원클릭 가입</li>
+              <li>월별 자산 변화 트래킹</li>
+              <li>다음 계 납입액 최적화 추천</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>MAU 5만 중 5% 프리미엄 가입</li>
+              <li>2,500명 × 9,900원/월</li>
+              <li>월 2,475만원</li>
+              <li>금융상품 연계 추가 수익 포함</li>
+              <li>연간 약 <strong>3억원</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 계 광고 플랫폼 -->
+      <div class="svc-card">
+        <div class="svc-header">
+          <div class="svc-icon-wrap" style="--icon-bg:var(--c5b)">📡</div>
+          <div class="svc-title-wrap">
+            <h3>계 목적별 타겟 광고 <span class="priority p-low">2년차</span></h3>
+            <p class="tagline">여행계엔 여행 광고, 결혼계엔 웨딩 광고 — 세상에서 가장 정밀한 타겟팅</p>
+          </div>
+          <div class="svc-revenue">
+            <span class="rev-label">수익 모델</span>
+            <span class="rev-val">CPM·CPC</span>
+            <span class="rev-type">광고 수익</span>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div>
+            <p class="svc-col-title">서비스 내용</p>
+            <p class="svc-desc">계 목적, 수령 시기, 금액대를 알기 때문에 광고 타겟팅 정밀도가 극도로 높습니다. 여행계 계원에게 항공사 광고 노출 시 전환율이 일반 배너의 5배.</p>
+          </div>
+          <div>
+            <p class="svc-col-title">광고 상품</p>
+            <ul class="svc-list">
+              <li>수령일 당일 프리미엄 배너</li>
+              <li>목적계 매칭 네이티브 광고</li>
+              <li>한턱 선물샵 스폰서 상품</li>
+              <li>계 채팅방 브랜드 스티커</li>
+              <li>공동구매 타임딜 스폰서</li>
+            </ul>
+          </div>
+          <div>
+            <p class="svc-col-title">수익 계산</p>
+            <ul class="svc-list">
+              <li>DAU 1만 × 광고 CPM 3만원</li>
+              <li>월 광고 수익 약 900만원</li>
+              <li>MAU 20만 달성 시 × 20배</li>
+              <li>= 월 1.8억원</li>
+              <li>연간 약 <strong>21억원 (장기)</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 수익 종합 테이블 -->
+  <div class="sec">
+    <p class="sec-label" style="color:var(--gold)">06 · Revenue Summary</p>
+    <h2>💰 파생서비스 수익 종합표</h2>
+    <p style="font-size:13.5px;color:var(--muted)">MAU 5만 달성 기준 (창업 1년) · 보수적 추정치</p>
+    <table class="rev-table">
+      <thead>
+        <tr><th>서비스</th><th>카테고리</th><th>출시 시기</th><th>연간 수익 추정</th><th>우선순위</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>한턱 선물샵</strong></td><td>커머스</td><td class="mono">즉시</td><td class="c-gold mono">2,400만원</td><td><span class="priority p-high">최우선</span></td></tr>
+        <tr><td><strong>계원 경조사 모금함</strong></td><td>커뮤니티</td><td class="mono">즉시</td><td class="c-gold mono">1,200만원</td><td><span class="priority p-high">최우선</span></td></tr>
+        <tr><td><strong>계 전용 보험 패키지</strong></td><td>금융</td><td class="mono">1년 내</td><td class="c-gold mono">7,560만원</td><td><span class="priority p-mid">우선</span></td></tr>
+        <tr><td><strong>목적계 연계 쇼핑</strong></td><td>커머스</td><td class="mono">6개월</td><td class="c-gold mono">2,200만원</td><td><span class="priority p-mid">우선</span></td></tr>
+        <tr><td><strong>계원 공동구매</strong></td><td>커머스</td><td class="mono">6개월</td><td class="c-gold mono">4,800만원</td><td><span class="priority p-mid">우선</span></td></tr>
+        <tr><td><strong>기업 사내 계 솔루션</strong></td><td>B2B</td><td class="mono">1년 내</td><td class="c-gold mono">6,000만원</td><td><span class="priority p-mid">우선</span></td></tr>
+        <tr><td><strong>계 단체 식당 예약</strong></td><td>커뮤니티</td><td class="mono">6개월</td><td class="c-gold mono">720만원</td><td><span class="priority p-low">검토</span></td></tr>
+        <tr><td><strong>곗돈 수령 즉시 적금 연계</strong></td><td>금융</td><td class="mono">1년 내</td><td class="c-gold mono">3,240만원</td><td><span class="priority p-mid">우선</span></td></tr>
+        <tr><td><strong>AI 곗돈 재무 코치</strong></td><td>데이터·AI</td><td class="mono">1.5년</td><td class="c-gold mono">3억원</td><td><span class="priority p-low">검토</span></td></tr>
+        <tr><td><strong>중금리 대출 연계</strong></td><td>금융</td><td class="mono">2년차</td><td class="c-gold mono">3,750만원</td><td><span class="priority p-future">장기</span></td></tr>
+        <tr><td><strong>신협·금고 SaaS</strong></td><td>B2B</td><td class="mono">2년차</td><td class="c-gold mono">24억원+</td><td><span class="priority p-future">장기</span></td></tr>
+        <tr><td><strong>계 기념 굿즈·포토북</strong></td><td>커뮤니티</td><td class="mono">1년 내</td><td class="c-gold mono">120만원~</td><td><span class="priority p-low">검토</span></td></tr>
+        <tr><td><strong>계 목적별 타겟 광고</strong></td><td>데이터·AI</td><td class="mono">2년차</td><td class="c-gold mono">21억원+</td><td><span class="priority p-future">장기</span></td></tr>
+        <tr class="total">
+          <td colspan="3"><strong>파생서비스 합계 (즉시~1년 내 서비스만)</strong></td>
+          <td class="mono c-green"><strong>약 28억원/년</strong></td>
+          <td></td>
+        </tr>
+        <tr class="total">
+          <td colspan="3"><strong>기존 계 수수료 수익 포함 전체 합계 (2년차 장기 포함)</strong></td>
+          <td class="mono c-green"><strong>약 60억원+/년</strong></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout callout-green" style="margin-top:20px">
+      <strong>핵심 인사이트:</strong> 파생서비스만으로 기존 계 수수료 수익(연 9.7억)의 3배 규모를 추가로 확보할 수 있습니다.
+      특히 <strong>신협·새마을금고 SaaS와 타겟 광고</strong>는 MAU 20만 달성 시 각각 연 24억, 21억의 잠재 수익을 가집니다.
+      장기적으로 곗돈 타는 날은 단순 계 앱이 아닌 <strong>생활금융 슈퍼앱</strong>으로 성장합니다.
+    </div>
+  </div>
+
+  <!-- 출시 로드맵 -->
+  <div class="sec">
+    <p class="sec-label" style="color:var(--gold)">07 · Launch Roadmap</p>
+    <h2>🗓️ 파생서비스 출시 로드맵</h2>
+    <div class="roadmap">
+      <div class="rm-card">
+        <p class="rm-phase" style="color:var(--c4)">PHASE 1 · 0~6개월</p>
+        <h4>즉시 출시 (MVP와 동시)</h4>
+        <ul>
+          <li>한턱 선물샵 (커피·배달 쿠폰)</li>
+          <li>계원 경조사 모금함</li>
+          <li>계 단체 식당 예약 (카카오맵 연동)</li>
+          <li>계 기념 PDF 아카이브 (무료)</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <p class="rm-phase" style="color:var(--c2)">PHASE 2 · 6~18개월</p>
+        <h4>성장기 확장</h4>
+        <ul>
+          <li>목적계 연계 쇼핑 (여행·결혼)</li>
+          <li>계원 공동구매 마켓</li>
+          <li>계 전용 보험 패키지</li>
+          <li>곗돈 수령 즉시 적금 연계</li>
+          <li>기업 사내 계 솔루션 (B2B)</li>
+          <li>계 기념 굿즈·포토북</li>
+        </ul>
+      </div>
+      <div class="rm-card">
+        <p class="rm-phase" style="color:var(--c5)">PHASE 3 · 2년차 이후</p>
+        <h4>슈퍼앱 전환</h4>
+        <ul>
+          <li>AI 재무 코치 (구독 서비스)</li>
+          <li>중금리 대출 연계</li>
+          <li>신협·새마을금고 SaaS</li>
+          <li>계 목적별 타겟 광고 플랫폼</li>
+          <li>해외 계 문화권 진출 연계 커머스</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="brand">곗돈 타는 날</div>
+  <p>파생서비스 기획서 · 2026-05-23</p>
+</footer>
+
+</body>
+</html>
