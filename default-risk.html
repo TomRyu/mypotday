@@ -226,6 +226,30 @@
     .rm-body strong { display: block; font-size: 13.5px; color: var(--text); margin-bottom: 3px; }
     .rm-body span   { font-size: 12.5px; color: var(--sub); }
 
+    /* Q&A BLOCK */
+    .qa-block { margin-top: 36px; display: flex; flex-direction: column; gap: 0; }
+    .qa-q, .qa-a { display: flex; gap: 16px; align-items: flex-start; }
+    .qa-q { margin-bottom: 0; }
+    .qa-a { margin-top: 4px; }
+    .qa-label {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700;
+      background: var(--red-bg); color: var(--red); border: 2px solid #FECACA;
+      margin-top: 2px;
+    }
+    .qa-label.a {
+      background: var(--green-bg); color: var(--green); border-color: #A7F3D0;
+    }
+    .qa-text {
+      background: var(--red-bg); border: 1px solid #FECACA;
+      border-radius: 0 14px 14px 14px; padding: 14px 18px;
+      font-size: 14.5px; color: #7F1D1D; font-weight: 500; line-height: 1.65; flex: 1;
+    }
+    .qa-body { flex: 1; padding: 14px 0 4px; }
+    .qa-body p { font-size: 14.5px; color: var(--sub); margin-bottom: 12px; }
+    .qa-body em { color: var(--gold); font-style: normal; font-weight: 600; }
+
     /* FOOTER */
     .foot {
       max-width: 860px; margin: 0 auto; padding: 24px 24px 48px;
@@ -650,6 +674,125 @@
     </div>
   </div>
 
+
+  <!-- 8. 심층 토론 -->
+  <div class="sec">
+    <div class="sec-num" style="background:#F0F4FF;color:#3B5BDB;">SECTION 08</div>
+    <h2>창업자 질문 — 심층 토론</h2>
+    <p>이 문서를 작성하며 실제로 나눈 질문과 답변입니다. 비즈니스 실현 가능성에 대한 솔직한 검토를 담았습니다.</p>
+  </div>
+
+  <!-- Q1 -->
+  <div class="qa-block">
+    <div class="qa-q">
+      <div class="qa-label">Q</div>
+      <div class="qa-text">먹튀 문제를 해결하기 힘들기 때문에 이 비즈니스는 실패할 것 같군요.</div>
+    </div>
+    <div class="qa-a">
+      <div class="qa-label a">A</div>
+      <div class="qa-body">
+        <p><strong>전통 계는 이미 수백 년간 이 문제를 해결해왔습니다.</strong> 디지털 이전에도 계는 존재했고, 먹튀는 항상 있었습니다. 그런데도 계는 사라지지 않았습니다. 전통 계는 <em>사회적 압력</em>(동네 망신, 관계 파탄)으로 해결했습니다. 플랫폼은 그걸 <em>시스템</em>(에스크로, 자동이체, 법적 집행)으로 대체하는 것입니다. 해결 수단이 약해진 게 아니라 강해진 겁니다.</p>
+        <p><strong>먹튀 리스크는 은행 대출 리스크보다 작습니다.</strong> 은행은 신원도 모르는 사람에게 무담보로 대출을 줍니다. 계 플랫폼은 실명 인증 + 계좌 연동 + 에스크로 + 데이터 증거까지 갖춥니다.</p>
+        <div class="callout callout-green" style="margin-top:14px;">
+          진짜 질문은 <strong>"먹튀를 막을 수 있는가"가 아니라 "막는 비용이 수익보다 크냐"</strong>입니다. 에스크로 보증금만 제대로 설계되면 먹튀 발생 시에도 플랫폼이 직접 손실을 지지 않습니다. 리스크가 0이 아니어도 <strong>경영 가능한 리스크(manageable risk)</strong> 수준으로 내려오면 사업은 됩니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="qa-block">
+    <div class="qa-q">
+      <div class="qa-label">Q</div>
+      <div class="qa-text">Esusu, Tanda, StepLadder(영국), 인도 Chit Fund — 이곳들의 자세한 운영 상황을 알고 싶어요.</div>
+    </div>
+    <div class="qa-a">
+      <div class="qa-label a">A</div>
+      <div class="qa-body">
+        <p>실제 조사 결과는 일부 예상과 다릅니다. <strong>솔직하게 정리합니다.</strong></p>
+
+        <div class="sec-label" style="margin-top:16px;">Esusu (미국) — 중요 정정</div>
+        <div class="callout callout-red">
+          <strong>실제로는 ROSCA 앱이 아닙니다.</strong> 원래 계 개념으로 시작했으나 <strong>임차료 신용 보고 서비스</strong>로 완전히 피벗했습니다. 월세를 제때 내면 신용점수에 반영해주는 서비스. 사용자 1,200만 명, 기업가치 $1.2B(유니콘), 2025년 Series C $50M 투자 유치. <br><strong>함의:</strong> ROSCA 자체보다 신용 데이터 사업으로 방향을 튼 것이 성공 요인. 순수 ROSCA 모델은 어렵다는 방증이기도 합니다.
+        </div>
+
+        <div class="sec-label" style="margin-top:16px;">Tanda (미국) — 실패 사례</div>
+        <div class="callout callout-red">
+          Yahoo Finance가 2018년 1월 런칭, <strong>같은 해 5월 종료. 불과 4개월.</strong> 이후 이름만 같은 소규모 앱들이 존재하지만 규모·데이터 없음.
+        </div>
+
+        <div class="sec-label" style="margin-top:16px;">StepLadder (영국) — 소규모 운영 중</div>
+        <div class="tbl-wrap" style="margin-top:8px;">
+          <table>
+            <tbody>
+              <tr><td class="td-strong">설립</td><td>2015년</td></tr>
+              <tr><td class="td-strong">누적 투자</td><td>£300만 (약 52억원) — 소규모</td></tr>
+              <tr><td class="td-strong">수수료</td><td>총 저축액의 2~5%</td></tr>
+              <tr><td class="td-strong">타깃</td><td>내 집 마련 보증금 저축</td></tr>
+              <tr><td class="td-strong">먹튀 해결법</td><td>소규모 지인 그룹 + 무작위 추첨</td></tr>
+              <tr><td class="td-strong">현재 상태</td><td>운영 중이나 2022년 이후 주요 뉴스 없음</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="sec-label" style="margin-top:16px;">인도 Chit Fund — 진짜 대형 시장</div>
+        <div class="tbl-wrap" style="margin-top:8px;">
+          <table>
+            <tbody>
+              <tr><td class="td-strong">공식 시장 규모</td><td>Rs 35,000 crore ≈ <strong>약 5.6조원</strong></td></tr>
+              <tr><td class="td-strong">등록 업체</td><td>약 30,000개</td></tr>
+              <tr><td class="td-strong">비등록 업체</td><td>등록의 약 100배 추정 → 실제 수백조 원 수준</td></tr>
+              <tr><td class="td-strong">규제 시작</td><td>1982년 Chit Funds Act, 2019년 개정(투명성 강화)</td></tr>
+              <tr><td class="td-strong">먹튀 해결법</td><td>주 정부 등록 + 연간 감사 + 최소 자본금 + RBI 감시</td></tr>
+              <tr><td class="td-strong">문제점</td><td>비등록 업체 대규모 사기 반복 발생</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-gold" style="margin-top:14px;">
+          <strong>MyPotDay에 주는 시사점:</strong> 순수 ROSCA 앱으로 크게 성공한 글로벌 사례는 아직 없습니다. 그러나 인도 Chit Fund가 5.6조원 공식 시장을 만든 것처럼, <strong>문화적 뿌리가 있어야 ROSCA가 됩니다.</strong> 한국은 계 문화가 수백 년 축적된 유일한 시장입니다. 경쟁 앱이 없는 이유가 바로 그 난이도이며, 그것이 진입장벽입니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qa-block">
+    <div class="qa-q">
+      <div class="qa-label">Q</div>
+      <div class="qa-text">쉽지 않아 보이네요...</div>
+    </div>
+    <div class="qa-a">
+      <div class="qa-label a">A</div>
+      <div class="qa-body">
+        <p>솔직히 말씀드리면, 맞습니다. 쉽지 않습니다. 하지만 <strong>"쉽지 않다"와 "불가능하다"는 다릅니다.</strong> 그리고 쉬운 사업에는 경쟁자가 몰립니다.</p>
+        <p>현실적으로 리스크를 낮추는 방법이 하나 있습니다. <strong>처음부터 돈을 다루지 않는 것입니다.</strong></p>
+
+        <div class="sim-block">
+          <div class="sim-title">RISK-MINIMIZED LAUNCH STRATEGY</div>
+          <pre>
+<span class="hl-y">1단계: 계 관리 앱</span> (돈을 절대 안 건드림)
+  → 순번 관리, 납부 확인 알림, 계원 채팅
+  → 계주가 직접 돈을 걷고 보내는 기존 방식 유지
+  → 플랫폼은 그냥 <span class="hl-g">"스마트 계 수첩"</span>
+  → 먹튀 리스크 = 0 (플랫폼과 무관)
+  → 핀테크 라이선스 = 불필요
+
+<span class="hl-y">2단계: 신뢰 이력 쌓인 후 에스크로 도입</span>
+  → 신뢰 이력이 있는 계원부터 시범 적용
+  → 먹튀 데이터도 쌓이고, 대응 체계도 검증됨
+
+<span class="hl-y">3단계: 보험·금융 연계</span>
+  → 계 파산 보험, 신용 스코어링, 파생 서비스 확장
+          </pre>
+        </div>
+
+        <div class="callout callout-green">
+          카카오뱅크도 처음에는 메신저였습니다. 토스도 처음에는 송금 UI였습니다. <strong>첫 버전이 완벽한 핀테크일 필요가 없습니다.</strong> 1단계만으로도 한국에 존재하지 않는 서비스입니다.
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- KEY INSIGHT -->
   <div class="insight-box">
