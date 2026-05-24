@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyPotDay — 불입 불이행 대응 방안</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:       #C8860A;
+      --gold-l:     #E8A030;
+      --gold-pale:  #FDF3E0;
+      --bg:         #FDFAF5;
+      --bg-warm:    #FFF8EE;
+      --text:       #1E1208;
+      --sub:        #4A3018;
+      --muted:      #9A7A50;
+      --border:     #E8D5B0;
+      --green:      #1D7A55;
+      --green-bg:   #ECFDF5;
+      --blue:       #1D4ED8;
+      --blue-bg:    #EFF6FF;
+      --red:        #B91C1C;
+      --red-bg:     #FEF2F2;
+      --purple:     #6D28D9;
+      --purple-bg:  #F5F3FF;
+      --orange:     #C2410C;
+      --orange-bg:  #FFF7ED;
+    }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--bg); color: var(--text); line-height: 1.85; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(150deg, #1A0804 0%, #3A1208 55%, #2C0E08 100%);
+      padding: 68px 40px 60px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(185,28,28,0.2) 0%, transparent 65%);
+    }
+    .hero-badge {
+      display: inline-block; border: 1px solid rgba(220,80,60,0.5); color: #F87171;
+      font-size: 11px; letter-spacing: 3px; padding: 5px 18px; border-radius: 20px; margin-bottom: 26px; position: relative;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif; font-size: clamp(1.9rem, 5vw, 3.2rem);
+      font-weight: 900; color: #fff; line-height: 1.3; position: relative; margin-bottom: 12px;
+    }
+    .hero h1 em { color: #FCA5A5; font-style: normal; }
+    .hero-sub { font-size: 13.5px; color: rgba(255,255,255,0.45); position: relative; }
+    .hero-line { width: 44px; height: 2px; background: #F87171; margin: 26px auto 0; position: relative; }
+
+    /* BACK LINK */
+    .back-bar { max-width: 860px; margin: 28px auto 0; padding: 0 24px; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--gold); }
+
+    /* WRAPPER */
+    .wrapper { max-width: 860px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* ALERT BANNER */
+    .alert-banner {
+      background: var(--red-bg); border: 1.5px solid #FECACA;
+      border-radius: 16px; padding: 24px 28px; margin: 40px 0 0;
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .alert-icon { font-size: 1.8rem; flex-shrink: 0; margin-top: 2px; }
+    .alert-body strong { display: block; font-size: 15px; color: var(--red); margin-bottom: 6px; }
+    .alert-body p { font-size: 14px; color: #7F1D1D; line-height: 1.7; }
+
+    /* SECTION */
+    .sec { margin-top: 64px; }
+    .sec-num {
+      display: inline-block; font-family: 'Space Mono', monospace;
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      background: var(--red-bg); color: var(--red); border-radius: 6px;
+      padding: 3px 10px; margin-bottom: 10px;
+    }
+    .sec-num.green { background: var(--green-bg); color: var(--green); }
+    .sec-num.blue  { background: var(--blue-bg);  color: var(--blue); }
+    .sec-num.purple { background: var(--purple-bg); color: var(--purple); }
+    .sec-num.gold  { background: var(--gold-pale); color: var(--gold); }
+    .sec-num.orange { background: var(--orange-bg); color: var(--orange); }
+    .sec-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: var(--gold); margin-bottom: 8px; }
+    .sec h2 {
+      font-family: 'Noto Serif KR', serif; font-size: 1.5rem; font-weight: 700;
+      color: var(--text); margin-bottom: 22px; padding-bottom: 14px; border-bottom: 2px solid var(--border);
+    }
+    .sec p { font-size: 15px; color: var(--sub); margin-bottom: 14px; }
+
+    /* CALLOUT */
+    .callout {
+      border-radius: 12px; padding: 20px 24px; margin: 20px 0; font-size: 14px; line-height: 1.75;
+    }
+    .callout-gold   { background: var(--gold-pale); border-left: 4px solid var(--gold-l); color: var(--sub); }
+    .callout-green  { background: var(--green-bg);  border-left: 4px solid var(--green);  color: #064E3B; }
+    .callout-blue   { background: var(--blue-bg);   border-left: 4px solid var(--blue);   color: #1E3A8A; }
+    .callout-red    { background: var(--red-bg);    border-left: 4px solid var(--red);    color: #7F1D1D; }
+    .callout-purple { background: var(--purple-bg); border-left: 4px solid var(--purple); color: #4C1D95; }
+    .callout-orange { background: var(--orange-bg); border-left: 4px solid var(--orange); color: #7C2D12; }
+    .callout strong { font-weight: 700; }
+
+    /* SIM BLOCK */
+    .sim-block {
+      background: #1A1208; border-radius: 14px; padding: 28px; margin: 24px 0; overflow-x: auto;
+    }
+    .sim-block .sim-title {
+      font-family: 'Space Mono', monospace; font-size: 11px; color: #E8A030;
+      letter-spacing: 2px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;
+    }
+    .sim-block pre {
+      font-family: 'Space Mono', monospace; font-size: 12.5px; color: #D4C5A8; line-height: 1.9;
+    }
+    .sim-block .hl { color: #FCA5A5; }
+    .sim-block .hl-g { color: #6EE7B7; }
+    .sim-block .hl-b { color: #93C5FD; }
+    .sim-block .hl-y { color: #FDE68A; }
+
+    /* TABLE */
+    .tbl-wrap { overflow-x: auto; margin: 20px 0; border-radius: 12px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th {
+      background: var(--bg-warm); color: var(--muted); font-weight: 700;
+      font-size: 11px; letter-spacing: 1px; padding: 12px 16px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 13px 16px; color: var(--sub); border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg-warm); }
+    .td-strong { font-weight: 700; color: var(--text); }
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px;
+      border-radius: 6px; white-space: nowrap;
+    }
+    .tag-red    { background: var(--red-bg);    color: var(--red); }
+    .tag-green  { background: var(--green-bg);  color: var(--green); }
+    .tag-blue   { background: var(--blue-bg);   color: var(--blue); }
+    .tag-gold   { background: var(--gold-pale); color: var(--gold); }
+    .tag-purple { background: var(--purple-bg); color: var(--purple); }
+
+    /* TIMELINE */
+    .timeline { margin: 24px 0; display: flex; flex-direction: column; gap: 0; }
+    .tl-item { display: flex; gap: 16px; position: relative; }
+    .tl-item::before {
+      content: ''; position: absolute; left: 19px; top: 40px;
+      width: 2px; height: calc(100% - 10px); background: var(--border);
+    }
+    .tl-item:last-child::before { display: none; }
+    .tl-dot {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+      margin-top: 0;
+    }
+    .tl-dot.normal { background: var(--gold-pale); color: var(--gold); border: 2px solid var(--gold-l); }
+    .tl-dot.warn   { background: #FFF7ED; color: var(--orange); border: 2px solid var(--orange); }
+    .tl-dot.alert  { background: var(--red-bg); color: var(--red); border: 2px solid var(--red); }
+    .tl-dot.legal  { background: var(--purple-bg); color: var(--purple); border: 2px solid var(--purple); }
+    .tl-body { padding: 8px 0 28px; }
+    .tl-day { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .tl-desc { font-size: 13.5px; color: var(--sub); }
+
+    /* KEY INSIGHT */
+    .insight-box {
+      background: linear-gradient(135deg, #1A0804 0%, #3A1208 100%);
+      border-radius: 16px; padding: 36px 32px; margin: 40px 0; text-align: center; position: relative; overflow: hidden;
+    }
+    .insight-box::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(185,28,28,0.25) 0%, transparent 70%);
+    }
+    .insight-box p {
+      font-family: 'Noto Serif KR', serif; font-size: clamp(1.05rem, 2.5vw, 1.3rem);
+      font-weight: 700; color: #fff; line-height: 1.65; position: relative; margin: 0;
+    }
+    .insight-box em { color: #FCA5A5; font-style: normal; }
+
+    /* REVENUE CARD */
+    .rev-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 20px 0; }
+    .rev-card {
+      background: var(--bg-warm); border: 1px solid var(--border); border-radius: 12px;
+      padding: 20px; position: relative; overflow: hidden;
+    }
+    .rev-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .rev-card.gold::before  { background: var(--gold-l); }
+    .rev-card.green::before { background: var(--green); }
+    .rev-card.blue::before  { background: var(--blue); }
+    .rev-card .rc-label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 1px; margin-bottom: 8px; }
+    .rev-card .rc-title { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .rev-card .rc-desc  { font-size: 12.5px; color: var(--sub); line-height: 1.65; }
+
+    /* CLAUSE */
+    .clause-list { list-style: none; margin: 16px 0; display: flex; flex-direction: column; gap: 10px; }
+    .clause-list li {
+      background: var(--bg-warm); border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 18px; display: flex; gap: 12px; align-items: flex-start;
+      font-size: 14px; color: var(--sub);
+    }
+    .clause-num {
+      font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700;
+      color: var(--gold); background: var(--gold-pale); border-radius: 6px;
+      padding: 2px 8px; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* ROADMAP */
+    .roadmap { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+    .rm-row {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--bg-warm); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px;
+    }
+    .rm-phase {
+      font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; padding: 4px 10px; border-radius: 6px; flex-shrink: 0; margin-top: 1px;
+    }
+    .rm-phase.p0 { background: var(--red-bg);    color: var(--red); }
+    .rm-phase.p1 { background: var(--gold-pale); color: var(--gold); }
+    .rm-phase.p2 { background: var(--green-bg);  color: var(--green); }
+    .rm-phase.p3 { background: var(--blue-bg);   color: var(--blue); }
+    .rm-body strong { display: block; font-size: 13.5px; color: var(--text); margin-bottom: 3px; }
+    .rm-body span   { font-size: 12.5px; color: var(--sub); }
+
+    /* FOOTER */
+    .foot {
+      max-width: 860px; margin: 0 auto; padding: 24px 24px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    .foot a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .hero { padding: 48px 20px 44px; }
+      .wrapper { padding: 0 16px 60px; }
+      .back-bar { padding: 0 16px; }
+      .insight-box { padding: 28px 20px; }
+      .foot { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">RISK MANAGEMENT</div>
+  <h1>계 수령 후 <em>불입 불이행</em> 대응 방안</h1>
+  <p class="hero-sub">MyPotDay 플랫폼 리스크 관리 설계서 · 2026-05-24</p>
+  <div class="hero-line"></div>
+</div>
+
+<div class="back-bar">
+  <a class="back-link" href="index.html">← 문서 허브로 돌아가기</a>
+</div>
+
+<div class="wrapper">
+
+  <div class="alert-banner">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>왜 이 문서가 중요한가</strong>
+      <p>계(ROSCA)는 수령 순번이 빠를수록 미래 납부 의무가 크고, 도덕적 해이 유인이 존재합니다. 플랫폼이 이 비대칭성을 제도로 해소하지 못하면 계 파탄 → 사용자 신뢰 붕괴 → 서비스 종료로 이어집니다. 예방·탐지·사후 대응을 레이어드(layered) 방어 체계로 구축해야 합니다.</p>
+    </div>
+  </div>
+
+
+  <!-- 1. 문제의 구조 -->
+  <div class="sec">
+    <div class="sec-num">SECTION 01</div>
+    <h2>문제의 구조적 본질</h2>
+    <p>계(ROSCA)는 본질적으로 <strong>시간 차 신용 시스템</strong>입니다. 모든 리스크 설계는 이 구조적 비대칭성을 전제로 해야 합니다.</p>
+
+    <div class="sim-block">
+      <div class="sim-title">STRUCTURAL ASYMMETRY</div>
+      <pre>
+<span class="hl-y">1회차 수령자</span>:  실질적으로 (N-1)개월분 무이자 차입 → <span class="hl">도덕적 해이 유인 최대</span>
+<span class="hl-b">마지막 수령자</span>: 실질적으로 (N-1)개월분 무이자 대출 공여 → <span class="hl-g">피해 최대</span>
+
+예시: 10명 계, 월 100만원
+  ├─ 1번 수령자: 900만원 미래 납부 의무 (도망 시 계원들 900만원 손실)
+  └─ 10번 수령자: 이미 900만원 납부, 100만원 남음 (피해는 미미하나 계 파탄 경험)
+
+<span class="hl">결론</span>: 순번 1~3번 수령자의 도주가 가장 치명적.
+        플랫폼이 이 구간을 집중 관리해야 한다.
+      </pre>
+    </div>
+
+    <div class="callout callout-red">
+      <strong>한국 속칭 "먹고 튀기"</strong> — 계를 수령하고 이후 불입을 중단하는 행위. 전통 계에서도 반복적으로 발생해온 패턴으로, 디지털 플랫폼에서는 더 익명성이 높아 리스크가 증가합니다.
+    </div>
+  </div>
+
+
+  <!-- 2. 예방 단계 -->
+  <div class="sec">
+    <div class="sec-num green">SECTION 02</div>
+    <h2>예방 단계 — 시작 전에 막는 설계</h2>
+
+    <div class="sec-label">A. 신원·신용 인증 (가입 시)</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>조치</th><th>내용</th><th>중요도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-strong">실명 인증</td>
+            <td>본인 명의 계좌 연동 필수 — 타인 명의 계좌로 가입 불가</td>
+            <td><span class="tag tag-red">필수</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">신용점수 조회</td>
+            <td>나이스·올크레딧 연동, 최소 신용점수 기준선 설정. 점수별 가입 가능 계 규모 차등</td>
+            <td><span class="tag tag-red">필수</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">금융거래 이력</td>
+            <td>최근 2년 내 연체·불이행 기록 확인. 기록 있을 시 후순위 강제 배정</td>
+            <td><span class="tag tag-blue">중요</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">플랫폼 내 이력</td>
+            <td>기존 계 납부 실적을 스코어화. 신규 계 가입 시 신용 등급 상향 반영</td>
+            <td><span class="tag tag-green">장기</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-gold">
+      <strong>핵심 설계 원칙:</strong> 신용점수가 낮을수록 → 수령 가능 순번 후순위 강제 배정, 또는 고액 계 가입 제한. 신뢰도가 검증된 계원이 먼저 받는 구조가 자기선택(self-selection) 효과를 만든다.
+    </div>
+
+    <div class="sec-label" style="margin-top: 32px;">B. 자동이체 선(先) 설정 의무화 (계 시작 시)</div>
+    <p>계 가입 후 <strong>첫 불입일 전에</strong> 자동이체 등록을 완료해야만 참여가 확정되도록 설계합니다.</p>
+
+    <div class="sim-block">
+      <div class="sim-title">ONBOARDING FLOW</div>
+      <pre>
+가입 신청
+  ↓
+<span class="hl-y">자동이체 계좌 등록 완료</span>   ← 이 단계 미완료 시 참여 불가
+  ↓
+곗주 승인
+  ↓
+계 시작 확정
+
+자동이체 실패 시:
+  D+1  → 앱 푸시 + 카카오 알림톡 즉시 발송
+  D+3  → 재출금 시도 + 수동 납부 요청
+  D+7  → 플랫폼 개입 + 강제 조치 예고
+      </pre>
+    </div>
+
+    <div class="sec-label" style="margin-top: 32px;">C. 보증금 에스크로 예치 — 핵심 설계</div>
+    <p>수령 전 <strong>보증금을 플랫폼 에스크로에 예치</strong>하는 방식이 가장 강력한 단일 예방책입니다. 도망쳐 봤자 보증금을 잃기 때문에 합리적 행위자라면 불이행을 선택하지 않습니다.</p>
+
+    <div class="sim-block">
+      <div class="sim-title">ESCROW EXAMPLE — 10명 계, 월 100만원</div>
+      <pre>
+<span class="hl-y">1회차 수령 예정자 (가장 리스크가 큰 포지션)</span>
+  잔여 납부 예정액 = 9개월 × 100만원 = <span class="hl">900만원</span>
+  에스크로 보증금 예치 = 잔여액의 30% → <span class="hl-g">270만원 예치 후 수령 가능</span>
+  정상 납부 완료 시 → 만기 후 전액 반환
+
+<span class="hl-b">보증금 구간별 차등 (제안 기준)</span>
+  순번 1번 = 잔여 납부액의 30%
+  순번 2번 = 잔여 납부액의 20%
+  순번 3번 = 잔여 납부액의 15%
+  순번 5번~ = 잔여 납부액의 5~8%
+  마지막 2번 = 면제 (이미 리스크 없음)
+
+<span class="hl-y">신용점수 우대</span>: 신용 A등급 → 보증금 비율 50% 할인
+      </pre>
+    </div>
+
+    <div class="callout callout-green">
+      <strong>부가 수익 연계:</strong> 에스크로로 모인 자금을 단기 MMF·파킹통장 등으로 운용 시 이자 수익 발생. 법적 검토(전자금융거래법, 자본시장법) 후 반영 가능.
+    </div>
+
+    <div class="sec-label" style="margin-top: 32px;">D. 순번 배정 방식 설계</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>배정 방식</th><th>특징</th><th>리스크 수준</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-strong">무작위 추첨</td>
+            <td>공평하나 신용도 미반영</td>
+            <td><span class="tag tag-red">높음</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">입찰 (낙찰계)</td>
+            <td>고이자 납부자 우선, 시장원리 적용</td>
+            <td><span class="tag tag-blue">중간</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">신용 기반 우선</td>
+            <td>신뢰도 높은 사람 먼저 수령 → 자기선택 효과</td>
+            <td><span class="tag tag-green">낮음</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">플랫폼 보증 후순위</td>
+            <td>플랫폼이 선지급 보증, 미납자 추심 대행</td>
+            <td><span class="tag tag-green">최저</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- 3. 탐지 단계 -->
+  <div class="sec">
+    <div class="sec-num blue">SECTION 03</div>
+    <h2>탐지 단계 — 조기에 문제를 포착하는 시스템</h2>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot normal">D+0</div>
+        <div class="tl-body">
+          <div class="tl-day">자동이체 출금 시도일</div>
+          <div class="tl-desc">정상 출금 완료 시 납부 확인 알림 발송. 출금 실패 시 즉시 다음 단계 진입.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot normal">D+1</div>
+        <div class="tl-body">
+          <div class="tl-day">출금 실패 감지</div>
+          <div class="tl-desc">앱 푸시 알림 + 카카오 알림톡 즉시 발송. "오늘 자동이체가 실패했습니다. 00일까지 납부해주세요."</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot warn">D+3</div>
+        <div class="tl-body">
+          <div class="tl-day">재출금 시도 + 곗주 알림</div>
+          <div class="tl-desc">재출금 자동 시도 + 곗주에게 해당 계원 연체 알림. 계원에게 카카오톡/SMS 추가 발송.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot warn">D+7</div>
+        <div class="tl-body">
+          <div class="tl-day">플랫폼 고객센터 개입</div>
+          <div class="tl-desc">플랫폼이 해당 계원에게 직접 연락. 납부 의향 확인. 법적 조치 예정 안내 시작.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot alert">D+10</div>
+        <div class="tl-body">
+          <div class="tl-day">법적 조치 사전 경고문 발송</div>
+          <div class="tl-desc">내용증명 발송 검토. "14일 이내 미납 시 법적 절차를 개시합니다." 공식 경고.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot legal">D+14</div>
+        <div class="tl-body">
+          <div class="tl-day">에스크로 충당 + 법적 절차 개시</div>
+          <div class="tl-desc">보증금 에스크로에서 미납액 자동 충당 → 다른 계원 보호. 법적 조치 공식 착수.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-orange">
+      <strong>의도적 불이행 조기 식별 신호:</strong> 연락 두절 + 자동이체 계좌 잔액 0 + 카드 거래 중단이 동시 발생 → 의도적 도주 패턴으로 판단, 즉시 D+14 법적 단계로 전환.
+    </div>
+  </div>
+
+
+  <!-- 4. 사후 대응 -->
+  <div class="sec">
+    <div class="sec-num">SECTION 04</div>
+    <h2>사후 대응 — 불이행 발생 시 대응 체계</h2>
+
+    <div class="sec-label">A. 즉각 보전 (D+14 ~ D+30)</div>
+    <p>가장 먼저 다른 계원의 피해를 최소화합니다.</p>
+
+    <div class="callout callout-blue">
+      <strong>① 에스크로 보증금 선충당</strong> → 다른 계원 피해 즉시 최소화<br>
+      <strong>② 보험금 청구</strong> → 계파산보험 가입 계의 경우 보험사에 청구<br>
+      <strong>③ 책임 분담 기준 집행</strong> → 약관에 명시된 곗주 vs 플랫폼 책임 비율 적용
+    </div>
+
+    <div class="sec-label" style="margin-top: 28px;">B. 법적 조치 수단 비교</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>수단</th><th>내용</th><th>소요기간</th><th>비용</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-strong">지급명령</td>
+            <td>법원 독촉, 이의 없으면 판결과 동일한 효력. 가장 빠른 채권 회수 수단</td>
+            <td>2~4주</td>
+            <td><span class="tag tag-green">인지대 소액</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">민사소송</td>
+            <td>채권 강제집행, 판결 후 재산 압류·경매 가능</td>
+            <td>6개월~1년</td>
+            <td><span class="tag tag-blue">변호사 비용</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">형사 고발</td>
+            <td>처음부터 납부 의사 없었을 경우 사기죄(형법 §347) 적용 가능. 플랫폼 로그가 핵심 증거</td>
+            <td>수개월</td>
+            <td><span class="tag tag-green">0원</span></td>
+          </tr>
+          <tr>
+            <td class="td-strong">신용정보 등록</td>
+            <td>연체 정보 신용정보원 제출 → 신용점수 하락. 즉각적이고 강력한 억지력</td>
+            <td>즉시</td>
+            <td><span class="tag tag-green">0원</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-purple">
+      <strong>형사 고발 성립 요건:</strong> 계 가입 당시부터 납부 의사가 없었음을 입증. 플랫폼의 채팅 로그, 열람 기록, 계좌 잔액 변동 데이터가 핵심 증거로 활용됩니다. 반드시 데이터를 서버에 보존해야 합니다.
+    </div>
+
+    <div class="sec-label" style="margin-top: 28px;">C. 플랫폼 내 블랙리스트 시스템</div>
+
+    <div class="sim-block">
+      <div class="sim-title">BLACKLIST SYSTEM</div>
+      <pre>
+불이행 확정 시:
+  <span class="hl">① 플랫폼 계정 즉시 정지</span>
+  <span class="hl">② 실명 기반 블랙리스트 DB 등록</span>
+  <span class="hl">③ 동일인 재가입 차단</span> (본인인증 연동 — 주민번호/CI 값 기반)
+  <span class="hl-b">④ 업계 공유 블랙리스트 장기 검토</span> (개인정보 보호법 제17조 검토 필요)
+
+데이터 보존 정책:
+  → 불이행 관련 로그: 최소 5년 보관 (법적 소멸시효 대응)
+  → 개인정보: 회원 탈퇴 후에도 분쟁 해결 목적으로 보존 가능 (약관 명시 필수)
+      </pre>
+    </div>
+  </div>
+
+
+  <!-- 5. 수익 연계 -->
+  <div class="sec">
+    <div class="sec-num gold">SECTION 05</div>
+    <h2>비즈니스 모델 연계 — 리스크를 수익으로 전환</h2>
+    <p>이 문제는 단순 피해 방지가 아니라 <strong>새로운 수익 라인</strong>으로 설계할 수 있습니다.</p>
+
+    <div class="rev-grid">
+      <div class="rev-card gold">
+        <div class="rc-label">REVENUE LINE 1</div>
+        <div class="rc-title">계 파산 보험 중개</div>
+        <div class="rc-desc">불입 불이행 시 잔여 계금 보장 보험. 월 보험료 계금의 0.3~0.5%. 플랫폼 커미션 10~15%. 기존 수익 모델의 "보험 중개" 라인과 직결.</div>
+      </div>
+      <div class="rev-card green">
+        <div class="rc-label">REVENUE LINE 2</div>
+        <div class="rc-title">신용 등급별 차등 수수료</div>
+        <div class="rc-desc">신용 A등급 계원 포함 계 → 수수료 0.8%. C등급 포함 계 → 수수료 1.3% + 보험 강제 가입. 리스크 프리미엄을 수수료에 반영.</div>
+      </div>
+      <div class="rev-card blue">
+        <div class="rc-label">REVENUE LINE 3</div>
+        <div class="rc-title">에스크로 운용 수익</div>
+        <div class="rc-desc">보증금 에스크로 자금을 단기 MMF·파킹통장으로 운용. 연 2~4% 수익 발생 가능. 전자금융거래법·자본시장법 검토 선행 필요.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-gold" style="margin-top: 8px;">
+      <strong>마케팅 포인트:</strong> "MyPotDay는 계 파산 보험이 적용됩니다" — 보험의 존재 자체가 신뢰 신호(trust signal)로 작동. 경쟁사 대비 최강의 안전성 차별화 포인트.
+    </div>
+  </div>
+
+
+  <!-- 6. 약관 핵심 항목 -->
+  <div class="sec">
+    <div class="sec-num purple">SECTION 06</div>
+    <h2>약관 설계 핵심 항목</h2>
+    <p>법적 집행력을 위해 가입 약관에 반드시 명시해야 할 항목입니다. 법률 검토 후 확정 필요.</p>
+
+    <ul class="clause-list">
+      <li>
+        <span class="clause-num">제1조</span>
+        자동이체 실패 시 대체 납부 의무 및 기한 (실패 후 7일 이내 수동 납부)
+      </li>
+      <li>
+        <span class="clause-num">제2조</span>
+        7일 이상 연체 시 플랫폼 에스크로 보증금 충당에 동의함 (계 가입 시 포괄 동의)
+      </li>
+      <li>
+        <span class="clause-num">제3조</span>
+        14일 이상 연체 시 플랫폼의 법적 조치(지급명령, 민사소송, 형사 고발) 위임에 동의
+      </li>
+      <li>
+        <span class="clause-num">제4조</span>
+        불이행 확정 시 신용정보기관 연체 정보 등록에 동의
+      </li>
+      <li>
+        <span class="clause-num">제5조</span>
+        계 수령 후 불입 의무는 계 만기일까지 면제 불가하며, 수령 행위가 계속 납부 확약으로 간주됨
+      </li>
+      <li>
+        <span class="clause-num">제6조</span>
+        분쟁 해결 목적으로 계 관련 데이터를 계 종료 후 5년간 보관함에 동의
+      </li>
+    </ul>
+  </div>
+
+
+  <!-- 7. 우선순위 로드맵 -->
+  <div class="sec">
+    <div class="sec-num orange">SECTION 07</div>
+    <h2>구현 우선순위 로드맵</h2>
+
+    <div class="roadmap">
+      <div class="rm-row">
+        <span class="rm-phase p0">즉시</span>
+        <div class="rm-body">
+          <strong>자동이체 의무화 + 약관 정비</strong>
+          <span>MVP 개발 전 설계에 반영. 법률 검토 병행. 추가 비용 없이 리스크 대폭 감소.</span>
+        </div>
+      </div>
+      <div class="rm-row">
+        <span class="rm-phase p1">Phase 1 · 론칭 시</span>
+        <div class="rm-body">
+          <strong>실명인증 + 신용조회 연동 + 에스크로 보증금</strong>
+          <span>나이스·올크레딧 API 계약. 에스크로 계좌 설계. 핵심 예방 인프라 완성.</span>
+        </div>
+      </div>
+      <div class="rm-row">
+        <span class="rm-phase p2">Phase 2 · MAU 1천명</span>
+        <div class="rm-body">
+          <strong>계 파산 보험 파트너십 체결</strong>
+          <span>하나손보·DB손보 등 핀테크 친화 보험사 접촉. 보험 상품 공동 설계. 수익 모델 확장.</span>
+        </div>
+      </div>
+      <div class="rm-row">
+        <span class="rm-phase p3">Phase 3 · MAU 1만명</span>
+        <div class="rm-body">
+          <strong>AI 기반 불이행 예측 모델 + 내부 신용 스코어링</strong>
+          <span>납부 패턴·계좌 잔액·플랫폼 행동 데이터 기반 예측. 고위험 계원 자동 식별 및 사전 대응.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- KEY INSIGHT -->
+  <div class="insight-box">
+    <p>
+      "불이행 가능성을 0으로 만들 수는 없지만,<br>
+      <em>불이행의 동기를 0으로 만들 수 있습니다.</em><br><br>
+      에스크로 보증금 + 보험 + 블랙리스트 + 법적 집행 —<br>
+      합리적 행위자라면 도망치지 않는 구조를 만드는 것이 목표입니다."
+    </p>
+  </div>
+
+</div><!-- /wrapper -->
+
+<div class="foot">
+  <span><a href="index.html">← MyPotDay 문서 허브</a></span>
+  <span>리스크 관리 설계서 · 2026-05-24</span>
+</div>
+
+</body>
+</html>
