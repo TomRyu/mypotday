@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyPotDay — 그라민 은행 완전 분석</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:      #C8860A; --gold-l:   #E8A030; --gold-pale: #FDF3E0;
+      --bg:        #F7FAFF; --bg-warm:  #EFF6FF;
+      --text:      #0F1E38; --sub:      #2A3F6B; --muted:     #6B82A8;
+      --border:    #C7D8F0;
+      --blue:      #1D4ED8; --blue-bg:  #EFF6FF; --blue-l:    #3B82F6;
+      --green:     #1D7A55; --green-bg: #ECFDF5;
+      --red:       #B91C1C; --red-bg:   #FEF2F2;
+      --teal:      #0F766E; --teal-bg:  #F0FDFA;
+      --purple:    #6D28D9; --purple-bg:#F5F3FF;
+      --orange:    #C2410C; --orange-bg:#FFF7ED;
+      --bd-green:  #059669; /* 방글라데시 국기 녹색 */
+      --bd-red:    #DC2626; /* 방글라데시 국기 적색 */
+    }
+    body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); line-height:1.85; }
+
+    /* HERO */
+    .hero {
+      background:linear-gradient(150deg,#0A1628 0%,#112244 55%,#0D1B36 100%);
+      padding:72px 40px 64px; text-align:center; position:relative; overflow:hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse at 50% 0%,rgba(29,78,216,0.25) 0%,transparent 65%);
+    }
+    .hero-flag {
+      display:inline-flex; align-items:center; gap:10px;
+      margin-bottom:24px; position:relative;
+    }
+    .flag-bd {
+      width:48px; height:32px; border-radius:4px; overflow:hidden;
+      display:flex; flex-direction:column; position:relative;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+    .flag-bd-bg { width:100%; height:100%; background:#006A4E; position:relative; display:flex; align-items:center; justify-content:center; }
+    .flag-bd-circle { width:16px; height:16px; border-radius:50%; background:#F42A41; margin-left:2px; }
+    .flag-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:3px; color:rgba(255,255,255,0.5); }
+    .hero-badge {
+      display:block; border:1px solid rgba(59,130,246,0.5); color:#93C5FD;
+      font-size:11px; letter-spacing:3px; padding:5px 18px; border-radius:20px;
+      margin-bottom:26px; position:relative; width:fit-content; margin-left:auto; margin-right:auto;
+    }
+    .hero h1 {
+      font-family:'Noto Serif KR',serif; font-size:clamp(1.9rem,5vw,3.2rem);
+      font-weight:900; color:#fff; line-height:1.3; position:relative; margin-bottom:12px;
+    }
+    .hero h1 em { color:#60A5FA; font-style:normal; }
+    .hero-sub { font-size:13.5px; color:rgba(255,255,255,0.45); position:relative; }
+    .hero-line { width:44px; height:2px; background:#60A5FA; margin:26px auto 0; }
+
+    /* STATS ROW */
+    .stats-row {
+      max-width:920px; margin:0 auto; padding:0 24px;
+      display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:36px;
+    }
+    .stat-card {
+      background:#fff; border:1px solid var(--border); border-radius:14px;
+      padding:20px 16px; text-align:center;
+    }
+    .stat-card .sv { font-family:'Space Mono',monospace; font-size:1.5rem; font-weight:700; color:var(--blue); line-height:1; margin-bottom:6px; }
+    .stat-card .sl { font-size:11px; color:var(--muted); }
+
+    .back-bar { max-width:920px; margin:28px auto 0; padding:0 24px; }
+    .back-link { display:inline-flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .back-link:hover { color:var(--gold); }
+
+    .wrapper { max-width:920px; margin:0 auto; padding:0 24px 80px; }
+
+    /* SECTION */
+    .sec { margin-top:64px; }
+    .sec-num { display:inline-block; font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:2px; border-radius:6px; padding:3px 10px; margin-bottom:10px; }
+    .n-blue   { background:var(--blue-bg);   color:var(--blue); }
+    .n-green  { background:var(--green-bg);  color:var(--green); }
+    .n-gold   { background:var(--gold-pale); color:var(--gold); }
+    .n-red    { background:var(--red-bg);    color:var(--red); }
+    .n-teal   { background:var(--teal-bg);   color:var(--teal); }
+    .n-purple { background:var(--purple-bg); color:var(--purple); }
+    .n-orange { background:var(--orange-bg); color:var(--orange); }
+    .sec h2 { font-family:'Noto Serif KR',serif; font-size:1.5rem; font-weight:700; color:var(--text); margin-bottom:22px; padding-bottom:14px; border-bottom:2px solid var(--border); }
+    .sec p { font-size:15px; color:var(--sub); margin-bottom:14px; }
+
+    /* CALLOUT */
+    .callout { border-radius:12px; padding:20px 24px; margin:20px 0; font-size:14px; line-height:1.75; }
+    .callout-blue   { background:var(--blue-bg);   border-left:4px solid var(--blue);   color:#1E3A8A; }
+    .callout-green  { background:var(--green-bg);  border-left:4px solid var(--green);  color:#064E3B; }
+    .callout-gold   { background:var(--gold-pale); border-left:4px solid var(--gold-l); color:var(--sub); }
+    .callout-red    { background:var(--red-bg);    border-left:4px solid var(--red);    color:#7F1D1D; }
+    .callout-teal   { background:var(--teal-bg);   border-left:4px solid var(--teal);   color:#134E4A; }
+    .callout-orange { background:var(--orange-bg); border-left:4px solid var(--orange); color:#7C2D12; }
+    .callout strong { font-weight:700; }
+
+    /* SIM BLOCK */
+    .sim-block { background:#0A1628; border-radius:14px; padding:28px; margin:24px 0; overflow-x:auto; }
+    .sim-title { font-family:'Space Mono',monospace; font-size:11px; color:#60A5FA; letter-spacing:2px; margin-bottom:18px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:10px; }
+    .sim-block pre { font-family:'Space Mono',monospace; font-size:12.5px; color:#C8D8F0; line-height:1.9; }
+    .hl   { color:#FCA5A5; } .hl-g { color:#6EE7B7; }
+    .hl-b { color:#93C5FD; } .hl-y { color:#FDE68A; }
+
+    /* TABLE */
+    .tbl-wrap { overflow-x:auto; margin:20px 0; border-radius:12px; border:1px solid var(--border); }
+    table { width:100%; border-collapse:collapse; font-size:13.5px; }
+    th { background:var(--bg-warm); color:var(--muted); font-weight:700; font-size:11px; letter-spacing:1px; padding:12px 16px; text-align:left; border-bottom:1px solid var(--border); }
+    td { padding:13px 16px; color:var(--sub); border-bottom:1px solid var(--border); vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:var(--bg-warm); }
+    .td-strong { font-weight:700; color:var(--text); }
+    .tag { display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:6px; white-space:nowrap; }
+    .tag-blue   { background:var(--blue-bg);   color:var(--blue); }
+    .tag-green  { background:var(--green-bg);  color:var(--green); }
+    .tag-red    { background:var(--red-bg);    color:var(--red); }
+    .tag-gold   { background:var(--gold-pale); color:var(--gold); }
+    .tag-teal   { background:var(--teal-bg);   color:var(--teal); }
+    .tag-orange { background:var(--orange-bg); color:var(--orange); }
+
+    /* TIMELINE */
+    .timeline { margin:24px 0; display:flex; flex-direction:column; gap:0; }
+    .tl-item { display:flex; gap:16px; position:relative; }
+    .tl-item::before { content:''; position:absolute; left:19px; top:44px; width:2px; height:calc(100% - 14px); background:var(--border); }
+    .tl-item:last-child::before { display:none; }
+    .tl-dot { width:40px; height:40px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:10px; font-weight:700; text-align:center; line-height:1.2; }
+    .td-blue   { background:var(--blue-bg);   color:var(--blue);   border:2px solid var(--blue-l); }
+    .td-green  { background:var(--green-bg);  color:var(--green);  border:2px solid var(--green); }
+    .td-gold   { background:var(--gold-pale); color:var(--gold);   border:2px solid var(--gold-l); }
+    .td-red    { background:var(--red-bg);    color:var(--red);    border:2px solid var(--red); }
+    .td-teal   { background:var(--teal-bg);   color:var(--teal);   border:2px solid var(--teal); }
+    .td-purple { background:var(--purple-bg); color:var(--purple); border:2px solid var(--purple); }
+    .tl-body { padding:8px 0 28px; }
+    .tl-year { font-family:'Space Mono',monospace; font-size:12px; font-weight:700; color:var(--text); margin-bottom:4px; }
+    .tl-desc { font-size:13.5px; color:var(--sub); line-height:1.7; }
+    .tl-desc strong { color:var(--text); }
+
+    /* PROFILE CARD */
+    .profile-card {
+      background:#fff; border:1px solid var(--border); border-radius:20px;
+      padding:32px; display:flex; gap:28px; align-items:flex-start; margin:24px 0;
+    }
+    .profile-avatar {
+      width:80px; height:80px; border-radius:50%; flex-shrink:0;
+      background:linear-gradient(135deg,#1D4ED8,#0F766E);
+      display:flex; align-items:center; justify-content:center;
+      font-size:2rem; border:3px solid var(--border);
+    }
+    .profile-info h3 { font-family:'Noto Serif KR',serif; font-size:1.3rem; font-weight:700; color:var(--text); margin-bottom:8px; }
+    .profile-info .pi-sub { font-size:12.5px; color:var(--muted); margin-bottom:14px; font-family:'Space Mono',monospace; }
+    .profile-info p { font-size:14px; color:var(--sub); line-height:1.7; margin-bottom:8px; }
+    .profile-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+
+    /* NOBEL BOX */
+    .nobel-box {
+      background:linear-gradient(135deg,#FDF3E0,#FFF8EE);
+      border:2px solid var(--gold-l); border-radius:20px; padding:28px 28px;
+      display:flex; gap:20px; align-items:center; margin:24px 0;
+    }
+    .nobel-icon { font-size:3rem; flex-shrink:0; }
+    .nobel-body h4 { font-family:'Noto Serif KR',serif; font-size:1.1rem; font-weight:700; color:var(--text); margin-bottom:6px; }
+    .nobel-body p  { font-size:13.5px; color:var(--sub); line-height:1.7; margin:0; }
+
+    /* MECHANISM BOX */
+    .mech-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; margin:20px 0; }
+    .mech-card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:20px; position:relative; overflow:hidden; }
+    .mech-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+    .mech-card.blue::before  { background:var(--blue); }
+    .mech-card.green::before { background:var(--green); }
+    .mech-card.gold::before  { background:var(--gold-l); }
+    .mech-card.teal::before  { background:var(--teal); }
+    .mech-card .mc-num  { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:8px; }
+    .mech-card .mc-title { font-family:'Noto Serif KR',serif; font-size:.95rem; font-weight:700; color:var(--text); margin-bottom:8px; }
+    .mech-card .mc-desc  { font-size:12.5px; color:var(--sub); line-height:1.65; }
+
+    /* GLOBAL MAP */
+    .global-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin:20px 0; }
+    .global-card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:20px; }
+    .global-card .gc-region { font-family:'Space Mono',monospace; font-size:10px; font-weight:700; letter-spacing:2px; margin-bottom:8px; }
+    .global-card .gc-name   { font-family:'Noto Serif KR',serif; font-size:1rem; font-weight:700; color:var(--text); margin-bottom:8px; }
+    .global-card .gc-desc   { font-size:12.5px; color:var(--sub); line-height:1.65; }
+    .gc-americas { border-top:3px solid var(--blue); }   .gc-americas .gc-region { color:var(--blue); }
+    .gc-asia     { border-top:3px solid var(--green); }  .gc-asia .gc-region     { color:var(--green); }
+    .gc-africa   { border-top:3px solid var(--orange); } .gc-africa .gc-region   { color:var(--orange); }
+    .gc-korea    { border-top:3px solid var(--teal); }   .gc-korea .gc-region    { color:var(--teal); }
+
+    /* CRITICISM BLOCK */
+    .crit-list { display:flex; flex-direction:column; gap:12px; margin:20px 0; }
+    .crit-item { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px 20px; display:flex; gap:14px; }
+    .crit-icon { font-size:1.4rem; flex-shrink:0; margin-top:2px; }
+    .crit-body strong { display:block; font-size:14px; color:var(--text); margin-bottom:4px; }
+    .crit-body p { font-size:13px; color:var(--sub); line-height:1.65; margin:0; }
+
+    /* MYPOTDAY LINK */
+    .mypotday-link {
+      background:linear-gradient(135deg,#ECFDF5,#F0FDFA);
+      border:2px solid #6EE7B7; border-radius:20px; padding:32px;
+      margin:48px 0 0; position:relative; overflow:hidden;
+    }
+    .mypotday-link::before {
+      content:''; position:absolute; top:-40px; right:-40px;
+      width:120px; height:120px; border-radius:50%;
+      background:rgba(16,185,129,0.08);
+    }
+    .mypotday-link .ml-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:3px; color:var(--green); margin-bottom:12px; }
+    .mypotday-link h3 { font-family:'Noto Serif KR',serif; font-size:1.2rem; font-weight:700; color:var(--text); margin-bottom:14px; }
+    .mypotday-link ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+    .mypotday-link ul li { font-size:13.5px; color:var(--sub); display:flex; gap:8px; }
+    .mypotday-link ul li::before { content:'✓'; color:var(--green); font-weight:700; flex-shrink:0; }
+
+    /* INSIGHT */
+    .insight-box {
+      background:linear-gradient(135deg,#0A1628 0%,#112244 100%);
+      border-radius:16px; padding:36px 32px; margin:48px 0; text-align:center; position:relative; overflow:hidden;
+    }
+    .insight-box::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(29,78,216,0.3) 0%,transparent 70%); }
+    .insight-box p { font-family:'Noto Serif KR',serif; font-size:clamp(1.05rem,2.5vw,1.3rem); font-weight:700; color:#fff; line-height:1.7; position:relative; margin:0; }
+    .insight-box em { color:#60A5FA; font-style:normal; }
+
+    /* FOOTER */
+    .foot { max-width:920px; margin:0 auto; padding:24px 24px 48px; display:flex; justify-content:space-between; align-items:center; font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); border-top:1px solid var(--border); }
+    .foot a { color:var(--gold); text-decoration:none; }
+
+    @media(max-width:640px){
+      .hero { padding:48px 20px 44px; }
+      .stats-row { grid-template-columns:repeat(2,1fr); }
+      .wrapper,.back-bar { padding-left:16px; padding-right:16px; }
+      .profile-card { flex-direction:column; }
+      .foot { flex-direction:column; gap:8px; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-flag">
+    <div class="flag-bd"><div class="flag-bd-bg"><div class="flag-bd-circle"></div></div></div>
+    <span class="flag-label">BANGLADESH · 방글라데시</span>
+  </div>
+  <div class="hero-badge">GRAMEEN BANK — 완전 분석</div>
+  <h1>그라민 은행<br><em>세계를 바꾼 27달러의 기적</em></h1>
+  <p class="hero-sub">1976년 조브라 마을 → 2024년 1,087만 차용자 · 노벨 평화상 수상 · MyPotDay 참조 모델</p>
+  <div class="hero-line"></div>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="sv">1,087만</div>
+    <div class="sl">현재 차용자 수 (2024)</div>
+  </div>
+  <div class="stat-card">
+    <div class="sv">98%</div>
+    <div class="sl">상환율 · 여성 차용자 비율</div>
+  </div>
+  <div class="stat-card">
+    <div class="sv">64개국+</div>
+    <div class="sl">글로벌 확산 국가</div>
+  </div>
+  <div class="stat-card">
+    <div class="sv">$27</div>
+    <div class="sl">최초 대출 총액 (1976)</div>
+  </div>
+</div>
+
+<div class="back-bar" style="margin-top:32px;">
+  <a class="back-link" href="index.html">← 문서 허브로 돌아가기</a>
+</div>
+
+<div class="wrapper">
+
+
+  <!-- 1. 창립자 & 배경 -->
+  <div class="sec">
+    <div class="sec-num n-blue">SECTION 01</div>
+    <h2>창립자 — 무함마드 유누스와 방글라데시</h2>
+
+    <div class="profile-card">
+      <div class="profile-avatar">👤</div>
+      <div class="profile-info">
+        <h3>무함마드 유누스 (Muhammad Yunus)</h3>
+        <div class="pi-sub">1940년 6월 28일생 · 경제학 박사 (밴더빌트 대학) · 방글라데시</div>
+        <p>치타공 대학 경제학 교수로 재직 중이던 1974년, 방글라데시를 강타한 대기근을 목도하며 "대학에서 이론만 가르치는 것이 공허하다"는 깨달음을 얻었습니다. 극빈층이 단 몇 달러만 있어도 스스로 생계를 꾸릴 수 있다는 사실을 현장에서 확인하고, 1976년 개인 돈으로 첫 대출 실험을 시작했습니다.</p>
+        <div class="profile-tags">
+          <span class="tag tag-gold">노벨 평화상 (2006)</span>
+          <span class="tag tag-blue">그라민 은행 설립자</span>
+          <span class="tag tag-teal">방글라데시 임시정부 수장 (2024~2026)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-num n-red" style="margin-bottom:8px; margin-top:28px;">방글라데시 — 왜 이 나라에서 시작됐나</div>
+    <p>그라민 은행은 우연히 방글라데시에서 탄생하지 않았습니다. <strong>절박한 현실이 혁신을 만들었습니다.</strong></p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>배경 요인</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td class="td-strong">1974년 대기근</td><td>독립(1971) 3년 후 사상 최악의 기근. 인구 2%(약 140만 명) 사망. 국가 시스템 붕괴.</td></tr>
+          <tr><td class="td-strong">금융 소외</td><td>농촌 인구 대부분이 담보 부재로 공식 금융에서 완전 배제. 사채 이자율 연 100~200%.</td></tr>
+          <tr><td class="td-strong">여성 소외</td><td>여성은 경제 활동 자체가 제한. 대출 접근 불가. 가정 경제 개선 의지는 높으나 수단 없음.</td></tr>
+          <tr><td class="td-strong">농촌 공동체 문화</td><td>마을 단위 강한 공동체 의식 → 연대보증의 사회적 압력이 작동할 수 있는 토양.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-blue">
+      <strong>핵심 통찰:</strong> 유누스는 "빈곤층이 신용이 없어서 가난한 게 아니라, 가난해서 신용에 접근하지 못하는 것"임을 간파했습니다. 담보 대신 <strong>공동체 신뢰</strong>를 담보로 삼으면 대출이 가능하다는 역발상이 그라민 은행의 출발점입니다.
+    </div>
+  </div>
+
+
+  <!-- 2. 창립 과정 -->
+  <div class="sec">
+    <div class="sec-num n-green">SECTION 02</div>
+    <h2>창립 과정 — 27달러에서 독립 은행까지</h2>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot td-red">1974</div>
+        <div class="tl-body">
+          <div class="tl-year">방글라데시 대기근 — 영감의 시작</div>
+          <div class="tl-desc">치타공 대학 교수 유누스, 교문 밖 굶주린 사람들을 보며 "이론 경제학의 공허함"을 깨닫다. <strong>직접 행동하기로 결심.</strong></div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-blue">1976</div>
+        <div class="tl-body">
+          <div class="tl-year">조브라(Jobra) 마을 실험 — 역사적 첫 대출</div>
+          <div class="tl-desc">치타공 인근 조브라 마을 <strong>42가구</strong>에 개인 돈 <strong>총 27달러</strong> 무담보 대출. 용도: 대나무 가구 제작 원자재 구입. 전원 상환. "이것이 가능하다"는 증명.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-blue">1979</div>
+        <div class="tl-body">
+          <div class="tl-year">방글라데시 중앙은행 지원 확보</div>
+          <div class="tl-desc">3년간의 성공 데이터를 바탕으로 방글라데시 은행의 공식 지원 확보. 탕가일(Tangail) 지구로 사업 확대. 마을 단위 그룹 대출 체계 정립.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-green">1983</div>
+        <div class="tl-body">
+          <div class="tl-year">그라민 은행 공식 설립 — 세계 최초 마이크로크레딧 법제화</div>
+          <div class="tl-desc"><strong>1983년 9월 4일</strong> 방글라데시 정부 조례로 독립 은행 설립. "그라민(Grameen)"은 벵골어로 <strong>"마을"</strong>을 뜻함. 세계 최초로 마이크로크레딧을 법적 제도로 인정.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-blue">1984</div>
+        <div class="tl-body">
+          <div class="tl-year">16가지 결의(Sixteen Decisions) 도입</div>
+          <div class="tl-desc">단순 대출을 넘어 <strong>삶의 방식 변화</strong>를 목표로 16가지 생활 원칙 도입. 위생, 교육, 가족 계획, 여성 자립 등 포함. 모든 그룹 회의에서 낭독.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-gold">2002</div>
+        <div class="tl-body">
+          <div class="tl-year">그라민 II — 대대적 모델 개혁</div>
+          <div class="tl-desc">1990년대 운영 한계 인정 후 전면 개혁. 연대보증 폐지 → 개인 신용 중심 전환. 유연한 상환 일정, 다양한 금융 상품(저축·보험) 추가. 지속가능한 사회적 기업으로 재설계.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-gold">2006</div>
+        <div class="tl-body">
+          <div class="tl-year">노벨 평화상 공동 수상 🏆</div>
+          <div class="tl-desc">무함마드 유누스 & 그라민 은행 공동 수상. 상금 $140만. 수상 이유: <strong>"아래로부터의 경제적·사회적 발전을 창출하기 위한 노력."</strong> 마이크로파이낸스 세계적 주목.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-red">2011</div>
+        <div class="tl-body">
+          <div class="tl-year">유누스 강제 퇴임 — 정치적 탄압</div>
+          <div class="tl-desc">셰이크 하시나 총리 정부, 72세 정년 규정을 이유로 유누스 강제 퇴임. 실제 배경: 정치적 대립. 하시나 총리, 유누스를 <strong>"빈곤층의 피를 빠는 뱀파이어"</strong>라고 표현.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-teal">2024</div>
+        <div class="tl-body">
+          <div class="tl-year">유누스, 방글라데시 임시정부 수장 취임</div>
+          <div class="tl-desc">2024년 7월 시위로 하시나 총리 축출·망명. 학생 주도 운동이 유누스 추대. <strong>2024년 8월 8일</strong> 임시정부 수장 취임. 2026년 2월 민선 정부 출범으로 임기 종료.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot td-blue">2025</div>
+        <div class="tl-body">
+          <div class="tl-year">거버넌스 개혁 — 정부 지분 25%→5%</div>
+          <div class="tl-desc">정부 임명 이사 3명→1명 축소. 회장 선출 방식을 정부 임명에서 이사회 선출로 전환. <strong>2011년 이전의 자치 구조 복원 목표.</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nobel-box">
+      <div class="nobel-icon">🏆</div>
+      <div class="nobel-body">
+        <h4>2006년 노벨 평화상 수상</h4>
+        <p>노벨위원회 선정 이유: <em>"아래로부터의 경제적·사회적 발전을 창출하기 위한 노력."</em> 상금 $140만은 저가 고영양식 개발 회사, 안과 병원, 과학기술대학 설립에 투자. 금융 혁신이 처음으로 평화상을 받은 역사적 사례.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 3. 핵심 메커니즘 -->
+  <div class="sec">
+    <div class="sec-num n-teal">SECTION 03</div>
+    <h2>핵심 비즈니스 모델 — 연대보증 그룹 대출</h2>
+
+    <div class="mech-grid">
+      <div class="mech-card blue">
+        <div class="mc-num">MECHANISM 01</div>
+        <div class="mc-title">5인 연대보증 그룹</div>
+        <div class="mc-desc">서로 아는 5명이 그룹 결성. 개인 담보 대신 <strong>동료의 신뢰</strong>가 담보. 법적 연대보증 없이 사회적 압력으로 운영.</div>
+      </div>
+      <div class="mech-card green">
+        <div class="mc-num">MECHANISM 02</div>
+        <div class="mc-title">단계별 대출 실행</div>
+        <div class="mc-desc">첫 2명 대출 → 정상 상환 확인 → 나머지 3명 대출. 그룹 전체가 서로를 감시하고 독려하는 구조.</div>
+      </div>
+      <div class="mech-card gold">
+        <div class="mc-num">MECHANISM 03</div>
+        <div class="mc-title">주(週)단위 소액 상환</div>
+        <div class="mc-desc">큰 금액 대신 매주 소액 상환. 심리적 부담 최소화. 정기 그룹 회의에서 상환 공개 확인.</div>
+      </div>
+      <div class="mech-card teal">
+        <div class="mc-num">MECHANISM 04</div>
+        <div class="mc-title">여성 우선 대출</div>
+        <div class="mc-desc">차용자의 97~98%가 여성. 이유: 여성이 대출금을 가족 생계에 더 효과적으로 사용. 여성 경제력 강화 → 가정·사회 변화.</div>
+      </div>
+    </div>
+
+    <div class="sim-block">
+      <div class="sim-title">GROUP LENDING FLOW — 연대보증 그룹 작동 방식</div>
+      <pre>
+<span class="hl-y">[ Step 1 ]</span> 그룹 결성
+  5명의 지인(주로 이웃·마을 여성)이 자발적으로 그룹 결성
+  상호 신뢰가 없으면 그룹 자체가 구성되지 않음
+
+<span class="hl-y">[ Step 2 ]</span> 첫 2명 대출
+  그룹 중 2명이 먼저 소액 대출 수령
+  나머지 3명은 대기 (이들의 대출은 첫 2명의 상환에 달림)
+
+<span class="hl-y">[ Step 3 ]</span> 상환 검증 기간
+  주(週)단위 그룹 회의에서 상환 공개 확인
+  한 명이라도 연체 → <span class="hl">그룹 전체 다음 대출 보류</span>
+
+<span class="hl-y">[ Step 4 ]</span> 나머지 3명 대출 실행
+  첫 2명 정상 상환 확인 후 나머지 3명 순차 대출
+  성공적 완료 시 → 더 큰 금액의 다음 대출 자격 획득
+
+<span class="hl-g">결과:</span> 법적 강제 없이도 상환율 97~99% 달성
+핵심: 법원이 아닌 <span class="hl-b">공동체의 눈(peer pressure)</span>이 강제 집행
+      </pre>
+    </div>
+
+    <div class="sec-num n-teal" style="margin-bottom:8px; margin-top:28px;">16가지 결의 (Sixteen Decisions)</div>
+    <p>1984년 도입. 대출의 조건이자 삶의 방식 변화 선언. 모든 그룹 회의에서 낭독합니다. 2023년 <strong>18가지</strong>로 확대.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>영역</th><th>주요 내용</th></tr></thead>
+        <tbody>
+          <tr><td class="td-strong">위생 & 건강</td><td>깨끗한 식수 사용, 화장실 설치, 채소 재배, 적절한 주택 건축</td></tr>
+          <tr><td class="td-strong">교육</td><td>자녀를 반드시 학교에 보낼 것 → 그라민 차용자 자녀 진학률 급상승</td></tr>
+          <tr><td class="td-strong">가족 계획</td><td>가족 규모 합리적 유지, 조혼 반대, 지참금 제도 거부</td></tr>
+          <tr><td class="td-strong">경제적 자립</td><td>대출금의 올바른 활용, 정기 저축 습관 형성</td></tr>
+          <tr><td class="td-strong">공동체</td><td>공동체 시설 발전 참여, 여성 자주성 강화, 상호 부조</td></tr>
+          <tr><td class="td-strong">환경 (2023 추가)</td><td>나무 심기, 쓰레기 관리 등 환경 보호 항목 신설</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- 4. 현재 규모 -->
+  <div class="sec">
+    <div class="sec-num n-gold">SECTION 04</div>
+    <h2>현재 규모 — 2024~2025년 최신 현황</h2>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>지표</th><th>수치</th><th>비고</th></tr></thead>
+        <tbody>
+          <tr><td class="td-strong">총 차용자</td><td><strong>1,087만 명</strong></td><td>가족 포함 수혜자 약 4,500만 명</td></tr>
+          <tr><td class="td-strong">여성 차용자 비율</td><td><strong>98%</strong></td><td>설립 초기부터 여성 우선 원칙</td></tr>
+          <tr><td class="td-strong">커버리지</td><td><strong>81,678개 마을</strong></td><td>방글라데시 전국 94% 커버</td></tr>
+          <tr><td class="td-strong">지점 수</td><td><strong>2,568개</strong></td><td>직원 24,518명</td></tr>
+          <tr><td class="td-strong">상환율</td><td><strong>98%+</strong></td><td>미국 은행 평균 96% 대비 우수</td></tr>
+          <tr><td class="td-strong">평균 대출액</td><td><strong>약 $100~160</strong></td><td>소규모 생산 활동 자금</td></tr>
+          <tr><td class="td-strong">운영 기간</td><td><strong>49년</strong></td><td>1976년 시작 기준</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sim-block">
+      <div class="sim-title">GROWTH HISTORY — 차용자 수 변화</div>
+      <pre>
+1976년  <span class="hl-b">▌</span> 42가구 (조브라 마을)            · $27 대출
+1983년  <span class="hl-b">▌▌</span> 공식 은행 설립
+2006년  <span class="hl-b">▌▌▌▌▌▌▌</span> <span class="hl-y">700만 명</span> (노벨상 수상 시점)   · 96% 여성
+2022년  <span class="hl-b">▌▌▌▌▌▌▌▌▌</span> <span class="hl-y">950만 명</span>                    · 96.81% 여성
+2024년  <span class="hl-g">▌▌▌▌▌▌▌▌▌▌▌</span> <span class="hl-g">1,087만 명</span>                 · 98% 여성
+
+마을 커버리지:
+1976년  1개 마을    →  2024년  <span class="hl-g">81,678개 마을 (전국 94%)</span>
+      </pre>
+    </div>
+
+    <div class="sec-num n-gold" style="margin-bottom:8px; margin-top:28px;">무함마드 유누스 최근 행보</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>시기</th><th>상황</th></tr></thead>
+        <tbody>
+          <tr><td class="td-strong">2011년</td><td>셰이크 하시나 정부의 정치적 압박으로 그라민 은행 회장직 강제 퇴임</td></tr>
+          <tr><td class="td-strong">2024년 7월</td><td>학생 주도 반정부 시위로 하시나 총리 축출, 인도 망명</td></tr>
+          <tr><td class="td-strong">2024년 8월 8일</td><td>방글라데시 임시정부 수장 취임 (84세) — 학생 운동이 추대</td></tr>
+          <tr><td class="td-strong">2026년 2월 17일</td><td>민선 정부 출범(타리크 라만 총리)으로 임시정부 종료, 민간 복귀</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- 5. 글로벌 확산 -->
+  <div class="sec">
+    <div class="sec-num n-purple">SECTION 05</div>
+    <h2>글로벌 확산 — 64개국 이상으로 퍼진 모델</h2>
+
+    <p>그라민 모델은 방글라데시를 넘어 전 세계로 확산됐습니다. 문화권이 달라도 <strong>"공동체 신뢰 + 소액 분할 상환"</strong>의 핵심 원리는 동일하게 작동했습니다.</p>
+
+    <div class="global-grid">
+      <div class="global-card gc-americas">
+        <div class="gc-region">AMERICAS · 미주</div>
+        <div class="gc-name">Grameen America (2008)</div>
+        <div class="gc-desc">뉴욕시 설립. 미국 내 27개 도시 운영. 누적 220,000명의 여성 기업가 지원. 누적 대출 <strong>$40억+</strong> (2024년 기준). 501(c)(3) 비영리 기관.</div>
+      </div>
+      <div class="global-card gc-asia">
+        <div class="gc-region">ASIA · 아시아</div>
+        <div class="gc-name">Grameen Foundation 아시아 (1997)</div>
+        <div class="gc-desc">인도·인도네시아·필리핀 중심. CASHPOR Inc.는 아시아 8개국 22개 마이크로크레딧 기관 네트워크 운영. 인도에서는 독자적 마이크로파이낸스 산업으로 성장.</div>
+      </div>
+      <div class="global-card gc-africa">
+        <div class="gc-region">AFRICA · 아프리카</div>
+        <div class="gc-name">Grameen Foundation 아프리카</div>
+        <div class="gc-desc">베닌·부르키나파소·가나·케냐·시에라리온·탄자니아·우간다 7개국 활동. M-Pesa(케냐)와 같은 모바일 금융 혁신과 결합해 급성장 중.</div>
+      </div>
+      <div class="global-card gc-korea">
+        <div class="gc-region">KOREA · 한국</div>
+        <div class="gc-name">신나는조합 / 사회연대은행</div>
+        <div class="gc-desc"><strong>신나는조합</strong>: 그라민 은행 한국 지부. 보증인·담보 불필요. <strong>사회연대은행</strong>: 그라민 모델 영감, 사회적 금융기관. 수요 검증됨 — 오프라인 한계로 공급 부족 상태.</div>
+      </div>
+    </div>
+
+    <div class="callout callout-gold">
+      <strong>글로벌 확산 공통 패턴:</strong> 64개국 이상에서 유사 모델 운영 중이나, <strong>방글라데시처럼 성공한 나라는 없습니다.</strong> 이유: 방글라데시의 촘촘한 농촌 공동체 + 극도의 빈곤 + 여성의 강한 상환 의지가 결합된 특수한 토양. 그러나 디지털·도시 환경에서 재설계 시 새로운 가능성 존재.
+    </div>
+  </div>
+
+
+  <!-- 6. 비판과 논란 -->
+  <div class="sec">
+    <div class="sec-num n-red">SECTION 06</div>
+    <h2>비판과 논란 — 균형 잡힌 시각</h2>
+    <p>그라민 은행은 세계적 칭송을 받는 동시에 구조적 문제에 대한 비판도 받습니다. MyPotDay 설계 시 이 실패 사례들을 반면교사로 삼아야 합니다.</p>
+
+    <div class="crit-list">
+      <div class="crit-item">
+        <div class="crit-icon">⚠️</div>
+        <div class="crit-body">
+          <strong>중첩 부채 악순환 (가장 심각한 문제)</strong>
+          <p>방글라데시 600개 마이크로크레딧 기관 차용자 2,200만 명 중 상당수가 기존 대출 상환을 위해 다른 기관에서 재차입하는 악순환 발생. 2009~2010년 상환율 급락(97.81% → 96.55%)으로 "마이크로크레딧 버블" 우려 제기.</p>
+        </div>
+      </div>
+      <div class="crit-item">
+        <div class="crit-icon">⚠️</div>
+        <div class="crit-body">
+          <strong>여성에게 부담 전가</strong>
+          <p>차용자 98%가 여성이지만, 실제 사업 운영과 수익은 남성이 가져가는 경우 다수. 대출에 따른 상환 부담과 심리적 압박은 여성이 고스란히 짊어지는 구조적 불균형.</p>
+        </div>
+      </div>
+      <div class="crit-item">
+        <div class="crit-icon">⚠️</div>
+        <div class="crit-body">
+          <strong>상환율 통계 의문</strong>
+          <p>공식 98% 상환율에 대한 의문. 실제로는 새 대출로 이전 대출을 상환하는 방식으로 통계를 유지한다는 비판. 실질적 상환율은 통계보다 낮을 수 있음.</p>
+        </div>
+      </div>
+      <div class="crit-item">
+        <div class="crit-icon">⚠️</div>
+        <div class="crit-body">
+          <strong>극단적 추심과 차용자 자살</strong>
+          <p>방글라데시·인도에서 과도한 추심 압박으로 인한 차용자 자살 사례 보도. 남성 유누스 사르다르(25세)는 7개 기관에 총 70,000타카 빚진 후 극단 선택. 인도 마이크로크레딧 버블 시기(2010년) 집단 자살 사례 발생.</p>
+        </div>
+      </div>
+      <div class="crit-item">
+        <div class="crit-icon">⚠️</div>
+        <div class="crit-body">
+          <strong>빈곤의 근본 원인 미해결</strong>
+          <p>마이크로크레딧이 빈곤 탈출의 근본 해결책이 아니라는 학계 비판. 대출은 증상을 완화할 뿐, 구조적 불평등·토지 개혁·교육 투자 없이는 빈곤 탈출에 한계가 있음.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-orange">
+      <strong>MyPotDay 설계에 주는 교훈:</strong> ① 단일 기관 내 중첩 대출 방지 설계 필요 ② 상환 압박보다 재무 상담 연계 ③ 실질 상환율과 통계 상환율 구분 관리 ④ 여성 차용자 보호 조항 약관 명시 ⑤ 대출이 유일한 해결책이 아님을 전제한 생태계 설계
+    </div>
+  </div>
+
+
+  <!-- 7. MyPotDay 연결 -->
+  <div class="mypotday-link">
+    <div class="ml-label">MYPOTDAY CONNECTION</div>
+    <h3>그라민 은행에서 MyPotDay가 배우는 것 — 그리고 넘어서는 것</h3>
+    <ul>
+      <li><strong>배울 점:</strong> 지인 연대보증 그룹 구조 → 계 그룹 10명으로 재현. 주단위 상환 → 월단위 자동이체로 현대화.</li>
+      <li><strong>배울 점:</strong> 여성 우선 타깃 → 한국 30~50대 여성 계주 집중. 문화적 뿌리 활용 (계 vs 방글라데시 공동체).</li>
+      <li><strong>넘어서는 점:</strong> 오프라인 현장 직원 → 100% 디지털 앱 자동화. 운영비 극적 절감.</li>
+      <li><strong>넘어서는 점:</strong> 정부 주도 자금 → 서민금융진흥원 파트너십 + 임팩트 투자 이원화. 지속가능성 강화.</li>
+      <li><strong>반면교사:</strong> 중첩 부채 방지 설계, 상환 압박 대신 재무 코칭 연계, 실질 임팩트 측정 체계 구축.</li>
+      <li><strong>한국 강점:</strong> 스마트폰 보급률 95%+, 자동이체 인프라, 수백 년 계 문화 — 그라민보다 유리한 실행 환경.</li>
+    </ul>
+  </div>
+
+  <div class="insight-box">
+    <p>
+      1976년, 한 교수가 주머니에서 꺼낸 <em>27달러</em>가<br>
+      49년 후 <em>1,087만 명의 삶</em>을 바꿨습니다.<br><br>
+      MyPotDay는 묻습니다:<br>
+      <em>"한국의 계(契) 문화 위에서,</em><br>
+      <em>디지털로 그 다음 장을 쓸 수 있을까?"</em>
+    </p>
+  </div>
+
+</div>
+
+<div class="foot">
+  <span><a href="index.html">← MyPotDay 문서 허브</a></span>
+  <span>그라민 은행 완전 분석 · 2026-05-25</span>
+</div>
+
+</body>
+</html>
